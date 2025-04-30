@@ -1,5 +1,5 @@
 #include "TileMap.hpp"
-
+#include "Character.hpp"
 TileMap::TileMap(int rows, int cols, int tileSize) 
     : rows(rows), cols(cols), tileSize(tileSize) {
     grid.resize(rows, std::vector<Node>(cols));
@@ -105,5 +105,24 @@ std::vector<TileMap::Node*> TileMap::getNeighbors(Node& node) {
 void TileMap::draw(sf::RenderWindow& window) {
     for (const auto& tile : tiles) {
         window.draw(tile);
+    }
+}
+void TileMap::addCharacter(std::shared_ptr<Character> character) {
+    characters.push_back(character);
+}
+
+void TileMap::moveCharacterTo(std::shared_ptr<Character> character, sf::Vector2i target) {
+    sf::Vector2i start = {
+        static_cast<int>(character->getPosition().x / tileSize),
+        static_cast<int>(character->getPosition().y / tileSize)
+    };
+    
+    auto path = findPath(start, target);
+    character->setPath(path, tileSize);
+}
+
+void TileMap::update(float deltaTime) {
+    for (auto& character : characters) {
+        character->update(deltaTime);
     }
 }

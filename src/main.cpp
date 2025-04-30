@@ -1,41 +1,61 @@
 #include <SFML/Graphics.hpp>
-#include "../include/TileMap.hpp"
+#include "TileMap.hpp"
+#include "Character.hpp"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "A* Pathfinding");
-    window.setFramerateLimit(60);
-
-    TileMap map(20, 20, 30); // Grid 20x20, tiles de 30px
-
-    // Configurar obstáculos (ejemplo)
-    for (int i = 3; i < 18; ++i) {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "A* Pathfinding con Personajes");
+    sf::Clock clock;
+    
+    TileMap map(20, 20, 30);
+    
+    // Configurar obstáculos
+    for (int i = 5; i < 15; ++i) {
         map.setObstacle(i, 10, true);
-        map.setObstacle(10, i, true);
     }
-
-    // Calcular camino
-    auto path = map.findPath({0, 0}, {19, 19});
-
-    // Bucle principal
+    
+    // Crear personaje
+    auto character = std::make_shared<Character>(sf::Vector2f(15, 15));
+    map.addCharacter(character);
+    
+    // Mover al hacer clic
+    sf::Vector2i targetPos;
+    bool hasTarget = false;
+    
     while (window.isOpen()) {
+        float deltaTime = clock.restart().asSeconds();
+        
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) window.close();
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            else if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    targetPos = {
+                        event.mouseButton.x / 30,
+                        event.mouseButton.y / 30
+                    };
+                    map.moveCharacterTo(character, targetPos);
+                }
+            }
         }
-
+        
+        map.update(deltaTime);
+        
         window.clear(sf::Color::White);
         map.draw(window);
-
-        // Dibujar camino (opcional)
-        for (const auto& point : path) {
-            sf::RectangleShape pathTile(sf::Vector2f(28, 28));
-            pathTile.setPosition(point.x * 30 + 1, point.y * 30 + 1);
-            pathTile.setFillColor(sf::Color(0, 255, 0, 150)); // Verde semitransparente
-            window.draw(pathTile);
+        
+        // Dibujar objetivo
+        if (hasTarget) {
+            sf::CircleShape target(10.f);
+            target.setPosition(targetPos.x * 30 + 5, targetPos.y * 30 + 5);
+            target.setFillColor(sf::Color::Red);
+            window.draw(target);
         }
-
+        
+        character->draw(window);
         window.display();
     }
-
+    
     return 0;
 }

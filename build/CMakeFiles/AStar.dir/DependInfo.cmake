@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Character.cpp" "CMakeFiles/AStar.dir/src/Character.cpp.o" "gcc" "CMakeFiles/AStar.dir/src/Character.cpp.o.d"
   "/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/TileMap.cpp" "CMakeFiles/AStar.dir/src/TileMap.cpp.o" "gcc" "CMakeFiles/AStar.dir/src/TileMap.cpp.o.d"
   "/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/main.cpp" "CMakeFiles/AStar.dir/src/main.cpp.o" "gcc" "CMakeFiles/AStar.dir/src/main.cpp.o.d"
   )

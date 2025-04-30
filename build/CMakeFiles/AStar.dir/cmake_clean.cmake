@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "AStar"
   "AStar.pdb"
+  "CMakeFiles/AStar.dir/src/Character.cpp.o"
+  "CMakeFiles/AStar.dir/src/Character.cpp.o.d"
   "CMakeFiles/AStar.dir/src/TileMap.cpp.o"
   "CMakeFiles/AStar.dir/src/TileMap.cpp.o.d"
   "CMakeFiles/AStar.dir/src/main.cpp.o"

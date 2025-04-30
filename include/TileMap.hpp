@@ -4,15 +4,21 @@
 #include <queue>
 #include <unordered_map>
 #include <algorithm>
+#include <memory>
 
+class Character; 
 class TileMap {
 public:
     TileMap(int rows, int cols, int tileSize);
     void draw(sf::RenderWindow& window);
     void setObstacle(int row, int col, bool isObstacle);
+    void update(float deltaTime);
+    void addCharacter(std::shared_ptr<Character> character);
+    void moveCharacterTo(std::shared_ptr<Character> character, sf::Vector2i target);
     std::vector<sf::Vector2i> findPath(sf::Vector2i start, sf::Vector2i end);
 
 private:
+    std::vector<std::shared_ptr<Character>> characters;
     struct Node {
         int row, col;
         int gCost = 0, hCost = 0, fCost = 0;

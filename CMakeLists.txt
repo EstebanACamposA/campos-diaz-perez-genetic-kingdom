@@ -12,6 +12,7 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 set(SOURCES
     src/main.cpp
     src/TileMap.cpp
+    src/Character.cpp
 )
 
 # Archivos de cabecera
