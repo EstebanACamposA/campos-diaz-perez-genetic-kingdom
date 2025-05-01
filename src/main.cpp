@@ -2,6 +2,7 @@
 #include "TileMap.hpp"
 #include "Character.hpp"
 
+// SFML logic for starting window and keeping time is here. Tile size defined here. VERIFY THIS!!!
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "A* Pathfinding con Personajes");
     sf::Clock clock;
