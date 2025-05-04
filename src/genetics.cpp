@@ -30,7 +30,7 @@ class Individual
 
         float max_health;
         // float health;
-        float speed;
+        float speed_multiplier;
         float pierce_armor;
         float magic_armor;
         float siege_armor;
@@ -38,7 +38,7 @@ class Individual
         // guide:
         // float mutation_relative_change = 0.2f;
         // float health = 100;
-        // float speed = 10;
+        // float speed_multiplier = 1;
         // float pierce_armor = 1;
         // float magic_armor = 1;
         // float siege_armor = 1;
@@ -46,12 +46,12 @@ class Individual
         // Test Constructor. Actual constructor requires CalculateFitness(float completed_path, float remaining_health).
         // Modify this constructor so that it receives an enemy unit object. Individual(Enemy enemy){}
         // The constructor calls CalculateFitness().
-        Individual(float max_health, float speed, float pierce_armor, float magic_armor, float siege_armor)
+        Individual(float max_health, float speed_multiplier, float pierce_armor, float magic_armor, float siege_armor)
         {
             this->mutation_relative_change = 0.2f;
             this->max_health = max_health;
             // this->health = max_health;
-            this->speed = speed;
+            this->speed_multiplier = speed_multiplier;
             this->pierce_armor = pierce_armor;
             this->magic_armor = magic_armor;
             this->siege_armor = siege_armor;
@@ -64,7 +64,7 @@ class Individual
         {
             this->mutation_relative_change = -1.0f;
             this->max_health = -1.0f;
-            this->speed = -1.0f;
+            this->speed_multiplier = -1.0f;
             this->pierce_armor = -1.0f;
             this->magic_armor = -1.0f;
             this->siege_armor = -1.0f;
@@ -78,7 +78,7 @@ class Individual
             // float fitness = completed_path/(1 - remaining_health/2)  //remaining_health = health/max_health. Same for the completed path.
             
             // Function for testing the class. 
-            float fitness = 2 * (1 - expf(-1 * max_health * speed * sqrtf(pierce_armor) * sqrtf(magic_armor) * sqrtf(siege_armor) / 1000));
+            float fitness = 2 * (1 - expf(-1 * max_health * speed_multiplier * sqrtf(pierce_armor) * sqrtf(magic_armor) * sqrtf(siege_armor) / 1000));
             this->fitness = fitness;
         };
         
@@ -89,7 +89,7 @@ class Individual
         void MutateStats()
         {
             this->max_health    *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
-            this->speed         *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
+            this->speed_multiplier         *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
             this->pierce_armor  *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
             this->magic_armor   *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
             this->siege_armor   *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
@@ -115,8 +115,8 @@ class Genetics
         std::vector<std::vector<Individual>> best_individuals_matrix;
 
         /* Order of species and spawn ratios:
-            0 Orcs, 10
-            1 Night elves, 15
+            0 Orcs, 15
+            1 Night elves, 10
             2 Harpies, 7
             3 Mercenaries, 7
         */
@@ -125,7 +125,7 @@ class Genetics
         // guide:
         // float mutation_relative_change = 0.2f;
         // float health = 100;
-        // float speed = 10;
+        // float speed_multiplier = 1;
         // float pierce_armor = 1;
         // float magic_armor = 1;
         // float siege_armor = 1;
@@ -173,14 +173,14 @@ class Genetics
         // }
 
         /* Order of species and spawn ratios:
-            0 Orcs, 10
-            1 Night elves, 15
+            0 Orcs, 15
+            1 Night elves, 10
             2 Harpies, 7
             3 Mercenaries, 7
         */
         void SimulateWave(int n)
         {
-            std::vector<int> spawn_rates = {10, 15, 7, 7}; 
+            std::vector<int> spawn_rates = {15, 10, 7, 7}; 
             // The size of spawn_rates vector must match that of best_individuals and of species.
             // i. e. the amount of species: orcs, night elves, harpies, mercs. -> 4.
 
@@ -301,10 +301,10 @@ class Genetics
             for (size_t i = 0; i < species.size(); i++)
             {
                 // Each of the 5 genes in an Individual.
-                // gene order float max_health, float speed, float pierce_armor, float magic_armor, float siege_armor.
+                // gene order float max_health, float speed_multiplier, float pierce_armor, float magic_armor, float siege_armor.
                 best_individuals[i] = Individual(
                     best_individuals_matrix[i][0 % best_individuals_matrix[i].size()].max_health,
-                    best_individuals_matrix[i][1 % best_individuals_matrix[i].size()].speed,
+                    best_individuals_matrix[i][1 % best_individuals_matrix[i].size()].speed_multiplier,
                     best_individuals_matrix[i][2 % best_individuals_matrix[i].size()].pierce_armor,
                     best_individuals_matrix[i][3 % best_individuals_matrix[i].size()].magic_armor,
                     best_individuals_matrix[i][4 % best_individuals_matrix[i].size()].siege_armor);
@@ -319,7 +319,7 @@ class Genetics
                 std::cout << "Race:\t" << i << "\tFitness:\t" << best_individuals[i].fitness << "\n"
                 << "Stats:\t"
                 << best_individuals[i].max_health << ",\t" 
-                << best_individuals[i].speed << ",\t" 
+                << best_individuals[i].speed_multiplier << ",\t" 
                 << best_individuals[i].pierce_armor << ",\t" 
                 << best_individuals[i].magic_armor << ",\t"  
                 << best_individuals[i].siege_armor << std::endl;
@@ -343,28 +343,42 @@ class Genetics
 
 };
 
-int main(int argc, char const *argv[])
-{
-    Genetics ginny = Genetics();
-    
-    std::cout << "Show best Individuals:" << std::endl;
-    ginny.ShowBestIndividuals();
-    std::cout << std::endl;
 
-    for (size_t i = 0; i < 12; i++)
-    {
+
+
+
+
+
+
+
+
+
+
+
+
+
+// int main(int argc, char const *argv[])
+// {
+//     Genetics ginny = Genetics();
+    
+//     std::cout << "Show best Individuals:" << std::endl;
+//     ginny.ShowBestIndividuals();
+//     std::cout << std::endl;
+
+//     for (size_t i = 0; i < 12; i++)
+//     {
         
-        std::cout << "Start simulation:" << std::endl;
-        ginny.SimulateWave(1);
-        std::cout << std::endl;
+//         std::cout << "Start simulation:" << std::endl;
+//         ginny.SimulateWave(1);
+//         std::cout << std::endl;
 
-        std::cout << "Show best Individuals:" << std::endl;
-        ginny.ShowBestIndividuals();
-        std::cout << std::endl;
+//         std::cout << "Show best Individuals:" << std::endl;
+//         ginny.ShowBestIndividuals();
+//         std::cout << std::endl;
 
-    }
+//     }
     
-    return 0;
-}
+//     return 0;
+// }
 
 

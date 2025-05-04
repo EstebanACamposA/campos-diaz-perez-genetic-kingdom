@@ -13,6 +13,8 @@ set(SOURCES
     src/main.cpp
     src/TileMap.cpp
     src/Character.cpp
+    src/genetics.cpp
+    src/Projectile.cpp
 )
 
 # Archivos de cabecera

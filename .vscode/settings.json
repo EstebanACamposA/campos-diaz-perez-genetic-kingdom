@@ -67,6 +67,12 @@
         "locale": "cpp",
         "print": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "deque": "cpp",
+        "map": "cpp",
+        "numeric": "cpp",
+        "numbers": "cpp",
+        "__node_handle": "cpp",
+        "__tree": "cpp"
     }
 }

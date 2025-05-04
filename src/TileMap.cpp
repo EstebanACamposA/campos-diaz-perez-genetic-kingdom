@@ -119,16 +119,29 @@ std::vector<TileMap::Node*> TileMap::getNeighbors(Node& node) {
     return neighbors;
 }
 
+// Draws all the tiles, characters, and projectiles.
 void TileMap::draw(sf::RenderWindow& window) {
+    // Tiles
     for (const auto& tile : tiles) {
         window.draw(tile);
+    }
+    // Characters.
+    for (size_t i = 0; i < characters.size(); i++)
+    {
+        (*characters[i]).draw(window);
+    }
+    // Projectiles.
+    for (size_t i = 0; i < projectiles.size(); i++)
+    {
+        (*projectiles[i]).draw(window);
     }
 }
 void TileMap::addCharacter(std::shared_ptr<Character> character) {
     characters.push_back(character);
 }
 
-// Characters are made to automatically move along a path if they one.
+// Give a new path to a Character.
+// Characters are made to automatically move along a path if they have one.
 void TileMap::moveCharacterTo(std::shared_ptr<Character> character, sf::Vector2i target) {
     sf::Vector2i start = {
         static_cast<int>(character->getPosition().x / tileSize),
@@ -140,8 +153,34 @@ void TileMap::moveCharacterTo(std::shared_ptr<Character> character, sf::Vector2i
     character->setPath(path, tileSize);
 }
 
+// Runs Character.update(deltatime) on all Characters in this->characters and on all projectiles.
+// (Character updates are handled by TileMap).
 void TileMap::update(float deltaTime) {
     for (auto& character : characters) {
         character->update(deltaTime);
     }
+    for (auto& projectile : projectiles) {
+        projectile->update(deltaTime);
+    }
 }
+
+
+// Testing function.
+// Adds a projectile to projectiles with a random target Character from characters.
+void TileMap::ShootRandomProjectile()
+{
+    std::cout << "Enters ShootRandomProjectile()" << std::endl;
+    // tiles[rows * cols /2 + cols/2]
+    sf::Vector2f projectile_start_position((float)rows*tileSize/2, (float)cols*tileSize/2);\
+    std::shared_ptr<Character> target_character = characters[characters.size()/2];
+
+    // Projectile projectile(projectile_start_position, target_character, 200.f);
+    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(projectile_start_position, target_character, 200.f);
+    projectiles.push_back(projectile);
+
+}
+
+
+
+
+

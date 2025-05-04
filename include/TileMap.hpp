@@ -6,7 +6,9 @@
 #include <algorithm>
 #include <memory>
 
-class Character; 
+#include "Projectile.h"
+
+class Character; // forward declaration instead of #include.
 class TileMap {
 public:
     TileMap(int rows, int cols, int tileSize);
@@ -16,9 +18,13 @@ public:
     void addCharacter(std::shared_ptr<Character> character);
     void moveCharacterTo(std::shared_ptr<Character> character, sf::Vector2i target);
     std::vector<sf::Vector2i> findPath(sf::Vector2i start, sf::Vector2i end);
+    // Game
+        // Testing
+    void ShootRandomProjectile();
 
 private:
     std::vector<std::shared_ptr<Character>> characters;
+    std::vector<std::shared_ptr<Projectile>> projectiles;
     struct Node {
         int row, col;
         int gCost = 0, hCost = 0, fCost = 0;

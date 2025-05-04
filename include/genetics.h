@@ -12,20 +12,6 @@ bool RandomBool(double probability);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class Individual
 {
     public:
@@ -36,7 +22,7 @@ class Individual
 
         float max_health;
         // float health;
-        float speed;
+        float speed_multiplier;
         float pierce_armor;
         float magic_armor;
         float siege_armor;
@@ -44,7 +30,7 @@ class Individual
         // guide:
         // float mutation_relative_change = 0.2f;
         // float health = 100;
-        // float speed = 10;
+        // float speed_multiplier = 10;
         // float pierce_armor = 1;
         // float magic_armor = 1;
         // float siege_armor = 1;
@@ -52,7 +38,7 @@ class Individual
         // Test Constructor. Actual constructor requires CalculateFitness(float completed_path, float remaining_health).
         // Modify this constructor so that it receives an enemy unit object. Individual(Enemy enemy){}
         // The constructor calls CalculateFitness().
-        Individual(float max_health, float speed, float pierce_armor, float magic_armor, float siege_armor);
+        Individual(float max_health, float speed_multiplier, float pierce_armor, float magic_armor, float siege_armor);
 
         // Default constructor gives -1.0f to all attributes.
         Individual();
@@ -71,28 +57,6 @@ class Individual
 
 
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -121,7 +85,7 @@ class Genetics
         // guide:
         // float mutation_relative_change = 0.2f;
         // float health = 100;
-        // float speed = 10;
+        // float speed_multiplier = 10;
         // float pierce_armor = 1;
         // float magic_armor = 1;
         // float siege_armor = 1;

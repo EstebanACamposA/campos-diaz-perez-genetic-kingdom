@@ -7,7 +7,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "A* Pathfinding con Personajes");
     sf::Clock clock;
     
-    TileMap map(20, 20, 30);
+    TileMap map(20, 20, 30);    // 30 doesn't divde both 800 and 600.
     
     // Configurar obstáculos
     for (int i = 5; i < 15; ++i) {
@@ -21,9 +21,20 @@ int main() {
     // Mover al hacer clic
     sf::Vector2i targetPos;
     bool hasTarget = false;
+
+    int counter60 = 0;
+
     
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
+
+        counter60 ++;
+        if (counter60 >= 60)
+        {
+            std::cout << "deltaTime = " << deltaTime << std::endl;    
+            map.ShootRandomProjectile();
+        }
+        
         
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -33,7 +44,7 @@ int main() {
             else if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     targetPos = {
-                        event.mouseButton.x / 30,
+                        event.mouseButton.x / 30,   // event.mouseButton/tilesize
                         event.mouseButton.y / 30
                     };
                     map.moveCharacterTo(character, targetPos);
@@ -54,7 +65,7 @@ int main() {
             window.draw(target);
         }
         
-        character->draw(window);
+        // character->draw(window); // Moved to TileMap.draw
         window.display();
     }
     
