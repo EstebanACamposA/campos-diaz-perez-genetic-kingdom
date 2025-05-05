@@ -69,7 +69,7 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
 
 
 // Moves character's postition a unit closer to the next destination in path if available.
-void Character::update(float deltaTime) {
+std::optional<Individual> Character::update(float deltaTime) {
     // Damage logic make new variable for character
     damage_taken =
     pierce_damage*pierce_damage_multiplier +
@@ -84,6 +84,10 @@ void Character::update(float deltaTime) {
 
     if (current_health <= 0)
     {
+        Individual genetic_result = CalculateIndividual();
+        return genetic_result; // Returning an Individual type object works even if the return type is std::optional<Individual>.
+
+
         // CODE FOR CHARACTER REMOVAL. This code should also pass the genes to the Genetic Manager as and Individual type object.
         // Could be a functions that calls the actual delete funcion in the game Manager (TileMap)
         // Delete from several places?
@@ -92,6 +96,11 @@ void Character::update(float deltaTime) {
     // Visual effect. Blinking.
     if (damage_taken > 0)
     {
+        std::cout << "current_health = " << current_health << std::endl;
+        std::cout << "current_health = " << current_health << std::endl;
+        std::cout << "current_health = " << current_health << std::endl;
+        std::cout << "current_health = " << current_health << std::endl;
+        std::cout << "current_health = " << current_health << std::endl;
         std::cout << "current_health = " << current_health << std::endl;
         if (damage_blink)
         {
@@ -128,6 +137,7 @@ void Character::update(float deltaTime) {
             position += direction * speed * deltaTime;
         }
     }
+    return std::nullopt; // This is taken as false inside an if statement.
 }
 
 // Takes a newPath and stores it into this.path.
@@ -155,4 +165,14 @@ void Character::draw(sf::RenderWindow& window) {
 
 sf::Vector2f Character::getPosition() const {
     return position;
+}
+
+
+Individual Character::CalculateIndividual()
+{   // Individual(float max_health, float speed_multiplier, float pierce_armor, float magic_armor, float siege_armor)
+    // NEED TO MAKE INDIVIDUAL CONSTRUCTOR TAKE REMAINING HEALTH AND REMAINING PATH
+        // This NEED A FUNCTION TO CALCULATE THE REMAINING PATH AS THE SUM OF THE INDIVIDUAL DISTANCES BETWEEN THE PATH'S REMAINING NODES. 
+    Individual genetic_result(max_health, speed_multiplier, pierce_armor, magic_armor, siege_armor);
+    return genetic_result;
+
 }

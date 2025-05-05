@@ -1,7 +1,7 @@
 CMakeFiles/AStar.dir/src/Character.cpp.o: \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Character.cpp \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Character.cpp \
  /usr/include/stdc-predef.h \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/include/Character.hpp \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/Character.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
@@ -235,8 +235,11 @@ CMakeFiles/AStar.dir/src/Character.cpp.o: \
  /usr/include/SFML/Graphics/Glsl.hpp /usr/include/SFML/Graphics/Glsl.inl \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
- /usr/include/SFML/Graphics/VertexBuffer.hpp /usr/include/c++/13/cmath \
- /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/SFML/Graphics/VertexBuffer.hpp \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/genetics.h \
+ /usr/include/c++/13/cstring /usr/include/string.h /usr/include/strings.h \
+ /usr/include/c++/13/cmath /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
@@ -257,4 +260,5 @@ CMakeFiles/AStar.dir/src/Character.cpp.o: \
  /usr/include/c++/13/tr1/modified_bessel_func.tcc \
  /usr/include/c++/13/tr1/poly_hermite.tcc \
  /usr/include/c++/13/tr1/poly_laguerre.tcc \
- /usr/include/c++/13/tr1/riemann_zeta.tcc
+ /usr/include/c++/13/tr1/riemann_zeta.tcc /usr/include/c++/13/iostream \
+ /usr/include/c++/13/istream /usr/include/c++/13/bits/istream.tcc

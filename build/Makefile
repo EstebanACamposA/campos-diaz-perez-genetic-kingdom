@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom
+CMAKE_SOURCE_DIR = /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build
+CMAKE_BINARY_DIR = /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,9 +132,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -198,6 +198,30 @@ src/Character.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/Character.cpp.s
 .PHONY : src/Character.cpp.s
 
+src/Projectile.o: src/Projectile.cpp.o
+.PHONY : src/Projectile.o
+
+# target to build an object file
+src/Projectile.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/Projectile.cpp.o
+.PHONY : src/Projectile.cpp.o
+
+src/Projectile.i: src/Projectile.cpp.i
+.PHONY : src/Projectile.i
+
+# target to preprocess a source file
+src/Projectile.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/Projectile.cpp.i
+.PHONY : src/Projectile.cpp.i
+
+src/Projectile.s: src/Projectile.cpp.s
+.PHONY : src/Projectile.s
+
+# target to generate assembly for a file
+src/Projectile.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/Projectile.cpp.s
+.PHONY : src/Projectile.cpp.s
+
 src/TileMap.o: src/TileMap.cpp.o
 .PHONY : src/TileMap.o
 
@@ -221,6 +245,30 @@ src/TileMap.s: src/TileMap.cpp.s
 src/TileMap.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/TileMap.cpp.s
 .PHONY : src/TileMap.cpp.s
+
+src/genetics.o: src/genetics.cpp.o
+.PHONY : src/genetics.o
+
+# target to build an object file
+src/genetics.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/genetics.cpp.o
+.PHONY : src/genetics.cpp.o
+
+src/genetics.i: src/genetics.cpp.i
+.PHONY : src/genetics.i
+
+# target to preprocess a source file
+src/genetics.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/genetics.cpp.i
+.PHONY : src/genetics.cpp.i
+
+src/genetics.s: src/genetics.cpp.s
+.PHONY : src/genetics.s
+
+# target to generate assembly for a file
+src/genetics.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/genetics.cpp.s
+.PHONY : src/genetics.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -262,9 +310,15 @@ help:
 	@echo "... src/Character.o"
 	@echo "... src/Character.i"
 	@echo "... src/Character.s"
+	@echo "... src/Projectile.o"
+	@echo "... src/Projectile.i"
+	@echo "... src/Projectile.s"
 	@echo "... src/TileMap.o"
 	@echo "... src/TileMap.i"
 	@echo "... src/TileMap.s"
+	@echo "... src/genetics.o"
+	@echo "... src/genetics.i"
+	@echo "... src/genetics.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

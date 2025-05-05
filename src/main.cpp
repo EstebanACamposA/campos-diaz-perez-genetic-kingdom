@@ -5,6 +5,7 @@
 // SFML logic for starting window and keeping time is here. Tile size defined here. VERIFY THIS!!!
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "A* Pathfinding con Personajes");
+    window.setFramerateLimit(60);
     sf::Clock clock;
     
     TileMap map(20, 20, 30);    // 30 doesn't divde both 800 and 600.
@@ -22,15 +23,16 @@ int main() {
     sf::Vector2i targetPos;
     bool hasTarget = false;
 
-    int counter60 = 0;
+    int counter60 = 99999;
 
     
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
 
         counter60 ++;
-        if (counter60 >= 60)
+        if (counter60 >= 600)
         {
+            counter60 = 0;
             std::cout << "deltaTime = " << deltaTime << std::endl;    
             map.ShootRandomProjectile();
         }

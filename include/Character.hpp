@@ -1,6 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+
+#include <optional>
+
 // Genetics
 #include "genetics.h"
 
@@ -8,7 +11,7 @@ class Character {
 public:
     // Basics and movement:
     Character(sf::Vector2f startPosition, float speed = 100.f); // 100.f is default speed. 
-    void update(float deltaTime);
+    std::optional<Individual> update(float deltaTime);
     void setPath(const std::vector<sf::Vector2i>& newPath, float tileSize);
     void draw(sf::RenderWindow& window);
     sf::Vector2f getPosition() const;
@@ -63,5 +66,6 @@ private:
     float damage_taken;
     bool damage_blink;
 
+    Individual CalculateIndividual();
 
 };

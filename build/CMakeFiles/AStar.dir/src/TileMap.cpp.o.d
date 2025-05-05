@@ -1,7 +1,7 @@
 CMakeFiles/AStar.dir/src/TileMap.cpp.o: \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/TileMap.cpp \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/TileMap.cpp \
  /usr/include/stdc-predef.h \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/include/TileMap.hpp \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/TileMap.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
@@ -255,4 +255,9 @@ CMakeFiles/AStar.dir/src/TileMap.cpp.o: \
  /usr/include/c++/13/bits/atomic_lockfree_defines.h \
  /usr/include/c++/13/backward/auto_ptr.h \
  /usr/include/c++/13/pstl/glue_memory_defs.h \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/include/Character.hpp
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/Projectile.h \
+ /usr/include/c++/13/iostream /usr/include/c++/13/istream \
+ /usr/include/c++/13/bits/istream.tcc \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/Character.hpp \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/genetics.h \
+ /usr/include/c++/13/cstring /usr/include/string.h /usr/include/strings.h

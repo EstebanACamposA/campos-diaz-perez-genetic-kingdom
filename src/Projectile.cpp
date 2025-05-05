@@ -15,21 +15,27 @@ Projectile::Projectile(sf::Vector2f startPosition, std::shared_ptr<Character> ta
 bool Projectile::update(float deltaTime)
 {
     sf::Vector2f displacement = target_character->getPosition() - position;
-
     // Magnitude of displacement.
     float distance = std::sqrt(displacement.x*displacement.x + displacement.y*displacement.y);
     // if (closest_distance_to_target)
     // {
     //     /* code */
     // }
-        
     if (distance <= speed*deltaTime)
     {
+        std::cout << "distance <= speed*deltaTime   OJO CUIDADO!!!!!!!!!!!!" << std::endl;
         target_character->magic_damage += 20.f;
         return true;
         // Returning true will make the GameManager remove this projectile.
     }
+    std::cout << "distance = " << distance << std::endl;
+    std::cout << "speed = " << speed << std::endl;
+    std::cout << "deltaTime = " << deltaTime << std::endl;
+    std::cout << "speed*deltaTime = " << speed*deltaTime << std::endl;
+    std::cout << std::endl;
+    
     position += displacement/distance * speed * deltaTime;
+    return false;
 }
 
 // currently called by main 

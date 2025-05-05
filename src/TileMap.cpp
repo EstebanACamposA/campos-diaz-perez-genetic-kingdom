@@ -156,12 +156,46 @@ void TileMap::moveCharacterTo(std::shared_ptr<Character> character, sf::Vector2i
 // Runs Character.update(deltatime) on all Characters in this->characters and on all projectiles.
 // (Character updates are handled by TileMap).
 void TileMap::update(float deltaTime) {
-    for (auto& character : characters) {
-        character->update(deltaTime);
+    // for (auto& character : characters) {
+    //     character->update(deltaTime);
+    // }
+    // for (auto& projectile : projectiles) {
+    //     if (projectile->update(deltaTime))
+    //     {
+    //         /* code to erase projectile from std::vector<std::shared_ptr<Projectile>> projectiles*/
+    //     }
+        
+        
+    // }
+
+    // Uses iterators to erase at the same time it iterates through the vector.
+    for (auto it = projectiles.begin(); it != projectiles.end(); )
+    {
+        if ((*it)->update(deltaTime))   // If the current Projectile is marked for deletion.
+        {
+            it = projectiles.erase(it); /* This erases the current Projectile from the list and returns a new iterator.
+            This is where the iterators helps in not getting errors when iterating through the list.*/
+        } else
+        {
+            ++it; // goes to the next position only if nothing was erased. This is part of this specific pattern to 
+        }
     }
-    for (auto& projectile : projectiles) {
-        projectile->update(deltaTime);
+
+    for (auto it = characters.begin(); it != characters.end(); )
+    {
+        if ((*it)->update(deltaTime))   // The return type of Character::update is std::optional<Individual>. It works as true or false.
+        {
+            // SEND GENETIC DATA TO GENETIC MANAGER FROM HERE AddIndividual(int species)
+            // HAS TO GET THE RIGHT SPECIES SOMEHOW. MAYBE INSTEAD OF A characters VECTOR THERE'S A CHARACTERS 2D VECTOR WITH THE INDIVIDUAL SPECIES.
+            // AND THIS FOR IS REPEATED FOR EACH SPECIES.
+            it = characters.erase(it);
+        } else
+        {
+            ++it;
+        }
     }
+
+
 }
 
 
@@ -171,12 +205,15 @@ void TileMap::ShootRandomProjectile()
 {
     std::cout << "Enters ShootRandomProjectile()" << std::endl;
     // tiles[rows * cols /2 + cols/2]
-    sf::Vector2f projectile_start_position((float)rows*tileSize/2, (float)cols*tileSize/2);\
+    sf::Vector2f projectile_start_position((float)rows*tileSize/2, (float)cols*tileSize/2);
+    // std::cout << "CHECKPOINT 1" << std::endl;
     std::shared_ptr<Character> target_character = characters[characters.size()/2];
-
+    // std::cout << "CHECKPOINT 2" << std::endl;
     // Projectile projectile(projectile_start_position, target_character, 200.f);
     std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(projectile_start_position, target_character, 200.f);
+    // std::cout << "CHECKPOINT 3" << std::endl;
     projectiles.push_back(projectile);
+    // std::cout << "CHECKPOINT 4" << std::endl;
 
 }
 
