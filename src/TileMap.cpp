@@ -9,7 +9,7 @@ TileMap::TileMap(int rows, int cols, int tileSize)
     // node struct attributes {int row, col; int gCost = 0, hCost = 0, fCost = 0; bool isObstacle = false; Node* parent}
     for (int y = 0; y < rows; ++y) {
         for (int x = 0; x < cols; ++x) {
-            grid[y][x] = {y, x, 0, 0, 0, false, nullptr};
+            grid[y][x] = {y, x, 0, 0, 0, false, false, nullptr};
 
             // Creates white sf::RectangleShape tiles and stores them in the tiles (1D) vector. This 1D vector is used similar to a matrix.
             sf::RectangleShape tile(sf::Vector2f(tileSize - 1, tileSize - 1));
@@ -27,13 +27,26 @@ TileMap::TileMap(int rows, int cols, int tileSize)
         std::vector<std::shared_ptr<Character>> new_row;
         enemy_species.push_back(new_row);
     }
+
+
+
+    // 
+
+
+
+
+
+
+
     
 }
 
 // Acceses grid and tiles at (row,col) and assigns isObstacle. White and free or Red and obstacle.
+// Makes all obstacles buildable.
 void TileMap::setObstacle(int row, int col, bool isObstacle) {
     if (row >= 0 && row < rows && col >= 0 && col < cols) {
         grid[row][col].isObstacle = isObstacle;
+        grid[row][col].isBuildable = true;
         tiles[row * cols + col].setFillColor(isObstacle ? sf::Color::Red : sf::Color::White);
     }
 }
@@ -290,6 +303,74 @@ void TileMap::ShootRandomProjectile()
 
 }
 
+void TileMap::clickEvents(sf::Vector2i click_coords)
+{
+    // checks current state of buttons displayed
+    if (!build_buttons && !upgrade_button)
+    {
+        // AIAIAIAIAIAIAIAIA
+        if (grid[click_coords.y][click_coords.x].isBuildable)
+        {
+            std::cout << "Obstacle clicked" << std::endl;
+            // Do something with the obstacle
+            last_succesful_tile_click = click_coords;
+            build_buttons = true;
+        }
+        else
+        {
+            std::cout << "Empty tile clicked" << std::endl;
+            // Do something with the empty tile
+        }
+     
+    }
+    if (build_buttons && !upgrade_button)
+    {
+        /*
+        button 1:
+            y: [1,7]
+            x: [31,37]
+        button 2:
+            y: [9,15]
+            x: [31,37]
+        button 3:
+            y: [16,22]
+            x: [31,37]    
+        */
+        if (click_coords.x >= 31 && click_coords.x <= 37)
+        {
+            if (click_coords.y >= 1 && click_coords.y <= 7)
+            {
+                std::cout << "Button 1 clicked" << std::endl;
+                // Do something with button 1
+                build_buttons = false;
+                //CONSTRUIR TORRE, FUNCION DE.
+
+            }
+            else if (click_coords.y >= 9 && click_coords.y <= 15)
+            {
+                std::cout << "Button 2 clicked" << std::endl;
+                // Do something with button 2
+                build_buttons = false;
+                //CONSTRUIR TORRE, FUNCION DE.
+            }
+            else if (click_coords.y >= 16 && click_coords.y <= 22)
+            {
+                std::cout << "Button 3 clicked" << std::endl;
+                // Do something with button 3
+                build_buttons = false;
+                //CONSTRUIR TORRE, FUNCION DE.
+            }
+        }
+        {
+            std::cout << "Obstacle clicked" << std::endl;
+            // Do something with the obstacle
+            last_succesful_tile_click = click_coords;
+            build_buttons = true;
+        }
+    }
+    
+    
+}
 
 
 

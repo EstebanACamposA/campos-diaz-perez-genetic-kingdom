@@ -28,16 +28,25 @@ public:
     // Genetics
     Genetics genetic_manager;
 
+    bool build_buttons;
+    bool upgrade_button;
+    sf::Vector2i last_succesful_tile_click;
+    void clickEvents(sf::Vector2i click_coords);
+
+
 private:
     std::vector<std::shared_ptr<Character>> characters;
     // A D2 vector of std::shared_ptr<Character>
     std::vector<std::vector<std::shared_ptr<Character>>> enemy_species;
     
     std::vector<std::shared_ptr<Projectile>> projectiles;
+
+    
     struct Node {
         int row, col;
         int gCost = 0, hCost = 0, fCost = 0;
         bool isObstacle = false;
+        bool isBuildable = false;
         Node* parent = nullptr;
 
         void calculateFCost() { fCost = gCost + hCost; }

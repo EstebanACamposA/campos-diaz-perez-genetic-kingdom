@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project
+CMAKE_SOURCE_DIR = /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build
+CMAKE_BINARY_DIR = /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -81,14 +81,14 @@ clean: CMakeFiles/AStar.dir/clean
 CMakeFiles/AStar.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target AStar"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target AStar"
 .PHONY : CMakeFiles/AStar.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/AStar.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/AStar.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles 0
 .PHONY : CMakeFiles/AStar.dir/rule
 
 # Convenience name for target.

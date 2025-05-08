@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include
+CXX_INCLUDES = -I/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/include
 
 CXX_FLAGS = -std=gnu++17
 
