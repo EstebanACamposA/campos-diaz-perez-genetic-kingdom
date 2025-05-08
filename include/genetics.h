@@ -43,7 +43,12 @@ class Individual
         // Default constructor gives -1.0f to all attributes.
         Individual();
 
+        // Constructor for Character to Individual. Takes completed_path and remaining_health
+        Individual(float max_health, float speed_multiplier, float pierce_armor, float magic_armor, float siege_armor, float completed_path, float remaining_health);
+        // Testing fitness calculation.
         void CalculateFitness();
+        // Actual fitness calculation.
+        void CalculateFitness(float completed_path, float remaining_health);
         
         // Testing only function.
         // Increases or decreases each stat by mutation_relative_change and recalculates the fitness.
@@ -110,6 +115,16 @@ class Genetics
         void ShowBestIndividuals();
 
         void ShowSpecies();
+
+        void AddIndividual(int species, Individual enemy);
+
+        void ClearWave();
+
+
+
+
+
+
 };
 
 

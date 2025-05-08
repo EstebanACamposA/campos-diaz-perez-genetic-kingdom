@@ -71,37 +71,51 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
 // Moves character's postition a unit closer to the next destination in path if available.
 std::optional<Individual> Character::update(float deltaTime) {
     // Damage logic make new variable for character
-    damage_taken =
-    pierce_damage*pierce_damage_multiplier +
-    magic_damage*magic_damage_multiplier +
-    siege_damage*siege_damage_multiplier;
 
-    pierce_damage = 0.f;
-    magic_damage = 0.f;
-    siege_damage = 0.f;
+
+    if (pierce_damage > 0 || magic_damage > 0 || siege_damage > 0 )
+    {    
+        damage_taken =
+        pierce_damage*pierce_damage_multiplier +
+        magic_damage*magic_damage_multiplier +
+        siege_damage*siege_damage_multiplier;
     
-    current_health -= damage_taken;
+    
+        std::cout << "pierce_damage:" << pierce_damage;
+        std::cout << " magic_damage:" << magic_damage;
+        std::cout << " siege_damage:" << siege_damage;
+    
+        std::cout << std::endl;
+    
+        std::cout << "pierce_damage_multiplier:" << pierce_damage_multiplier;
+        std::cout << " magic_damage_multiplier:" << magic_damage_multiplier;
+        std::cout << " siege_damage_multiplier:" << siege_damage_multiplier;
+    
+        std::cout << std::endl;
+    
+        pierce_damage = 0.f;
+        magic_damage = 0.f;
+        siege_damage = 0.f;
+        
+        std::cout << "current_health before:" << current_health;
+        current_health -= damage_taken;
+        std::cout << " current_health after:" << current_health << std::endl;
+
+    }
+    
+
 
     if (current_health <= 0)
     {
         Individual genetic_result = CalculateIndividual();
         return genetic_result; // Returning an Individual type object works even if the return type is std::optional<Individual>.
-
-
-        // CODE FOR CHARACTER REMOVAL. This code should also pass the genes to the Genetic Manager as and Individual type object.
-        // Could be a functions that calls the actual delete funcion in the game Manager (TileMap)
-        // Delete from several places?
     }
 
     // Visual effect. Blinking.
     if (damage_taken > 0)
     {
         std::cout << "current_health = " << current_health << std::endl;
-        std::cout << "current_health = " << current_health << std::endl;
-        std::cout << "current_health = " << current_health << std::endl;
-        std::cout << "current_health = " << current_health << std::endl;
-        std::cout << "current_health = " << current_health << std::endl;
-        std::cout << "current_health = " << current_health << std::endl;
+
         if (damage_blink)
         {
             damage_blink = false;
@@ -137,6 +151,8 @@ std::optional<Individual> Character::update(float deltaTime) {
             position += direction * speed * deltaTime;
         }
     }
+    
+    // returns std::nullopt every time the Character is not destroyed.
     return std::nullopt; // This is taken as false inside an if statement.
 }
 
@@ -169,10 +185,35 @@ sf::Vector2f Character::getPosition() const {
 
 
 Individual Character::CalculateIndividual()
-{   // Individual(float max_health, float speed_multiplier, float pierce_armor, float magic_armor, float siege_armor)
-    // NEED TO MAKE INDIVIDUAL CONSTRUCTOR TAKE REMAINING HEALTH AND REMAINING PATH
-        // This NEED A FUNCTION TO CALCULATE THE REMAINING PATH AS THE SUM OF THE INDIVIDUAL DISTANCES BETWEEN THE PATH'S REMAINING NODES. 
-    Individual genetic_result(max_health, speed_multiplier, pierce_armor, magic_armor, siege_armor);
+{   
+    float completed_path = CalculateCompletedPath();
+    float remaining_health = current_health / max_health;
+
+    Individual genetic_result(max_health, speed_multiplier, pierce_armor, magic_armor, siege_armor, completed_path, remaining_health);
     return genetic_result;
 
+}
+
+// Finds what proportion of the Character's path has been traveled. float completed_path -> [0,1]
+// Independent of tileSize.
+float Character::CalculateCompletedPath()
+{
+    float completed_distance = 0;
+    float remaining_distance = 0;
+    for (size_t i = 0; i < path.size() - 1; i++)
+    {
+        if (i >= currentTarget)
+        {
+            // Distance is calculated taking into account the possible movements of a Characters.
+            // Up, left, down, right.
+            remaining_distance += path[i+1].x - path[i].x + path[i+1].y - path[i].y;
+        }
+        else
+        {
+            completed_distance += path[i+1].x - path[i].x + path[i+1].y - path[i].y;
+        }
+    }
+    return completed_distance / (completed_distance + remaining_distance);
+    
+    
 }

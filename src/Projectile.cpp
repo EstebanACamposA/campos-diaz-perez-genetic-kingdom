@@ -23,16 +23,19 @@ bool Projectile::update(float deltaTime)
     // }
     if (distance <= speed*deltaTime)
     {
-        std::cout << "distance <= speed*deltaTime   OJO CUIDADO!!!!!!!!!!!!" << std::endl;
-        target_character->magic_damage += 20.f;
+        std::cout << "distance <= speed*deltaTime -> projectile marked for deletion." << std::endl;
+        // target_character->magic_damage += 20.f;
+        // Based on the damage of the projectile's type pierce, magic, siege (0.75, 2.00, 2.50)
+        target_character->magic_damage += 40.f;
+
         return true;
         // Returning true will make the GameManager remove this projectile.
     }
-    std::cout << "distance = " << distance << std::endl;
-    std::cout << "speed = " << speed << std::endl;
-    std::cout << "deltaTime = " << deltaTime << std::endl;
-    std::cout << "speed*deltaTime = " << speed*deltaTime << std::endl;
-    std::cout << std::endl;
+    // std::cout << "distance = " << distance << std::endl;
+    // std::cout << "speed = " << speed << std::endl;
+    // std::cout << "deltaTime = " << deltaTime << std::endl;
+    // std::cout << "speed*deltaTime = " << speed*deltaTime << std::endl;
+    // std::cout << std::endl;
     
     position += displacement/distance * speed * deltaTime;
     return false;

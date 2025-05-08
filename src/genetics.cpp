@@ -26,8 +26,7 @@ bool RandomBool(double probability)
 // float magic_armor = 1;
 // float siege_armor = 1;
 
-// Test Constructor. Actual constructor requires CalculateFitness(float completed_path, float remaining_health).
-// Modify this constructor so that it receives an enemy unit object. Individual(Enemy enemy){}
+// This constructor is used to create new Individuals manually and the base Individual for the start of the game. 
 // The constructor calls CalculateFitness().
 Individual::Individual(float max_health, float speed_multiplier, float pierce_armor, float magic_armor, float siege_armor)
 {
@@ -53,9 +52,25 @@ Individual::Individual()
     this->siege_armor = -1.0f;
 }
 
+// Constructor for Character to Individual. Takes completed_path and remaining_health.
+// Used when a Character is destroyed to comunicate its genetic performance to the genetic manager.
+Individual::Individual(float max_health, float speed_multiplier, float pierce_armor, float magic_armor, float siege_armor, float completed_path, float remaining_health)
+{
+    this->mutation_relative_change = 0.2f;
+    this->max_health = max_health;
+    // this->health = max_health;
+    this->speed_multiplier = speed_multiplier;
+    this->pierce_armor = pierce_armor;
+    this->magic_armor = magic_armor;
+    this->siege_armor = siege_armor;
+
+    CalculateFitness(completed_path, remaining_health);
+};
+
 // Currently has testing behaviour. Actual fitness calculation requires completed_path and remaining_health.
 void Individual::CalculateFitness()
 {
+    std::cout << "Entered Individual::CalculateFitness(). this testing funciton shouldn't be used outside genetics testing." << std::endl;
     // Fitness range: [0,2]
     // Actual fitness function.
     // float fitness = completed_path/(1 - remaining_health/2)  //remaining_health = health/max_health. Same for the completed path.
@@ -63,6 +78,14 @@ void Individual::CalculateFitness()
     // Function for testing the class. 
     float fitness = 2 * (1 - expf(-1 * max_health * speed_multiplier * sqrtf(pierce_armor) * sqrtf(magic_armor) * sqrtf(siege_armor) / 1000));
     this->fitness = fitness;
+};
+
+void Individual::CalculateFitness(float completed_path, float remaining_health)
+{
+    // Fitness range: [0,2]
+    // Actual fitness function.
+    float calc_fitness = completed_path/(1 - remaining_health/2);  //remaining_health = health/max_health. Same for the completed path.
+    this->fitness = calc_fitness;
 };
 
 // Testing only function.
@@ -151,6 +174,8 @@ void Genetics::SimulateWave(int n)
         }
     }
     
+    // Clears the wave for the next one.
+
     // Calculates matrix best_fits_ids with the best 5 Individuals' ids for each species.
     std::vector<std::vector<int>> best_fits_ids = CalculateBest5FitnessIDs();
 
@@ -177,6 +202,7 @@ void Genetics::SimulateWave(int n)
 
 // Returns a D2 vector with the best fitnesses' ids per species.
 // species matrix must contain current wave's Individuals. 
+// Individuals must have their fitness calculated.
 std::vector<std::vector<int>> Genetics::CalculateBest5FitnessIDs()
 {
     // for (size_t i = 0; i < this->species.size(); i++)
@@ -230,6 +256,7 @@ std::vector<std::vector<int>> Genetics::CalculateBest5FitnessIDs()
 
 
 // Takes the 2d matrix best_fits_ids and fills a best_individuals_matrix with corresponding data.
+// Finds the best 5 Individuals of a species and places them in one of best_individuals_matrix rows.
 // best_individuals_matrix must have as many rows as species and they are emptied at the start.
 void Genetics::GetBest5Individuals(const std::vector<std::vector<int>>& best_fits_ids)
 {
@@ -249,9 +276,9 @@ void Genetics::GetBest5Individuals(const std::vector<std::vector<int>>& best_fit
     }
 }
 
-// Modifies the best_individuals list with descendants of the top 5.
-// Picks a gene from each of the top five and there are 5 genes.
-// If there aren't 5 individuals in the best_individuals_matrix it cycles circularly until 5 genes are taken from the top 5.
+// Modifies the best_individuals list with descendants of the top 5 by fitness.
+// Picks a gene from each of the top 5 and there are 5 genes.
+// If there aren't 5 individuals in the best_individuals_matrix it cycles circularly until 5 genes are taken from the top indiviuals.
 void Genetics::CalculateNewBestIndividual()
 {   
     for (size_t i = 0; i < species.size(); i++)
@@ -295,6 +322,68 @@ void Genetics::ShowSpecies()
         std::cout << std::endl;
     }            
 };
+
+// {orc, NE, harpy, merc} = {1,2,3,4}
+// Adds an Individual to the species 2d vector.
+void Genetics::AddIndividual(int species, Individual enemy)
+{
+    // ClearWave() must be run before starting a new one so that there aren't different wave enemies in species 2d vector.
+    this->species[species].push_back(enemy);
+    std::cout << "AddIndividual of species " << species << std::endl;
+
+}
+
+// Runs:
+// CalculateBest5FitnessIDs() ->    uses this.species to get the ids of the top 5 fitness individuals.
+// GetBest5Individuals() ->         Updates best_individuals_matrix so that it holds the best 5 of each species.
+// CalculateNewBestIndividual() ->  Creates a new Individual as a pattern for the next round. Per species.
+
+void Genetics::ClearWave()
+{
+    // Calculates matrix best_fits_ids with the best 5 Individuals' ids for each species.
+    std::vector<std::vector<int>> best_fits_ids = CalculateBest5FitnessIDs();
+
+    // Show species' fits.
+    // ShowSpecies();
+
+    // Show best_fits_ids.
+    // std::cout << "---Show best_fits_ids.---" << std::endl;
+    // for (size_t i = 0; i < best_fits_ids.size(); i++)
+    // {
+    //     for (size_t j = 0; j < best_fits_ids[i].size(); j++)
+    //     {
+    //         std::cout << best_fits_ids[i][j] << ' ';
+    //     }
+    //     std::cout << std::endl;
+    // }
+
+    // Updates best_individuals_matrix.
+    GetBest5Individuals(best_fits_ids);
+    
+    // Updates best_individuals based on best_individuals_matrix.
+    CalculateNewBestIndividual();
+
+    // Empties species
+    for (size_t i = 0; i < species.size(); i++)
+    {
+        species[i].clear();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

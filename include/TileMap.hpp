@@ -8,6 +8,8 @@
 
 #include "Projectile.h"
 
+#include "genetics.h"
+
 class Character; // forward declaration instead of #include.
 class TileMap {
 public:
@@ -15,15 +17,22 @@ public:
     void draw(sf::RenderWindow& window);
     void setObstacle(int row, int col, bool isObstacle);
     void update(float deltaTime);
-    void addCharacter(std::shared_ptr<Character> character);
+    void addCharacter(std::shared_ptr<Character> character);    // Adds to characters vector.
+    void addCharacter(std::shared_ptr<Character> character, int species);   // Adds to species D2 vector.
     void moveCharacterTo(std::shared_ptr<Character> character, sf::Vector2i target);
     std::vector<sf::Vector2i> findPath(sf::Vector2i start, sf::Vector2i end);
     // Game
         // Testing
     void ShootRandomProjectile();
 
+    // Genetics
+    Genetics genetic_manager;
+
 private:
     std::vector<std::shared_ptr<Character>> characters;
+    // A D2 vector of std::shared_ptr<Character>
+    std::vector<std::vector<std::shared_ptr<Character>>> enemy_species;
+    
     std::vector<std::shared_ptr<Projectile>> projectiles;
     struct Node {
         int row, col;

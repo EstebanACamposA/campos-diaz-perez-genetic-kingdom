@@ -23,6 +23,9 @@ public:
     // Constructor for genetic logic.
     Character(sf::Vector2f startPosition, Individual genes, int species);
 
+    Individual CalculateIndividual();
+    float CalculateCompletedPath();
+
 private:
     // SFML and movement:
     sf::CircleShape sprite;
@@ -66,6 +69,5 @@ private:
     float damage_taken;
     bool damage_blink;
 
-    Individual CalculateIndividual();
 
 };

@@ -20,6 +20,14 @@ TileMap::TileMap(int rows, int cols, int tileSize)
             tiles.push_back(tile);
         }
     }
+
+    // Matches the number of rows of enemy_species with the number of species, 4.
+    for (size_t i = 0; i < 4; i++)
+    {
+        std::vector<std::shared_ptr<Character>> new_row;
+        enemy_species.push_back(new_row);
+    }
+    
 }
 
 // Acceses grid and tiles at (row,col) and assigns isObstacle. White and free or Red and obstacle.
@@ -125,10 +133,18 @@ void TileMap::draw(sf::RenderWindow& window) {
     for (const auto& tile : tiles) {
         window.draw(tile);
     }
-    // Characters.
-    for (size_t i = 0; i < characters.size(); i++)
+    // // Characters.
+    // for (size_t i = 0; i < characters.size(); i++)
+    // {
+    //     (*characters[i]).draw(window);
+    // }
+    // Characters of species 2D vector
+    for (size_t i = 0; i < enemy_species.size(); i++)
     {
-        (*characters[i]).draw(window);
+        for (size_t j = 0; j < enemy_species[i].size(); j++)
+        {
+            (*enemy_species[i][j]).draw(window);
+        }
     }
     // Projectiles.
     for (size_t i = 0; i < projectiles.size(); i++)
@@ -136,9 +152,21 @@ void TileMap::draw(sf::RenderWindow& window) {
         (*projectiles[i]).draw(window);
     }
 }
+
+// Testing function.
+// Add a Character to the characters vector. No species.
 void TileMap::addCharacter(std::shared_ptr<Character> character) {
     characters.push_back(character);
 }
+// Add a Character to the enemy_species D2 vector. A specific species id is required.
+void TileMap::addCharacter(std::shared_ptr<Character> character, int species) {
+    enemy_species[species].push_back(character);
+
+    sf::Vector2i target(rows-1, cols-1);    // testing behaviour.
+    moveCharacterTo(character, target);
+}
+
+
 
 // Give a new path to a Character.
 // Characters are made to automatically move along a path if they have one.
@@ -156,19 +184,9 @@ void TileMap::moveCharacterTo(std::shared_ptr<Character> character, sf::Vector2i
 // Runs Character.update(deltatime) on all Characters in this->characters and on all projectiles.
 // (Character updates are handled by TileMap).
 void TileMap::update(float deltaTime) {
-    // for (auto& character : characters) {
-    //     character->update(deltaTime);
-    // }
-    // for (auto& projectile : projectiles) {
-    //     if (projectile->update(deltaTime))
-    //     {
-    //         /* code to erase projectile from std::vector<std::shared_ptr<Projectile>> projectiles*/
-    //     }
-        
-        
-    // }
-
     // Uses iterators to erase at the same time it iterates through the vector.
+
+    // Iterates through the projectiles vector to update positions and remove if marked for deletion.
     for (auto it = projectiles.begin(); it != projectiles.end(); )
     {
         if ((*it)->update(deltaTime))   // If the current Projectile is marked for deletion.
@@ -180,34 +198,89 @@ void TileMap::update(float deltaTime) {
             ++it; // goes to the next position only if nothing was erased. This is part of this specific pattern to 
         }
     }
-
-    for (auto it = characters.begin(); it != characters.end(); )
+//////////////////////////////////////////////////
+    // // Uses characters (that holds test Characters with no related species) instead of enemy_species (new D2 vector for storing Characters).
+    // for (auto it = characters.begin(); it != characters.end(); )
+    // {
+    //     if ((*it)->update(deltaTime))   // The return type of Character::update is std::optional<Individual>. It works as true or false.
+    //     {
+    //         it = characters.erase(it);
+    //     } else
+    //     {
+    //         ++it;
+    //     }
+    // }
+//////////////////////////////////////////////////
+    
+// For each species in enemy_species, for each enemy, updates all positions
+// Removes characters marked for deletion and sends them to the genetic_manager.
+    // std::cout << std::endl;
+    for (size_t i = 0; i < enemy_species.size(); i++)
     {
-        if ((*it)->update(deltaTime))   // The return type of Character::update is std::optional<Individual>. It works as true or false.
+        // std::cout << "enters for enemy_species.size" << std::endl;
+        for (auto it = enemy_species[i].begin(); it != enemy_species[i].end(); )
         {
-            // SEND GENETIC DATA TO GENETIC MANAGER FROM HERE AddIndividual(int species)
-            // HAS TO GET THE RIGHT SPECIES SOMEHOW. MAYBE INSTEAD OF A characters VECTOR THERE'S A CHARACTERS 2D VECTOR WITH THE INDIVIDUAL SPECIES.
-            // AND THIS FOR IS REPEATED FOR EACH SPECIES.
-            it = characters.erase(it);
-        } else
-        {
-            ++it;
+            // std::cout << "enters for enemy_species[i].size" << std::endl;
+            if ((*it)->update(deltaTime))   // The return type of Character::update is std::optional<Individual>. It works as true or false.
+            {
+                Individual individual_from_character = (*it)->CalculateIndividual();
+                genetic_manager.AddIndividual(i, individual_from_character);
+
+                std::cout <<  "before enemy_species[" << i << "].size() = " << enemy_species[i].size() << std::endl;
+                it = enemy_species[i].erase(it);
+                std::cout << "Erased a Character of species: " << i << std::endl;
+                std::cout <<  "after enemy_species[" << i << "].size() = " << enemy_species[i].size() << std::endl;
+
+            } else
+            {
+                ++it;
+            }
         }
     }
-
 
 }
 
 
-// Testing function.
-// Adds a projectile to projectiles with a random target Character from characters.
+
+
+// // Testing function.
+// // Adds a projectile to projectiles with a random target Character from characters.
+// void TileMap::ShootRandomProjectile()
+// {
+//     std::cout << "Enters ShootRandomProjectile()" << std::endl;
+//     // tiles[rows * cols /2 + cols/2]
+//     sf::Vector2f projectile_start_position((float)rows*tileSize/2, (float)cols*tileSize/2);
+//     std::cout << "CHECKPOINT 1" << std::endl;
+//     std::shared_ptr<Character> target_character = characters[characters.size()/2];
+//     std::cout << "CHECKPOINT 2" << std::endl;
+//     // Projectile projectile(projectile_start_position, target_character, 200.f);
+//     std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(projectile_start_position, target_character, 200.f);
+//     std::cout << "CHECKPOINT 3" << std::endl;
+//     projectiles.push_back(projectile);
+//     std::cout << "CHECKPOINT 4" << std::endl;
+
+// }
+
+// Testing function. New.
+// Adds a projectile to projectiles with a random target Character from vector enemy_species[0].
 void TileMap::ShootRandomProjectile()
 {
     std::cout << "Enters ShootRandomProjectile()" << std::endl;
+    if (enemy_species.size() == 0)
+    {
+        std::cout <<  "enemy_species.size() == 0. Exits TileMap::ShootRandomProjectile()" << std::endl;
+        return;
+    }
+    if (enemy_species[0].size() == 0)
+    {
+        std::cout <<  "enemy_species[0].size() == 0. Exits TileMap::ShootRandomProjectile()" << std::endl;
+        return;
+    }
+
     // tiles[rows * cols /2 + cols/2]
     sf::Vector2f projectile_start_position((float)rows*tileSize/2, (float)cols*tileSize/2);
     // std::cout << "CHECKPOINT 1" << std::endl;
-    std::shared_ptr<Character> target_character = characters[characters.size()/2];
+    std::shared_ptr<Character> target_character = enemy_species[0][enemy_species[0].size()/2];
     // std::cout << "CHECKPOINT 2" << std::endl;
     // Projectile projectile(projectile_start_position, target_character, 200.f);
     std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(projectile_start_position, target_character, 200.f);
