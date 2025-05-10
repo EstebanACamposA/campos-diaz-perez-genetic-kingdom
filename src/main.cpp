@@ -1,8 +1,43 @@
 #include <SFML/Graphics.hpp>
 #include "TileMap.hpp"
 #include "Character.hpp"
-
+#include <vector>
+#include <iostream>
+#include <random> // Para std::random_device, std::mt19937 y std::uniform_int_distribution
 // SFML logic for starting window and keeping time is here. Tile size defined here. VERIFY THIS!!!
+// Función que genera un número aleatorio entre min y max (ambos inclusive)
+int random_int(int min, int max) {
+    // Generador de números aleatorios (semilla aleatoria basada en hardware)
+    static std::random_device rd;
+    static std::mt19937 gen(rd()); // Motor de generación Mersenne Twister
+
+    // Distribución uniforme en el rango [min, max]
+    std::uniform_int_distribution<int> distrib(min, max);
+
+    return distrib(gen);
+}
+/*
+float random_int() {
+    // Generador de números aleatorios (semilla aleatoria basada en hardware)
+    static std::random_device rd;
+    static std::mt19937 gen(rd()); // Motor de generación Mersenne Twister
+
+    // Distribución uniforme en el rango [min, max]
+    std::uniform_int_distribution<float> distrib(0, 1);
+
+    return distrib(gen);
+}*/
+
+std::vector<int> genWave(){
+    std::vector<int> wave;
+    
+    for (int i = 0; i < 41; ++i) {
+        int num = random_int(0, 3);
+        wave.push_back(num);
+    
+    }
+    return wave;
+}
 int main() {
     std::cout << "Enters main??????" << std::endl;
     sf::RenderWindow window(sf::VideoMode(1200, 950), "A* Pathfinding con Personajes");
@@ -48,6 +83,8 @@ int main() {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
+    
+
     for (int i = 0; i < 30; ++i) {
         for (int j = 0; j < 40; ++j) {
             if (laberinto[i][j] == 1) {
@@ -71,6 +108,8 @@ int main() {
 
     int counter60 = 99999;
     int counter600 = 99999;
+    int counterWaves = 0;
+    int counterEnemy = 0;
     
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
@@ -97,8 +136,12 @@ int main() {
             map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
             
         }
-        
-        
+        std::vector<int> wave = genWave();
+        printf("wave = ");
+        for (int i = 0; i<41; ++i){
+            std::cout<<wave[i]<<",";
+        }
+        std::cout<<std::endl;
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
@@ -135,3 +178,9 @@ int main() {
     
     return 0;
 }
+
+
+
+
+
+

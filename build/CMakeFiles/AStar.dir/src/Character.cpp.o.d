@@ -1,7 +1,7 @@
 CMakeFiles/AStar.dir/src/Character.cpp.o: \
- /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Character.cpp \
+ /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Character.cpp \
  /usr/include/stdc-predef.h \
- /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/Character.hpp \
+ /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/include/Character.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
@@ -237,7 +237,7 @@ CMakeFiles/AStar.dir/src/Character.cpp.o: \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp /usr/include/c++/13/optional \
  /usr/include/c++/13/bits/enable_special_members.h \
- /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/genetics.h \
+ /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/include/genetics.h \
  /usr/include/c++/13/cstring /usr/include/string.h /usr/include/strings.h \
  /usr/include/c++/13/cmath /usr/include/math.h \
  /usr/include/x86_64-linux-gnu/bits/math-vector.h \

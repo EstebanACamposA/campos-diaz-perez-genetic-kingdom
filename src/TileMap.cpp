@@ -433,7 +433,7 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
             y: [16,22]
             x: [31,37]    
         */
-        if (click_coords.x >= 31 && click_coords.x <= 37)
+        /*if (click_coords.x >= 31 && click_coords.x <= 37)
         {
             if (click_coords.y >= 1 && click_coords.y <= 7)
             {
@@ -473,7 +473,7 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
             // Clicked somewhere else to escape the menu.
             build_buttons = false;
             return;
-        }
+        }*/
         {
             std::cout << "Obstacle clicked" << std::endl;
             // Do something with the obstacle
