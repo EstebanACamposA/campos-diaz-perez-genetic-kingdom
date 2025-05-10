@@ -35,6 +35,8 @@ public:
     std::vector<sf::RectangleShape> build_buttons_sprites;
     sf::RectangleShape upgrade_button_sprite;
 
+    // This is used by both the upgrade_button and build_buttons to know what tower was clicked in case there's an action to do.
+    // In pixels.
     sf::Vector2i last_succesful_tile_click;
     void clickEvents(sf::Vector2i click_coords);
 
@@ -75,13 +77,18 @@ private:
     int calculateDistance(const Node& a, const Node& b);
     std::vector<Node*> getNeighbors(Node& node);
 
-    void ShootNearest(sf::Vector2f startPosition, float damage, int tower_type);
+    void ShootNearest(sf::Vector2f startPosition, float damage, int tower_type, float fire_range, float projectile_speed, bool power_up_projectile);
 
-    int pierce_tower_level;
-    int magic_tower_level;
-    int siege_tower_level;
+    int tower_levels[3];
 
     int clicked_tower_id;
+
+
+    int build_button_top_anchors[3];
+    int build_button_height;
+
+    //Handle AoR attacks
+    void AOEAttack(sf::Vector2f position, bool apply_shock_shell_effect, float damage);
 
     // // Calculates the distance between two characters.
     // float calculateDistanceInPixels()

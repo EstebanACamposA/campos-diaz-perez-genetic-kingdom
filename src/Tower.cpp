@@ -16,7 +16,40 @@
 
 // std::shared_ptr<Character> target_character;
 float tileSize;
-Tower::Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float fire_range) 
+// Tower::Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float tile_size) 
+// : position(startPosition), tower_type(tower_type){
+// // Visuals:
+//     sprite.setRadius(10.f);
+
+//     sf::Color tower_colors[3] = {
+//         sf::Color(190, 190, 255),
+//         sf::Color(255, 170, 210),
+//         sf::Color(255, 190, 150)
+//     };
+//     sprite.setFillColor(tower_colors[tower_type]);
+//     sprite.setOrigin(10.f, 10.f);
+
+//     sprite.setPosition(position);
+//     // Stats. Depend on level and type
+//     // Period.
+//     int towers_period_by_type[3] = {60, 120, 240};
+//     float towers_period_multiplier_by_level[3] = {0.64f, 0.8f, 1.0f};
+//     period = towers_period_by_type[tower_type];
+//     period = (int) (period*towers_period_multiplier_by_level[tower_level]);
+//     // Damage
+//     float towers_damage_by_type[3] = {7.5f, 20.f, 25.f};
+//     float towers_damage_multiplier_by_level[3] = {1.f, 1.2f, 1.44f};
+//     damage = towers_damage_by_type[tower_type];
+//     damage *= towers_damage_multiplier_by_level[tower_level];
+//     // Fire range.
+//     float towers_range_by_type[3] = {10.f, 7.1f, 5.0f};
+//     this->fire_range = towers_range_by_type[tower_type] * tile_size;
+
+//     float projectile_speed_by_type[3] = {300.f, 150.f, 200.f};
+//     projectile_speed = projectile_speed_by_type[tower_type];
+// }
+
+Tower::Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float tile_size) 
 : position(startPosition), tower_type(tower_type){
 // Visuals:
     sprite.setRadius(10.f);
@@ -33,18 +66,28 @@ Tower::Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float 
     // Stats. Depend on level and type
     // Period.
     int towers_period_by_type[3] = {60, 120, 240};
-    float towers_period_multiplier_by_level[3] = {0.64f, 0.8f, 1.0f};
     period = towers_period_by_type[tower_type];
-    period = (int) (period*towers_period_multiplier_by_level[tower_level]);
     // Damage
     float towers_damage_by_type[3] = {7.5f, 20.f, 25.f};
-    float towers_damage_multiplier_by_level[3] = {1.f, 1.2f, 1.44f};
     damage = towers_damage_by_type[tower_type];
-    damage *= towers_damage_multiplier_by_level[tower_level];
     // Fire range.
-    float towers_range_by_type[3] = {1.f, 0.71f, 0.5f};
-    this->fire_range = towers_damage_by_type[tower_type] * fire_range;
+    float towers_range_by_type[3] = {10.f, 7.1f, 5.0f};
+    this->fire_range = towers_range_by_type[tower_type] * tile_size;
+    // Projectile speed.
+    float projectile_speed_by_type[3] = {300.f, 150.f, 200.f};
+    projectile_speed = projectile_speed_by_type[tower_type];
+    // Upgrades many times in a row.
+    for (size_t i = 0; i < tower_level; i++)
+    {
+        upgrade();
+    }
+    
 }
+
+
+
+
+
 
 // Returns true if a bullet must be fired.
 // Fire a bullet taking this object's damage.
@@ -94,6 +137,20 @@ void Tower::upgrade()
 {
     damage *= 1.2f;
     period = (int)(period * 0.8f);
+
+    sf::Color original = sprite.getFillColor();
+
+    float darkenFactor = 0.85f;
+    
+    sf::Color darkerColor(
+        static_cast<sf::Uint8>(original.r * original.r / 255),
+        static_cast<sf::Uint8>(original.g * original.g / 255),
+        static_cast<sf::Uint8>(original.b * original.b / 255),
+        original.a // keep the original transparency
+    );
+    
+    sprite.setFillColor(darkerColor);
+
 }
 
 

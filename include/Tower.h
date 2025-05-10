@@ -22,7 +22,7 @@ public:
     // std::shared_ptr<Character> target_character;
     float tileSize;
     // Basics and movement:
-    Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float fire_range);
+    Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float tile_size);
 
     // {0,1,2} -> {pierce, magic, siege}
     int tower_type;
@@ -40,6 +40,8 @@ public:
     void upgrade();
 
     float fire_range;
+
+    float projectile_speed;
 
 private:
     // SFML and movement:

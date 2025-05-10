@@ -23,7 +23,14 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
 {
     // SFML:
     sprite.setRadius(10.f);
-    sprite.setFillColor(sf::Color::Blue);
+    sf::Color enemy_color[4] = {
+        sf::Color(200, 225, 170),
+        sf::Color(200, 170, 255),
+        sf::Color(200, 255, 150),
+        sf::Color(180, 190, 150)
+    };
+    base_color = enemy_color[species];
+    sprite.setFillColor(base_color);
     sprite.setOrigin(10.f, 10.f);
     
     // Game logic
@@ -45,7 +52,7 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
     max_health *= species_health_multiplier[species];   // This doesn't affect the genetic algorithm. It only makes the species balanced.
 
     current_health = max_health;
-    speed = 100 * speed_multiplier; // 100 is default speed!!! SPEED.
+    speed = 50 * speed_multiplier; // 100 is default speed!!! SPEED.
 
     pierce_damage = 0;
     magic_damage = 0;
@@ -63,6 +70,15 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
     pierce_damage_multiplier = species_damage_multipliers[0][species];
     magic_damage_multiplier  = species_damage_multipliers[1][species];
     siege_damage_multiplier  = species_damage_multipliers[2][species];
+
+    posion_arrow_effect = false;
+    frost_orb_effect = false;
+    shock_shell_timer = 0;
+
+    // Active color variables.
+    bool active_color_red = false;
+    bool active_color_blue = false;
+    bool active_color_green = false;
 
 
 }
@@ -120,19 +136,19 @@ std::optional<Individual> Character::update(float deltaTime) {
         {
             damage_blink = false;
             // Change this to sprite.setColor(sf::Color(255, 255, 255) to remove tint from an image base sprite.
-            sprite.setFillColor(sf::Color::Blue);
+            CalculateColors(-1,0,0); // Deactivate red.
         }
         else
         {
             damage_blink = true;
-            sprite.setFillColor(sf::Color::Red);
+            CalculateColors(1,0,0); // Activate red.
         }
         damage_taken --;    // The amount substracted from damage_taken tells how much the VFX lasts. damage points / frame.
     }
     else if (damage_blink)
     {
         damage_blink = false;
-        sprite.setFillColor(sf::Color::Blue);
+        CalculateColors(-1,0,0); // Deactivate red.
     }
 
     // If character hasn't arrived at its last destination.
@@ -147,11 +163,34 @@ std::optional<Individual> Character::update(float deltaTime) {
         } else {
             // Normalizes direction vector.
             direction /= distance;
+            
             // Changes the characters postition value, doesn't draw just yet.
-            position += direction * speed * deltaTime;
+            // Inverts direction if shock_effect_timer is on.
+            if (shock_shell_timer > 0)
+            {
+                position -= direction * speed * deltaTime *(float)std::sqrt(shock_shell_timer);    
+                shock_shell_timer -= 2;
+            }
+            else
+            {
+                position += direction * speed * deltaTime;    
+            }
+            
         }
     }
     
+    // Effect of poison arrow. Deals 60 dps. A level 1 tower deals about 30 dps.
+    if (posion_arrow_effect)
+    {
+        // Active colors
+        if (!active_color_green)
+        {
+            CalculateColors(0,1,0);
+        }
+        
+        current_health --;
+    }
+
     // returns std::nullopt every time the Character is not destroyed.
     return std::nullopt; // This is taken as false inside an if statement.
 }
@@ -216,4 +255,58 @@ float Character::CalculateCompletedPath()
     return completed_distance / (completed_distance + remaining_distance);
     
     
+}
+// Cuts enemies speed by half. Can only be applied once. Is permanent.
+void Character::ApplyFrostOrbEffect()
+{
+    if (!frost_orb_effect)
+    {
+        CalculateColors(0,0,1);
+        frost_orb_effect = true;
+        this->speed /= 2;    
+    }
+}
+
+// r,g,b must belong to {-1,0, 1}
+void Character::CalculateColors(int r, int g, int b)
+{
+    if (r = -1)
+    {
+        active_color_red = false;
+    }
+    if (g = -1)
+    {
+        active_color_green = false;
+    }
+    if (b = -1)
+    {
+        active_color_blue = false;
+    }
+    
+    if (r = 1)
+    {
+        active_color_red = true;
+    }
+    if (g = 1)
+    {
+        active_color_green = true;
+    }
+    if (b = 1)
+    {
+        active_color_blue = true;
+    }
+    
+    std::cout << "Color input = (" << r << ", " << g << ", " << b << ")" << std::endl;
+
+    sf::Color status_color(
+        255 -128*active_color_green - 128*active_color_blue,
+        255 -128*active_color_red - 128*active_color_blue,
+        255 -128*active_color_red - 128*active_color_green);
+    
+
+    sf::Color result_color(base_color.r * status_color.r / 255, base_color.g * status_color.g / 255, base_color.b * status_color.b / 255);
+    sprite.setFillColor(result_color);
+    std::cout << "result_color = (" << (int) result_color.r << ", " << (int) result_color.g << ", " << (int) result_color.b << ")" << std::endl;
+
+
 }

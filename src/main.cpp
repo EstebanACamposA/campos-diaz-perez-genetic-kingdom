@@ -120,11 +120,11 @@ int main() {
             // Create a bullet.
             counter60 = 0;
             // std::cout << "deltaTime = " << deltaTime << std::endl;    
-            map.ShootRandomProjectile();
+            // map.ShootRandomProjectile();
         }
         
         counter600 ++;
-        if (counter600 >= 600)
+        if (counter600 >= 300)
         {
             // Create a character;
             counter600 = 0;
@@ -135,13 +135,34 @@ int main() {
             // map.addCharacter(character);
             map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
             
+            Individual base_ne = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            character = std::make_shared<Character>(sf::Vector2f(45, 15), base_ne, 1); // Uses an Individual to set the Character's stats.
+            // map.addCharacter(character);
+            map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
+            
+            Individual base_harpy = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            character = std::make_shared<Character>(sf::Vector2f(75, 75), base_harpy, 2); // Uses an Individual to set the Character's stats.
+            // map.addCharacter(character);
+            map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
+            
+            Individual base_merc = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            character = std::make_shared<Character>(sf::Vector2f(105, 105), base_merc, 3); // Uses an Individual to set the Character's stats.
+            // map.addCharacter(character);
+            map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
+            
         }
-        std::vector<int> wave = genWave();
-        printf("wave = ");
-        for (int i = 0; i<41; ++i){
-            std::cout<<wave[i]<<",";
-        }
-        std::cout<<std::endl;
+
+
+        // Wave random int generation.
+        // std::vector<int> wave = genWave();
+        // printf("wave = ");
+        // for (int i = 0; i<41; ++i){
+        //     std::cout<<wave[i]<<",";
+        // }
+        // std::cout<<std::endl;
+
+
+
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
@@ -149,12 +170,15 @@ int main() {
             }
             else if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    targetPos = {
-                        event.mouseButton.x / 30,   // event.mouseButton/tilesize
-                        event.mouseButton.y / 30
-                    };
-                    // map.moveCharacterTo(character, targetPos);
-                    map.clickEvents(targetPos);
+                    // targetPos = {
+                    //     event.mouseButton.x / 30,   // event.mouseButton/tilesize
+                    //     event.mouseButton.y / 30
+                    // };
+                    // // map.moveCharacterTo(character, targetPos); // Testing function.
+                    // map.clickEvents(targetPos);
+                    sf::Vector2i target_pos_pixels(event.mouseButton.x, event.mouseButton.y);
+                    map.clickEvents(target_pos_pixels);
+                    
                 }
             }
         }

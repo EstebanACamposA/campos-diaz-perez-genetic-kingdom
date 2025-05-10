@@ -26,6 +26,12 @@ public:
     Individual CalculateIndividual();
     float CalculateCompletedPath();
 
+    // Apply powered up bullets' debuffs. 
+    bool posion_arrow_effect;
+    bool frost_orb_effect;
+    void ApplyFrostOrbEffect();
+    int shock_shell_timer;
+
 private:
     // SFML and movement:
     sf::CircleShape sprite;
@@ -65,9 +71,15 @@ private:
     float magic_damage_multiplier;
     // May need to make these values public so that bullets with special abilities know when not to affect immune units (harpies to siege).
     float siege_damage_multiplier;
-    // Visual effect variable
+    // Visual effect variables.
     float damage_taken;
     bool damage_blink;
-
+    // Active Colors variables.
+    bool active_color_red;
+    bool active_color_green;
+    bool active_color_blue;
+    sf::Color base_color;
+    // Active Colors method.
+    void CalculateColors(int r, int g, int b);
 
 };
