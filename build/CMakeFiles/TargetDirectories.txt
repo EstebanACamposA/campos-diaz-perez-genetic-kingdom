@@ -1,7 +1,0 @@
-/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles/AStar.dir
-/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles/edit_cache.dir
-/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles/rebuild_cache.dir
-/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles/list_install_components.dir
-/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles/install.dir
-/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles/install/local.dir
-/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles/install/strip.dir
