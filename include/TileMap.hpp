@@ -10,6 +10,8 @@
 
 #include "genetics.h"
 
+#include "Tower.h"
+
 class Character; // forward declaration instead of #include.
 class TileMap {
 public:
@@ -30,6 +32,9 @@ public:
 
     bool build_buttons;
     bool upgrade_button;
+    std::vector<sf::RectangleShape> build_buttons_sprites;
+    sf::RectangleShape upgrade_button_sprite;
+
     sf::Vector2i last_succesful_tile_click;
     void clickEvents(sf::Vector2i click_coords);
 
@@ -40,6 +45,9 @@ private:
     std::vector<std::vector<std::shared_ptr<Character>>> enemy_species;
     
     std::vector<std::shared_ptr<Projectile>> projectiles;
+
+    //A vector of towers. A row for each tower type (3 rows/types)
+    std::vector<std::shared_ptr<Tower>> towers;
 
     
     struct Node {
@@ -63,6 +71,18 @@ private:
     std::vector<sf::RectangleShape> tiles;
     int rows, cols, tileSize;
 
+    // Calculates 'Manhattan distance between two nodes.'
     int calculateDistance(const Node& a, const Node& b);
     std::vector<Node*> getNeighbors(Node& node);
+
+    void ShootNearest(sf::Vector2f startPosition, float damage, int tower_type);
+
+    int pierce_tower_level;
+    int magic_tower_level;
+    int siege_tower_level;
+
+    int clicked_tower_id;
+
+    // // Calculates the distance between two characters.
+    // float calculateDistanceInPixels()
 };

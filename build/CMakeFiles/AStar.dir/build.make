@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom
+CMAKE_SOURCE_DIR = /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build
+CMAKE_BINARY_DIR = /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/AStar.dir/depend.make
@@ -70,74 +70,88 @@ include CMakeFiles/AStar.dir/progress.make
 include CMakeFiles/AStar.dir/flags.make
 
 CMakeFiles/AStar.dir/src/main.cpp.o: CMakeFiles/AStar.dir/flags.make
-CMakeFiles/AStar.dir/src/main.cpp.o: /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/main.cpp
+CMakeFiles/AStar.dir/src/main.cpp.o: /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/main.cpp
 CMakeFiles/AStar.dir/src/main.cpp.o: CMakeFiles/AStar.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/AStar.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/main.cpp.o -MF CMakeFiles/AStar.dir/src/main.cpp.o.d -o CMakeFiles/AStar.dir/src/main.cpp.o -c /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/AStar.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/main.cpp.o -MF CMakeFiles/AStar.dir/src/main.cpp.o.d -o CMakeFiles/AStar.dir/src/main.cpp.o -c /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/main.cpp
 
 CMakeFiles/AStar.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AStar.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/main.cpp > CMakeFiles/AStar.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/main.cpp > CMakeFiles/AStar.dir/src/main.cpp.i
 
 CMakeFiles/AStar.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AStar.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/main.cpp -o CMakeFiles/AStar.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/main.cpp -o CMakeFiles/AStar.dir/src/main.cpp.s
 
 CMakeFiles/AStar.dir/src/TileMap.cpp.o: CMakeFiles/AStar.dir/flags.make
-CMakeFiles/AStar.dir/src/TileMap.cpp.o: /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/TileMap.cpp
+CMakeFiles/AStar.dir/src/TileMap.cpp.o: /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/TileMap.cpp
 CMakeFiles/AStar.dir/src/TileMap.cpp.o: CMakeFiles/AStar.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/AStar.dir/src/TileMap.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/TileMap.cpp.o -MF CMakeFiles/AStar.dir/src/TileMap.cpp.o.d -o CMakeFiles/AStar.dir/src/TileMap.cpp.o -c /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/TileMap.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/AStar.dir/src/TileMap.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/TileMap.cpp.o -MF CMakeFiles/AStar.dir/src/TileMap.cpp.o.d -o CMakeFiles/AStar.dir/src/TileMap.cpp.o -c /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/TileMap.cpp
 
 CMakeFiles/AStar.dir/src/TileMap.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AStar.dir/src/TileMap.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/TileMap.cpp > CMakeFiles/AStar.dir/src/TileMap.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/TileMap.cpp > CMakeFiles/AStar.dir/src/TileMap.cpp.i
 
 CMakeFiles/AStar.dir/src/TileMap.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AStar.dir/src/TileMap.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/TileMap.cpp -o CMakeFiles/AStar.dir/src/TileMap.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/TileMap.cpp -o CMakeFiles/AStar.dir/src/TileMap.cpp.s
 
 CMakeFiles/AStar.dir/src/Character.cpp.o: CMakeFiles/AStar.dir/flags.make
-CMakeFiles/AStar.dir/src/Character.cpp.o: /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Character.cpp
+CMakeFiles/AStar.dir/src/Character.cpp.o: /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Character.cpp
 CMakeFiles/AStar.dir/src/Character.cpp.o: CMakeFiles/AStar.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/AStar.dir/src/Character.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/Character.cpp.o -MF CMakeFiles/AStar.dir/src/Character.cpp.o.d -o CMakeFiles/AStar.dir/src/Character.cpp.o -c /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Character.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/AStar.dir/src/Character.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/Character.cpp.o -MF CMakeFiles/AStar.dir/src/Character.cpp.o.d -o CMakeFiles/AStar.dir/src/Character.cpp.o -c /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Character.cpp
 
 CMakeFiles/AStar.dir/src/Character.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AStar.dir/src/Character.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Character.cpp > CMakeFiles/AStar.dir/src/Character.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Character.cpp > CMakeFiles/AStar.dir/src/Character.cpp.i
 
 CMakeFiles/AStar.dir/src/Character.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AStar.dir/src/Character.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Character.cpp -o CMakeFiles/AStar.dir/src/Character.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Character.cpp -o CMakeFiles/AStar.dir/src/Character.cpp.s
 
 CMakeFiles/AStar.dir/src/genetics.cpp.o: CMakeFiles/AStar.dir/flags.make
-CMakeFiles/AStar.dir/src/genetics.cpp.o: /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/genetics.cpp
+CMakeFiles/AStar.dir/src/genetics.cpp.o: /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/genetics.cpp
 CMakeFiles/AStar.dir/src/genetics.cpp.o: CMakeFiles/AStar.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/AStar.dir/src/genetics.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/genetics.cpp.o -MF CMakeFiles/AStar.dir/src/genetics.cpp.o.d -o CMakeFiles/AStar.dir/src/genetics.cpp.o -c /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/genetics.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/AStar.dir/src/genetics.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/genetics.cpp.o -MF CMakeFiles/AStar.dir/src/genetics.cpp.o.d -o CMakeFiles/AStar.dir/src/genetics.cpp.o -c /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/genetics.cpp
 
 CMakeFiles/AStar.dir/src/genetics.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AStar.dir/src/genetics.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/genetics.cpp > CMakeFiles/AStar.dir/src/genetics.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/genetics.cpp > CMakeFiles/AStar.dir/src/genetics.cpp.i
 
 CMakeFiles/AStar.dir/src/genetics.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AStar.dir/src/genetics.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/genetics.cpp -o CMakeFiles/AStar.dir/src/genetics.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/genetics.cpp -o CMakeFiles/AStar.dir/src/genetics.cpp.s
 
 CMakeFiles/AStar.dir/src/Projectile.cpp.o: CMakeFiles/AStar.dir/flags.make
-CMakeFiles/AStar.dir/src/Projectile.cpp.o: /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Projectile.cpp
+CMakeFiles/AStar.dir/src/Projectile.cpp.o: /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Projectile.cpp
 CMakeFiles/AStar.dir/src/Projectile.cpp.o: CMakeFiles/AStar.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/AStar.dir/src/Projectile.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/Projectile.cpp.o -MF CMakeFiles/AStar.dir/src/Projectile.cpp.o.d -o CMakeFiles/AStar.dir/src/Projectile.cpp.o -c /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Projectile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/AStar.dir/src/Projectile.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/Projectile.cpp.o -MF CMakeFiles/AStar.dir/src/Projectile.cpp.o.d -o CMakeFiles/AStar.dir/src/Projectile.cpp.o -c /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Projectile.cpp
 
 CMakeFiles/AStar.dir/src/Projectile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AStar.dir/src/Projectile.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Projectile.cpp > CMakeFiles/AStar.dir/src/Projectile.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Projectile.cpp > CMakeFiles/AStar.dir/src/Projectile.cpp.i
 
 CMakeFiles/AStar.dir/src/Projectile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AStar.dir/src/Projectile.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Projectile.cpp -o CMakeFiles/AStar.dir/src/Projectile.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Projectile.cpp -o CMakeFiles/AStar.dir/src/Projectile.cpp.s
+
+CMakeFiles/AStar.dir/src/Tower.cpp.o: CMakeFiles/AStar.dir/flags.make
+CMakeFiles/AStar.dir/src/Tower.cpp.o: /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Tower.cpp
+CMakeFiles/AStar.dir/src/Tower.cpp.o: CMakeFiles/AStar.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/AStar.dir/src/Tower.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AStar.dir/src/Tower.cpp.o -MF CMakeFiles/AStar.dir/src/Tower.cpp.o.d -o CMakeFiles/AStar.dir/src/Tower.cpp.o -c /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Tower.cpp
+
+CMakeFiles/AStar.dir/src/Tower.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AStar.dir/src/Tower.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Tower.cpp > CMakeFiles/AStar.dir/src/Tower.cpp.i
+
+CMakeFiles/AStar.dir/src/Tower.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AStar.dir/src/Tower.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Tower.cpp -o CMakeFiles/AStar.dir/src/Tower.cpp.s
 
 # Object files for target AStar
 AStar_OBJECTS = \
@@ -145,7 +159,8 @@ AStar_OBJECTS = \
 "CMakeFiles/AStar.dir/src/TileMap.cpp.o" \
 "CMakeFiles/AStar.dir/src/Character.cpp.o" \
 "CMakeFiles/AStar.dir/src/genetics.cpp.o" \
-"CMakeFiles/AStar.dir/src/Projectile.cpp.o"
+"CMakeFiles/AStar.dir/src/Projectile.cpp.o" \
+"CMakeFiles/AStar.dir/src/Tower.cpp.o"
 
 # External object files for target AStar
 AStar_EXTERNAL_OBJECTS =
@@ -155,12 +170,13 @@ AStar: CMakeFiles/AStar.dir/src/TileMap.cpp.o
 AStar: CMakeFiles/AStar.dir/src/Character.cpp.o
 AStar: CMakeFiles/AStar.dir/src/genetics.cpp.o
 AStar: CMakeFiles/AStar.dir/src/Projectile.cpp.o
+AStar: CMakeFiles/AStar.dir/src/Tower.cpp.o
 AStar: CMakeFiles/AStar.dir/build.make
 AStar: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.6.1
 AStar: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1
 AStar: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.6.1
 AStar: CMakeFiles/AStar.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable AStar"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable AStar"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/AStar.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -172,6 +188,6 @@ CMakeFiles/AStar.dir/clean:
 .PHONY : CMakeFiles/AStar.dir/clean
 
 CMakeFiles/AStar.dir/depend:
-	cd /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles/AStar.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles/AStar.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/AStar.dir/depend
 

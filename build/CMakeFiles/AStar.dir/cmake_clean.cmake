@@ -7,6 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/AStar.dir/src/Projectile.cpp.o.d"
   "CMakeFiles/AStar.dir/src/TileMap.cpp.o"
   "CMakeFiles/AStar.dir/src/TileMap.cpp.o.d"
+  "CMakeFiles/AStar.dir/src/Tower.cpp.o"
+  "CMakeFiles/AStar.dir/src/Tower.cpp.o.d"
   "CMakeFiles/AStar.dir/src/genetics.cpp.o"
   "CMakeFiles/AStar.dir/src/genetics.cpp.o.d"
   "CMakeFiles/AStar.dir/src/main.cpp.o"

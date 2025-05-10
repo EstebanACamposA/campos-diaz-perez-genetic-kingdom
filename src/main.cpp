@@ -58,36 +58,38 @@ int main() {
     }
     
     std::cout << "Main checkpoint 5" << std::endl;
-    // Characters are now stored into one of the species.
-    // Crear personaje
-    Individual base_orc = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-    auto character = std::make_shared<Character>(sf::Vector2f(15, 15), base_orc, 0); // Uses an Individual to set the Character's stats.
-    // map.addCharacter(character);
-    map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
+    // // Characters are now stored into one of the species.
+    // // Crear personaje
+    // Individual base_orc = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+    // auto character = std::make_shared<Character>(sf::Vector2f(15, 15), base_orc, 0); // Uses an Individual to set the Character's stats.
+    // // map.addCharacter(character);
+    // map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
     
     // Mover al hacer clic
     sf::Vector2i targetPos;
     bool hasTarget = false;
 
     int counter60 = 99999;
-    int counter600 = 0;
+    int counter600 = 99999;
     
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
 
         counter60 ++;
-        if (counter60 >= 60)
+        if (counter60 >= 300)
         {
+            // Create a bullet.
             counter60 = 0;
-            std::cout << "deltaTime = " << deltaTime << std::endl;    
+            // std::cout << "deltaTime = " << deltaTime << std::endl;    
             map.ShootRandomProjectile();
         }
         
         counter600 ++;
         if (counter600 >= 600)
         {
+            // Create a character;
             counter600 = 0;
-            std::cout << "deltaTime = " << deltaTime << std::endl;    
+            // std::cout << "deltaTime = " << deltaTime << std::endl;    
             
             Individual base_orc = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
             auto character = std::make_shared<Character>(sf::Vector2f(15, 15), base_orc, 0); // Uses an Individual to set the Character's stats.
@@ -108,7 +110,8 @@ int main() {
                         event.mouseButton.x / 30,   // event.mouseButton/tilesize
                         event.mouseButton.y / 30
                     };
-                    map.moveCharacterTo(character, targetPos);
+                    // map.moveCharacterTo(character, targetPos);
+                    map.clickEvents(targetPos);
                 }
             }
         }

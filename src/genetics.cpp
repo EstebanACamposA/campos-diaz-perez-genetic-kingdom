@@ -68,9 +68,10 @@ Individual::Individual(float max_health, float speed_multiplier, float pierce_ar
 };
 
 // Currently has testing behaviour. Actual fitness calculation requires completed_path and remaining_health.
+// Use this constructor to create Characters from scratch (with no base Individual from best_individual)
 void Individual::CalculateFitness()
 {
-    std::cout << "Entered Individual::CalculateFitness(). this testing funciton shouldn't be used outside genetics testing." << std::endl;
+    // std::cout << "Entered Individual::CalculateFitness(). this testing funciton shouldn't be used outside genetics testing." << std::endl;
     // Fitness range: [0,2]
     // Actual fitness function.
     // float fitness = completed_path/(1 - remaining_health/2)  //remaining_health = health/max_health. Same for the completed path.

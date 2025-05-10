@@ -1,8 +1,12 @@
+#ifndef PROJECTILE_H
+#define PROJECTILE_H
+
+
 // #include <cmath>
 #include <iostream>
 #include <vector>
 #include <memory>
-#include <vector>
+// #include <vector>
 // #include <cstring>
 // #include <cstdint>
 // #include <iomanip>
@@ -19,6 +23,8 @@ public:
     float tileSize;
     // Basics and movement:
     Projectile(sf::Vector2f startPosition, std::shared_ptr<Character> target_character, float speed = 200.f); // 200.f is default speed. 
+    // // Make a constructor that takes the tower_type.
+    // Projectile(sf::Vector2f startPosition, std::shared_ptr<Character> target_character, float speed = 200.f); // 200.f is default speed. 
     bool update(float deltaTime);
     // void setPath(const std::vector<sf::Vector2i>& newPath, float tileSize);
     void draw(sf::RenderWindow& window);
@@ -90,3 +96,13 @@ private:
     // Posion ignores armor. Deals set damage per frame.
     // Frost is permanent or lasts a lot? Has to be kinda bad because magic has no weaknesses.
     // Shock lasts a little. 
+
+
+
+
+
+
+
+
+
+#endif

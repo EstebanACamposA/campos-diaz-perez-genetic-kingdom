@@ -81,17 +81,17 @@ std::optional<Individual> Character::update(float deltaTime) {
         siege_damage*siege_damage_multiplier;
     
     
-        std::cout << "pierce_damage:" << pierce_damage;
-        std::cout << " magic_damage:" << magic_damage;
-        std::cout << " siege_damage:" << siege_damage;
+        // std::cout << "pierce_damage:" << pierce_damage;
+        // std::cout << " magic_damage:" << magic_damage;
+        // std::cout << " siege_damage:" << siege_damage;
     
-        std::cout << std::endl;
+        // std::cout << std::endl;
     
-        std::cout << "pierce_damage_multiplier:" << pierce_damage_multiplier;
-        std::cout << " magic_damage_multiplier:" << magic_damage_multiplier;
-        std::cout << " siege_damage_multiplier:" << siege_damage_multiplier;
+        // std::cout << "pierce_damage_multiplier:" << pierce_damage_multiplier;
+        // std::cout << " magic_damage_multiplier:" << magic_damage_multiplier;
+        // std::cout << " siege_damage_multiplier:" << siege_damage_multiplier;
     
-        std::cout << std::endl;
+        // std::cout << std::endl;
     
         pierce_damage = 0.f;
         magic_damage = 0.f;
@@ -114,7 +114,7 @@ std::optional<Individual> Character::update(float deltaTime) {
     // Visual effect. Blinking.
     if (damage_taken > 0)
     {
-        std::cout << "current_health = " << current_health << std::endl;
+        // std::cout << "current_health = " << current_health << std::endl;
 
         if (damage_blink)
         {

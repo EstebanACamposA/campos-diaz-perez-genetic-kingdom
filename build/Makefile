@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom
+CMAKE_SOURCE_DIR = /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build
+CMAKE_BINARY_DIR = /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,9 +132,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -246,6 +246,30 @@ src/TileMap.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/TileMap.cpp.s
 .PHONY : src/TileMap.cpp.s
 
+src/Tower.o: src/Tower.cpp.o
+.PHONY : src/Tower.o
+
+# target to build an object file
+src/Tower.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/Tower.cpp.o
+.PHONY : src/Tower.cpp.o
+
+src/Tower.i: src/Tower.cpp.i
+.PHONY : src/Tower.i
+
+# target to preprocess a source file
+src/Tower.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/Tower.cpp.i
+.PHONY : src/Tower.cpp.i
+
+src/Tower.s: src/Tower.cpp.s
+.PHONY : src/Tower.s
+
+# target to generate assembly for a file
+src/Tower.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AStar.dir/build.make CMakeFiles/AStar.dir/src/Tower.cpp.s
+.PHONY : src/Tower.cpp.s
+
 src/genetics.o: src/genetics.cpp.o
 .PHONY : src/genetics.o
 
@@ -316,6 +340,9 @@ help:
 	@echo "... src/TileMap.o"
 	@echo "... src/TileMap.i"
 	@echo "... src/TileMap.s"
+	@echo "... src/Tower.o"
+	@echo "... src/Tower.i"
+	@echo "... src/Tower.s"
 	@echo "... src/genetics.o"
 	@echo "... src/genetics.i"
 	@echo "... src/genetics.s"

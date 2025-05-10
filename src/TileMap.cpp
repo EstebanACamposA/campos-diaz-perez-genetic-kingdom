@@ -1,5 +1,6 @@
 #include "TileMap.hpp"
 #include "Character.hpp"
+
 TileMap::TileMap(int rows, int cols, int tileSize) 
     : rows(rows), cols(cols), tileSize(tileSize) {
     // grid is a 2D vector of nodes.
@@ -27,17 +28,58 @@ TileMap::TileMap(int rows, int cols, int tileSize)
         std::vector<std::shared_ptr<Character>> new_row;
         enemy_species.push_back(new_row);
     }
+ 
+    /*
+    button 1:
+        y: [1,7]
+        x: [31,37]
+    button 2:
+        y: [9,15]
+        x: [31,37]
+    button 3:
+        y: [16,22]
+        x: [31,37]    
+    */
+    // button 1:
+    sf::RectangleShape button(sf::Vector2f(7*tileSize - 1, 7*tileSize - 1));
+    button.setPosition(31 * tileSize, 1 * tileSize);
+    button.setFillColor(sf::Color(225, 225, 255));  // Light Dull Blue.
+    button.setOutlineColor(sf::Color::Black);
+    button.setOutlineThickness(1.5f);
+    build_buttons_sprites.push_back(button);
+    // button 2:
+    // sf::RectangleShape button(sf::Vector2f(7*tileSize - 1, 7*tileSize - 1));
+    button.setPosition(31 * tileSize, 9 * tileSize);
+    button.setFillColor(sf::Color(255, 225, 240));  // Light Dull Magenta.
+    button.setOutlineColor(sf::Color::Black);
+    button.setOutlineThickness(1.5f);
+    build_buttons_sprites.push_back(button);
+    // button 3:
+    // sf::RectangleShape button(sf::Vector2f(7*tileSize - 1, 7*tileSize - 1));
+    button.setPosition(31 * tileSize, 16 * tileSize);
+    button.setFillColor(sf::Color(255, 240, 225));  // Light Dull Orange.
+    button.setOutlineColor(sf::Color::Black);
+    button.setOutlineThickness(1.5f);
+    build_buttons_sprites.push_back(button);    
+    
+    // upgrade button:
+    // sf::RectangleShape button(sf::Vector2f(7*tileSize - 1, 7*tileSize - 1));
+    button.setPosition(31 * tileSize, 9 * tileSize);
+    button.setFillColor(sf::Color(225, 225, 225));
+    button.setOutlineColor(sf::Color::Black);
+    button.setOutlineThickness(1.5f);
+    upgrade_button_sprite = button;
 
+    // Set initial tower levels
+    pierce_tower_level = 0;
+    magic_tower_level = 0;
+    siege_tower_level = 0;
 
-
-    // 
-
-
-
-
-
-
-
+    // No selected tower at the start;
+    clicked_tower_id = -1;
+    build_buttons = false;
+    upgrade_button = false;
+    
     
 }
 
@@ -140,7 +182,7 @@ std::vector<TileMap::Node*> TileMap::getNeighbors(Node& node) {
     return neighbors;
 }
 
-// Draws all the tiles, characters, and projectiles.
+// Draws all the tiles, characters, projectiles, towers, and buttons, respectively.
 void TileMap::draw(sf::RenderWindow& window) {
     // Tiles
     for (const auto& tile : tiles) {
@@ -164,6 +206,26 @@ void TileMap::draw(sf::RenderWindow& window) {
     {
         (*projectiles[i]).draw(window);
     }
+    // Towers.
+    for (size_t i = 0; i < towers.size(); i++)
+    {
+        towers[i]->draw(window);
+    }
+    // buttons.
+    if (build_buttons)
+    {
+        for (size_t i = 0; i < build_buttons_sprites.size(); i++)
+        {
+            window.draw(build_buttons_sprites[i]);
+        }
+    }
+    if (upgrade_button)
+    {
+        window.draw(upgrade_button_sprite);
+    }
+    
+    
+    
 }
 
 // Testing function.
@@ -195,6 +257,7 @@ void TileMap::moveCharacterTo(std::shared_ptr<Character> character, sf::Vector2i
 }
 
 // Runs Character.update(deltatime) on all Characters in this->characters and on all projectiles.
+// updates towers.
 // (Character updates are handled by TileMap).
 void TileMap::update(float deltaTime) {
     // Uses iterators to erase at the same time it iterates through the vector.
@@ -251,6 +314,20 @@ void TileMap::update(float deltaTime) {
         }
     }
 
+    for (size_t i = 0; i < towers.size(); i++)
+    {
+        if (towers[i]->update(deltaTime))
+        {
+            float damage = towers[i]->damage;
+            int tower_type = towers[i]->tower_type;
+            float fire_range = towers[i]->fire_range;
+            sf::Vector2f start_position = towers[i]->getPosition();
+            ShootNearest(start_position, damage, tower_type);   // ShootNearest(start_position, damage, tower_type, FIRERANGE AQUI AAAA);
+        }
+        
+    }
+    
+
 }
 
 
@@ -278,15 +355,15 @@ void TileMap::update(float deltaTime) {
 // Adds a projectile to projectiles with a random target Character from vector enemy_species[0].
 void TileMap::ShootRandomProjectile()
 {
-    std::cout << "Enters ShootRandomProjectile()" << std::endl;
+    // std::cout << "Enters ShootRandomProjectile()" << std::endl;
     if (enemy_species.size() == 0)
     {
-        std::cout <<  "enemy_species.size() == 0. Exits TileMap::ShootRandomProjectile()" << std::endl;
+        // std::cout <<  "enemy_species.size() == 0. Exits TileMap::ShootRandomProjectile()" << std::endl;
         return;
     }
     if (enemy_species[0].size() == 0)
     {
-        std::cout <<  "enemy_species[0].size() == 0. Exits TileMap::ShootRandomProjectile()" << std::endl;
+        // std::cout <<  "enemy_species[0].size() == 0. Exits TileMap::ShootRandomProjectile()" << std::endl;
         return;
     }
 
@@ -306,23 +383,43 @@ void TileMap::ShootRandomProjectile()
 void TileMap::clickEvents(sf::Vector2i click_coords)
 {
     // checks current state of buttons displayed
+
+    // No menu shown.
     if (!build_buttons && !upgrade_button)
     {
-        // AIAIAIAIAIAIAIAIA
+        // AIAIAIAIAIAIAIAIA // Need to make upgrade button pop up.
         if (grid[click_coords.y][click_coords.x].isBuildable)
         {
             std::cout << "Obstacle clicked" << std::endl;
             // Do something with the obstacle
             last_succesful_tile_click = click_coords;
+
+            sf::Vector2f position_of_possibly_clicked_tower((last_succesful_tile_click.x + 0.5)*tileSize, (last_succesful_tile_click.y + 0.5)*tileSize);
+            // Search possibly clicked tower's id in towers:
+            clicked_tower_id = -1;
+            for (size_t i = 0; i < towers.size(); i++)
+            {
+                // If it's close enough
+                if (towers[i]->getPosition().x - position_of_possibly_clicked_tower.x < 0.5*tileSize && towers[i]->getPosition().y - position_of_possibly_clicked_tower.y < 0.5*tileSize)
+                {
+                    clicked_tower_id = i;
+                    upgrade_button = true;
+                    return;
+                }
+            }
+            // Clicked an empty buildable tile.
             build_buttons = true;
+            return;
         }
         else
         {
-            std::cout << "Empty tile clicked" << std::endl;
-            // Do something with the empty tile
+            std::cout << "Empty unbuildable tile clicked." << std::endl;
+            // Do nothing with the empty tile
         }
      
     }
+    // If build buttons are displayed
+    // If the build menu is open will result in the menu closing and clicks on the buttons build a tower where previously clicked.
     if (build_buttons && !upgrade_button)
     {
         /*
@@ -343,23 +440,39 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
                 std::cout << "Button 1 clicked" << std::endl;
                 // Do something with button 1
                 build_buttons = false;
-                //CONSTRUIR TORRE, FUNCION DE.
+                
+                // Gets a Vector2f to the center of the tile indicated by click_coords. Multiplies by tile size to get the pixel position.
+                sf::Vector2f startPosition((last_succesful_tile_click.x + 0.5)*tileSize, (last_succesful_tile_click.y + 0.5)*tileSize);
+                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 0, pierce_tower_level);
+                towers.push_back(tower);
+                return;
 
             }
             else if (click_coords.y >= 9 && click_coords.y <= 15)
             {
                 std::cout << "Button 2 clicked" << std::endl;
-                // Do something with button 2
                 build_buttons = false;
-                //CONSTRUIR TORRE, FUNCION DE.
+                
+                // Gets a Vector2f to the center of the tile indicated by click_coords. Multiplies by tile size to get the pixel position.
+                sf::Vector2f startPosition((last_succesful_tile_click.x + 0.5)*tileSize, (last_succesful_tile_click.y + 0.5)*tileSize);
+                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 1, magic_tower_level);
+                towers.push_back(tower);
+                return;
             }
             else if (click_coords.y >= 16 && click_coords.y <= 22)
             {
                 std::cout << "Button 3 clicked" << std::endl;
-                // Do something with button 3
                 build_buttons = false;
-                //CONSTRUIR TORRE, FUNCION DE.
+                
+                // Gets a Vector2f to the center of the tile indicated by click_coords. Multiplies by tile size to get the pixel position.
+                sf::Vector2f startPosition((last_succesful_tile_click.x + 0.5)*tileSize, (last_succesful_tile_click.y + 0.5)*tileSize);
+                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 2, siege_tower_level);
+                towers.push_back(tower);
+                return;
             }
+            // Clicked somewhere else to escape the menu.
+            build_buttons = false;
+            return;
         }
         {
             std::cout << "Obstacle clicked" << std::endl;
@@ -368,9 +481,89 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
             build_buttons = true;
         }
     }
-    
-    
+    // If build buttons are off and the upgrade button was pressed.
+    // If the build menu is open will result in the menu closing and clicks on the buttons build a tower where previously clicked.
+    if (!build_buttons && upgrade_button)
+    {
+        if (click_coords.x >= 31 && click_coords.x <= 37)
+        {
+            if (clicked_tower_id != -1 && click_coords.y >= 9 && click_coords.y <= 15)
+            {
+                towers[clicked_tower_id]->upgrade();
+                std::cout << "upgraded tower of id" << clicked_tower_id << std::endl;
+                clicked_tower_id = -1;
+                upgrade_button = false;
+                return;
+            }
+        }
+    }
+
+
+
 }
+
+
+
+// Finds the nearest enemy and shoots a bullet( of the given type TO DO!!!)to it.
+void TileMap::ShootNearest(sf::Vector2f startPosition, float damage, int tower_type)
+{
+    // std::cout << "Enters ShootNearest(sf::Vector2f startPosition, float damage, int tower_type)" << std::endl;
+    if (enemy_species.size() == 0)
+    {
+        std::cout <<  "enemy_species.size() == 0. enemy_species uninitialized!!! Exits TileMap::ShootNearest()" << std::endl;
+        std::cout <<  "enemy_species.size() == 0. Exits TileMap::ShootNearest()" << std::endl;
+        return;
+    }
+    
+    bool one_enemy_found = false;
+    for (size_t i = 0; i < enemy_species.size(); i++)
+    {
+        if (enemy_species[i].size() > 0)
+        {
+            one_enemy_found = true;
+        }
+    }
+    if (!one_enemy_found)
+    {
+        std::cout << "Exit ShootNearest because there are no targets" << std::endl;
+        return;
+    }
+    
+
+
+    // std::cout << "ShootNearest cp 1" << std::endl;   //cp??
+    float closest_square_distance_to_enemy = tileSize*tileSize * 30 * 30 * 2; // No enemy will be farther away than this.
+    int closest_distance_enemy_id_i = -1;
+    int closest_distance_enemy_id_j = -1;
+
+    // Finds the closest enemy
+    for (size_t i = 0; i < enemy_species.size(); i++)
+    {
+        for (size_t j = 0; j < enemy_species[i].size(); j++)
+        {
+            float current_square_distance_to_enemy =
+                (enemy_species[i][j]->getPosition().x - startPosition.x) * (enemy_species[i][j]->getPosition().x - startPosition.x) + 
+                (enemy_species[i][j]->getPosition().y - startPosition.y) * (enemy_species[i][j]->getPosition().y - startPosition.y);
+                
+            if (current_square_distance_to_enemy < closest_square_distance_to_enemy)
+            {
+                closest_square_distance_to_enemy = current_square_distance_to_enemy;
+                closest_distance_enemy_id_i = i;
+                closest_distance_enemy_id_j = j;
+            }
+        }
+    }
+    std::cout << "ShootNearest cp 2" << std::endl;
+    
+
+    std::shared_ptr<Character> target_character = enemy_species[closest_distance_enemy_id_i][closest_distance_enemy_id_j];
+    // Projectile projectile(projectile_start_position, target_character, 200.f);
+    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(startPosition, target_character, 200.f);
+    projectiles.push_back(projectile);
+    std::cout << "ShootNearest cp 3" << std::endl;
+
+}
+
 
 
 

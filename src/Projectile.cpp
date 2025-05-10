@@ -23,7 +23,7 @@ bool Projectile::update(float deltaTime)
     // }
     if (distance <= speed*deltaTime)
     {
-        std::cout << "distance <= speed*deltaTime -> projectile marked for deletion." << std::endl;
+        // std::cout << "distance <= speed*deltaTime -> projectile marked for deletion." << std::endl;
         // target_character->magic_damage += 20.f;
         // Based on the damage of the projectile's type pierce, magic, siege (0.75, 2.00, 2.50)
         target_character->magic_damage += 40.f;

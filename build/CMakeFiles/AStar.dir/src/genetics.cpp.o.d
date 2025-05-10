@@ -1,5 +1,5 @@
 CMakeFiles/AStar.dir/src/genetics.cpp.o: \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/genetics.cpp \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/genetics.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/13/iostream \
  /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
@@ -193,4 +193,4 @@ CMakeFiles/AStar.dir/src/genetics.cpp.o: \
  /usr/include/c++/13/bits/stl_heap.h \
  /usr/include/c++/13/bits/stl_tempbuf.h \
  /usr/include/c++/13/pstl/glue_algorithm_defs.h \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/include/genetics.h
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/genetics.h

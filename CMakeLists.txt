@@ -15,6 +15,7 @@ set(SOURCES
     src/Character.cpp
     src/genetics.cpp
     src/Projectile.cpp
+    src/Tower.cpp
 )
 
 # Archivos de cabecera

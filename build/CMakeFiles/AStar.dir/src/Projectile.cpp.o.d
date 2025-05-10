@@ -1,7 +1,7 @@
 CMakeFiles/AStar.dir/src/Projectile.cpp.o: \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/src/Projectile.cpp \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/src/Projectile.cpp \
  /usr/include/stdc-predef.h \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/include/Projectile.h \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/Projectile.h \
  /usr/include/c++/13/iostream /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -173,7 +173,7 @@ CMakeFiles/AStar.dir/src/Projectile.cpp.o: \
  /usr/include/c++/13/backward/auto_ptr.h \
  /usr/include/c++/13/pstl/glue_memory_defs.h \
  /usr/include/c++/13/pstl/execution_defs.h \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/include/Character.hpp \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/Character.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
@@ -254,7 +254,7 @@ CMakeFiles/AStar.dir/src/Projectile.cpp.o: \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp /usr/include/c++/13/optional \
  /usr/include/c++/13/bits/enable_special_members.h \
- /home/steven/Escritorio/campos-diaz-perez-genetic-kingdom/include/genetics.h \
+ /home/esteban/Documents/d/tec/semestre-i-2025/proyecto-2-datos-II/genetic_kingdom_project/include/genetics.h \
  /usr/include/c++/13/cstring /usr/include/string.h /usr/include/strings.h \
  /usr/include/c++/13/cmath /usr/include/math.h \
  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
