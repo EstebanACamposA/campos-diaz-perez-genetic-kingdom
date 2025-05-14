@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <memory>
 
+#include <queue>
+
 #include "Projectile.h"
 
 #include "genetics.h"
@@ -15,7 +17,7 @@
 class Character; // forward declaration instead of #include.
 class TileMap {
 public:
-    TileMap(int rows, int cols, int tileSize);
+    TileMap(int rows, int cols, int tileSize, int wave_lenght);
     void draw(sf::RenderWindow& window);
     void setObstacle(int row, int col, bool isObstacle);
     void update(float deltaTime);
@@ -24,8 +26,13 @@ public:
     void moveCharacterTo(std::shared_ptr<Character> character, sf::Vector2i target);
     std::vector<sf::Vector2i> findPath(sf::Vector2i start, sf::Vector2i end);
     // Game
-        // Testing
+        // Testing //
     void ShootRandomProjectile();
+        // Testing //
+    void SpawnNextEnemy();
+    void AddWave(std::vector<int> new_wave);
+    bool IsCurrentRoundClear();
+    bool IsAtLastEnemySpawn();
 
     // Genetics
     Genetics genetic_manager;
@@ -90,6 +97,22 @@ private:
     //Handle AoR attacks
     void AOEAttack(sf::Vector2f position, bool apply_shock_shell_effect, float damage);
 
+    // Waves
+    int wave_lenght;
+    std::queue<std::vector<int>> waves_queue;
+    int current_round_cleared_enemies;
+    // Tells main to Add a new wave. wave == round
+    bool current_round_is_cleared;
+    int current_round_spawned_enemies;
+    // void ClearEnemy(std::vector<int> new_wave)
+    void EndWave();
+
+    double mutation_chance;
+    int total_mutations;
+    
+
+
     // // Calculates the distance between two characters.
     // float calculateDistanceInPixels()
+    
 };

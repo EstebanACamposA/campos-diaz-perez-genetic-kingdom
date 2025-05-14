@@ -3,8 +3,8 @@
 
 #include <cmath>
 
-TileMap::TileMap(int rows, int cols, int tileSize) 
-    : rows(rows), cols(cols), tileSize(tileSize) {
+TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght) 
+    : rows(rows), cols(cols), tileSize(tileSize), wave_lenght(wave_lenght) {
     // grid is a 2D vector of nodes.
     // Creates a grid of uninitialized nodes
     grid.resize(rows, std::vector<Node>(cols));
@@ -97,7 +97,16 @@ TileMap::TileMap(int rows, int cols, int tileSize)
     button.setOutlineThickness(1.5f);
     upgrade_button_sprite = button;
 
+    // Wave
+    current_round_cleared_enemies = 0;
+    current_round_is_cleared = false;
+    current_round_spawned_enemies = 0;
 
+    mutation_chance = 0.5;   // Enemies have 50% chance to mutate all stats.
+    std::cout << "after mutation_chance = 0.5; mutation_chance = " << mutation_chance << std::endl;
+    std::cout << "after mutation_chance = 0.5; mutation_chance = " << mutation_chance << std::endl;
+    std::cout << "after mutation_chance = 0.5; mutation_chance = " << mutation_chance << std::endl;
+    total_mutations = 0;
 
 }
 
@@ -327,13 +336,22 @@ void TileMap::update(float deltaTime) {
             // std::cout << "enters for enemy_species[i].size" << std::endl;
             if ((*it)->update(deltaTime))   // The return type of Character::update is std::optional<Individual>. It works as true or false.
             {
+                // Sends genetic data to genetic manager, increases clearedd enemy count for current wave and erases the enemy from the game.
                 Individual individual_from_character = (*it)->CalculateIndividual();
                 genetic_manager.AddIndividual(i, individual_from_character);
+                current_round_cleared_enemies ++;
 
                 std::cout <<  "before enemy_species[" << i << "].size() = " << enemy_species[i].size() << std::endl;
                 it = enemy_species[i].erase(it);
                 std::cout << "Erased a Character of species: " << i << std::endl;
                 std::cout <<  "after enemy_species[" << i << "].size() = " << enemy_species[i].size() << std::endl;
+
+                // When all the enemies of the current wave have been cleared.
+                if (current_round_cleared_enemies >= wave_lenght)
+                {
+                    EndWave();
+                }
+                
 
             } else
             {
@@ -350,7 +368,7 @@ void TileMap::update(float deltaTime) {
             int tower_type = towers[i]->tower_type;
             float fire_range = towers[i]->fire_range;
             sf::Vector2f start_position = towers[i]->getPosition();
-            bool power_up_projectile = RandomBool(0.25);
+            bool power_up_projectile = Genetics::RandomBool(0.25);
             float projectile_speed = towers[i]->projectile_speed;
             ShootNearest(start_position, damage, tower_type, fire_range, projectile_speed, power_up_projectile);   // ShootNearest(start_position, damage, tower_type, FIRERANGE AQUI AAAA);
         }
@@ -881,3 +899,63 @@ void TileMap::AOEAttack(sf::Vector2f position, bool apply_shock_shell_effect, fl
     }
     
 }
+
+void TileMap::AddWave(std::vector<int> new_wave)
+{
+    std::cout << "Enters AddWave()" << std::endl;
+    this->waves_queue.push(new_wave);
+    current_round_is_cleared = false;
+}
+
+// Marks the end of the wave to genetic_manager and sets current_round_is_cleared = true to tell main to call genWave().
+void TileMap::EndWave()
+{
+    std::cout << "Enteres EndWave" << std::endl;
+    genetic_manager.ClearWave();    // Recalculates the best Individuals of each species.
+    genetic_manager.ShowBestIndividuals();
+    current_round_cleared_enemies = 0;
+    current_round_is_cleared = true;
+}
+
+void TileMap::SpawnNextEnemy()
+{
+    // Checks if the round has been completely spawned.
+    if (current_round_spawned_enemies >= wave_lenght)
+    {
+        std::cout << "current_round_spawned_enemies >= wave_lenght is true" << std::endl;
+        std::cout << "waves_queue.pop();" << std::endl;
+        // Goes to the next set of characters to spawn. 
+        waves_queue.pop();
+        current_round_spawned_enemies = 0;
+    }
+
+    int current_species = waves_queue.front()[current_round_spawned_enemies];
+
+    // Creates and Individual from the current best.
+    Individual current_best = genetic_manager.best_individuals[current_species];
+    // Randomly mutates stats of the current Individual and increments total_mutations accordingly .
+    std::cout << "mutation_chance = " << mutation_chance << std::endl;
+    total_mutations += current_best.MutateStats(mutation_chance);
+    
+    int spawn_location_offset = current_round_spawned_enemies%4;
+    auto character = std::make_shared<Character>(sf::Vector2f(15 + 30*spawn_location_offset, 15), current_best, 0); // Uses an Individual to set the Character's stats.
+    // Adds a character to the current species.
+    // This moves the spawned characters to the bottom right corner of the map.
+    addCharacter(character, current_species);
+    std::cout << "Added a character of species " << current_species << std::endl;
+    std::cout << "total_mutations = " << total_mutations << std::endl;
+
+    current_round_spawned_enemies ++;
+}
+
+bool TileMap::IsCurrentRoundClear()
+{
+    return current_round_is_cleared;
+}
+
+bool TileMap::IsAtLastEnemySpawn()
+{
+    return current_round_spawned_enemies == wave_lenght;
+}
+
+

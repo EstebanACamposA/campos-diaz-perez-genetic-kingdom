@@ -10,7 +10,7 @@
 
 #include "genetics.h"
 
-bool RandomBool(double probability)
+bool Genetics::RandomBool(double probability)
 {
     static std::random_device rd;
     static std::mt19937 gen(rd());
@@ -95,13 +95,70 @@ void Individual::CalculateFitness(float completed_path, float remaining_health)
 // This is called by the testing function Genetics.SimulateWave()
 void Individual::MutateStats()
 {
-    this->max_health    *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
-    this->speed_multiplier         *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
-    this->pierce_armor  *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
-    this->magic_armor   *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
-    this->siege_armor   *= 1 + this->mutation_relative_change * (1 - 2*RandomBool(0.5));
+    this->max_health    *= 1 + this->mutation_relative_change * (1 - 2*Genetics::RandomBool(0.5));
+    this->speed_multiplier         *= 1 + this->mutation_relative_change * (1 - 2*Genetics::RandomBool(0.5));
+    this->pierce_armor  *= 1 + this->mutation_relative_change * (1 - 2*Genetics::RandomBool(0.5));
+    this->magic_armor   *= 1 + this->mutation_relative_change * (1 - 2*Genetics::RandomBool(0.5));
+    this->siege_armor   *= 1 + this->mutation_relative_change * (1 - 2*Genetics::RandomBool(0.5));
     CalculateFitness();
 }
+
+
+// Increases or decreases each stat by mutation_relative_change.
+// e. g.: stat *= 1.2; OR stat *= 0.8;
+// Decides based on mutation_chance for each of the 5 genes.
+int Individual::MutateStats(double mutation_chance)
+{
+    int mutated_stats = 0;
+    if (Genetics::RandomBool(mutation_chance))
+    {
+        this->max_health    *= 1 + this->mutation_relative_change * (1 - 2*Genetics::RandomBool(0.5));
+        mutated_stats ++;
+    }
+    if (Genetics::RandomBool(mutation_chance))
+    {
+        this->speed_multiplier    *= 1 + this->mutation_relative_change * (1 - 2*Genetics::RandomBool(0.5));
+        mutated_stats ++;
+    }
+    if (Genetics::RandomBool(mutation_chance))
+    {
+        this->pierce_armor    *= 1 + this->mutation_relative_change * (1 - 2*Genetics::RandomBool(0.5));
+        mutated_stats ++;
+    }
+    if (Genetics::RandomBool(mutation_chance))
+    {
+        this->magic_armor    *= 1 + this->mutation_relative_change * (1 - 2*Genetics::RandomBool(0.5));
+        mutated_stats ++;
+    }
+    if (Genetics::RandomBool(mutation_chance))
+    {
+        this->siege_armor    *= 1 + this->mutation_relative_change * (1 - 2*Genetics::RandomBool(0.5));
+        mutated_stats ++;
+    }
+    // // TESTING RandomBool!!!!!
+    // for (size_t i = 0; i < 100; i++)
+    // {
+    //     if (Genetics::RandomBool(0.5))
+    //     {
+    //         std::cout << "Genetics::RandomBool(0.5) = " << i << "," << true << std::endl;
+    //     }
+        
+    // }
+    // std::cout << "TESTS WITH mutation_chance" << std::endl;
+    // for (size_t i = 0; i < 100; i++)
+    // {
+    //     if (Genetics::RandomBool(mutation_chance))
+    //     {
+    //         std::cout << "Genetics::RandomBool(mutation_chance) = " << i << "," << true << std::endl;
+    //     }
+        
+    // }
+    
+
+    std::cout << "At Individual::MutateStats mutated stats = " << mutated_stats << std::endl;
+    return mutated_stats;
+}
+
 
 
 /* Order of species and spawn ratios:
@@ -144,10 +201,10 @@ Genetics::Genetics()
     this->best_individuals_matrix.push_back(best_mercs);
 
     //Initializes the best_individuals vector with starter values.
-    Individual best_orc = Individual(100.0f, 10.0f, 1.0f, 1.0f, 1.0f);
-    Individual best_night_elf = Individual(100.0f, 10.0f, 1.0f, 1.0f, 1.0f);
-    Individual best_harpy = Individual(100.0f, 10.0f, 1.0f, 1.0f, 1.0f);
-    Individual best_merc = Individual(100.0f, 10.0f, 1.0f, 1.0f, 1.0f);
+    Individual best_orc = Individual(100.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+    Individual best_night_elf = Individual(100.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+    Individual best_harpy = Individual(100.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+    Individual best_merc = Individual(100.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
     this->best_individuals.push_back(best_orc);
     this->best_individuals.push_back(best_night_elf);
@@ -338,7 +395,6 @@ void Genetics::AddIndividual(int species, Individual enemy)
 // CalculateBest5FitnessIDs() ->    uses this.species to get the ids of the top 5 fitness individuals.
 // GetBest5Individuals() ->         Updates best_individuals_matrix so that it holds the best 5 of each species.
 // CalculateNewBestIndividual() ->  Creates a new Individual as a pattern for the next round. Per species.
-
 void Genetics::ClearWave()
 {
     // Calculates matrix best_fits_ids with the best 5 Individuals' ids for each species.

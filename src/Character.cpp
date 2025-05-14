@@ -52,7 +52,7 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
     max_health *= species_health_multiplier[species];   // This doesn't affect the genetic algorithm. It only makes the species balanced.
 
     current_health = max_health;
-    speed = 50 * speed_multiplier; // 100 is default speed!!! SPEED.
+    speed = 30 * speed_multiplier; // 30 is default speed!!! SPEED.
 
     pierce_damage = 0;
     magic_damage = 0;
@@ -79,6 +79,8 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
     bool active_color_red = false;
     bool active_color_blue = false;
     bool active_color_green = false;
+
+    damage_blink = false;
 
 
 }
@@ -130,6 +132,7 @@ std::optional<Individual> Character::update(float deltaTime) {
     // Visual effect. Blinking.
     if (damage_taken > 0)
     {
+        // std::cout << "damage_taken = " << damage_taken << std::endl;
         // std::cout << "current_health = " << current_health << std::endl;
 
         if (damage_blink)
@@ -178,6 +181,13 @@ std::optional<Individual> Character::update(float deltaTime) {
             
         }
     }
+    else
+    {
+        // Characters is taken out of the game before loosing all its health when reaching the goal/
+        Individual genetic_result = CalculateIndividual();
+        return genetic_result; // Returning an Individual type object works even if the return type is std::optional<Individual>.
+    }
+    
     
     // Effect of poison arrow. Deals 60 dps. A level 1 tower deals about 30 dps.
     if (posion_arrow_effect)
@@ -270,43 +280,53 @@ void Character::ApplyFrostOrbEffect()
 // r,g,b must belong to {-1,0, 1}
 void Character::CalculateColors(int r, int g, int b)
 {
-    if (r = -1)
+    if (r == -1)
     {
         active_color_red = false;
     }
-    if (g = -1)
+    if (g == -1)
     {
         active_color_green = false;
     }
-    if (b = -1)
+    if (b == -1)
     {
         active_color_blue = false;
     }
     
-    if (r = 1)
+    if (r == 1)
     {
         active_color_red = true;
     }
-    if (g = 1)
+    if (g == 1)
     {
         active_color_green = true;
     }
-    if (b = 1)
+    if (b == 1)
     {
         active_color_blue = true;
     }
     
-    std::cout << "Color input = (" << r << ", " << g << ", " << b << ")" << std::endl;
+    // std::cout << "Color input = (" << r << ", " << g << ", " << b << ")" << std::endl;
 
+    // Generates a status color rgb by starting with white and substracting the colors that are not the applied one. This is then mutliplied to the base color.
+    // sf::Color status_color(
+    //     255 -128*active_color_green - 128*active_color_blue,
+    //     255 -128*active_color_red - 128*active_color_blue,
+    //     255 -128*active_color_red - 128*active_color_green);
+    
+    //  Generates a status color rgb by starting with white
+    // and substracting 128 to each channel if any of the other channels are active colors and the current one is not an active color,
+    // in which case nothing is substracted. This is then mutliplied to the base color.
     sf::Color status_color(
-        255 -128*active_color_green - 128*active_color_blue,
-        255 -128*active_color_red - 128*active_color_blue,
-        255 -128*active_color_red - 128*active_color_green);
+        255 -128*((active_color_green | active_color_blue) & !active_color_red),
+        255 -128*((active_color_red | active_color_blue) & !active_color_green),
+        255 -128*((active_color_red | active_color_green) & !active_color_blue));
     
 
     sf::Color result_color(base_color.r * status_color.r / 255, base_color.g * status_color.g / 255, base_color.b * status_color.b / 255);
     sprite.setFillColor(result_color);
-    std::cout << "result_color = (" << (int) result_color.r << ", " << (int) result_color.g << ", " << (int) result_color.b << ")" << std::endl;
+    // std::cout << "base_color = (" << (int) base_color.r << ", " << (int) base_color.g << ", " << (int) base_color.b << ")" << std::endl;
+    // std::cout << "result_color = (" << (int) result_color.r << ", " << (int) result_color.g << ", " << (int) result_color.b << ")" << std::endl;
 
 
 }

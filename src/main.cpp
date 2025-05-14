@@ -28,63 +28,159 @@ float random_int() {
     return distrib(gen);
 }*/
 
-std::vector<int> genWave(){
+
+
+int current_species_to_spawn_offset = 0;
+int species_spawn_rates[4] = {15,10,7,7}; // Spawns 15+10+7+7 + 13 enemies per round = 52
+int wave_length =             15+10+7+7 + 13;
+
+std::vector<int> genWave()
+{
+    /* Order of species and spawn ratios:
+    0 Orcs, 15
+    1 Night elves, 10
+    2 Harpies, 7
+    3 Mercenaries, 7
+    */
     std::vector<int> wave;
-    
-    for (int i = 0; i < 41; ++i) {
-        int num = random_int(0, 3);
-        wave.push_back(num);
-    
+    int current_species_to_spawn = (0+current_species_to_spawn_offset)%4;
+    for (int i = 0; i < species_spawn_rates[current_species_to_spawn]; ++i)
+    {
+        int random_25_chance = random_int(0, 3);
+        // At a 25% chance inserts a random (not necessarily different) species to the wave.
+        if (random_25_chance == 0)
+        {
+            int num = random_int(0, 3);
+            wave.push_back(num);
+        }
+        else
+        {
+            wave.push_back(current_species_to_spawn);
+        }
     }
+
+    current_species_to_spawn = (1+current_species_to_spawn_offset)%4;
+    for (int i = 0; i < species_spawn_rates[current_species_to_spawn]; ++i)
+    {
+        int random_25_chance = random_int(0, 3);
+        // At a 25% chance inserts a random (not necessarily different) species to the wave.
+        if (random_25_chance == 0)
+        {
+            int num = random_int(0, 3);
+            wave.push_back(num);
+        }
+        else
+        {
+            wave.push_back(current_species_to_spawn);
+        }
+    }
+
+    current_species_to_spawn = (2+current_species_to_spawn_offset)%4;
+    for (int i = 0; i < species_spawn_rates[current_species_to_spawn]; ++i)
+    {
+        int random_25_chance = random_int(0, 3);
+        // At a 25% chance inserts a random (not necessarily different) species to the wave.
+        if (random_25_chance == 0)
+        {
+            int num = random_int(0, 3);
+            wave.push_back(num);
+        }
+        else
+        {
+            wave.push_back(current_species_to_spawn);
+        }
+    }
+
+    current_species_to_spawn = (3+current_species_to_spawn_offset)%4;
+    for (int i = 0; i < species_spawn_rates[current_species_to_spawn]; ++i)
+    {
+        int random_25_chance = random_int(0, 3);
+        // At a 25% chance inserts a random (not necessarily different) species to the wave.
+        if (random_25_chance == 0)
+        {
+            int num = random_int(0, 3);
+            wave.push_back(num);
+        }
+        else
+        {
+            wave.push_back(current_species_to_spawn);
+        }
+    }
+    
+    // current_species_to_spawn is used differently for the last for. The last 13 enemies of the round are random,
+    // but each consecutive one only has a 33% chance of being different than the last one inserted. 
+    for (int i = 0; i < 13; ++i)
+    {
+        int random_33_chance = random_int(0, 2);
+        // At a 25% chance inserts a random (not necessarily different) species to the wave.
+        if (random_33_chance == 0)
+        {
+            int num = random_int(0, 3);
+            wave.push_back(num);
+            current_species_to_spawn = num;
+        }
+        else
+        {
+            wave.push_back(current_species_to_spawn);
+        }
+    }
+    
+    // Starts next round by a different species.
+    current_species_to_spawn_offset += random_int(0, 3);
+
     return wave;
 }
+
+
+
 int main() {
-    std::cout << "Enters main??????" << std::endl;
-    sf::RenderWindow window(sf::VideoMode(1200, 950), "A* Pathfinding con Personajes");
+    // sf::RenderWindow window(sf::VideoMode(1200, 950), "A* Pathfinding con Personajes");
+    sf::RenderWindow window(sf::VideoMode(1200, 950), "Genetic Kingdom");
+
     std::cout << "Main checkpoint 1" << std::endl;
     window.setFramerateLimit(60);
     std::cout << "Main checkpoint 2" << std::endl;
     sf::Clock clock;
     std::cout << "Main checkpoint 3" << std::endl;
-    TileMap map(30, 30, 30);    // 30 doesn't divde both 800 and 600.
+    TileMap map(30, 30, 30, 52);    // 30 is TileSize and also the amount of tiles for each axis. 52 is the wave_length.
     std::cout << "Main checkpoint 4" << std::endl;
     // Configurar obstáculos
 
     int laberinto[30][30] = {
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0}
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
     
-
+    // Make buildable walkable tiles.
     for (int i = 0; i < 30; ++i) {
         for (int j = 0; j < 40; ++j) {
             if (laberinto[i][j] == 1) {
@@ -109,10 +205,26 @@ int main() {
     int counter60 = 99999;
     int counter600 = 99999;
     int counterWaves = 0;
-    int counterEnemy = 0;
+    // int counterEnemy = 0;
     
-    while (window.isOpen()) {
+    // Adds initial waves to the game. Rounds don't define genetic behaviour of spawned enemies.
+    // All genetics are managed by TileMap.genetic_manager of the Genetics class.
+    map.AddWave(genWave());
+    map.AddWave(genWave());
+
+    while (window.isOpen())
+    {
         float deltaTime = clock.restart().asSeconds();
+
+        bool new_wave_added = false;
+
+        if (map.IsCurrentRoundClear())
+        {
+            map.AddWave(genWave());
+            new_wave_added = true;
+            // counter60 = 0;
+        }
+        
 
         counter60 ++;
         if (counter60 >= 300)
@@ -121,34 +233,42 @@ int main() {
             counter60 = 0;
             // std::cout << "deltaTime = " << deltaTime << std::endl;    
             // map.ShootRandomProjectile();
+            std::cout << std::endl;
         }
         
         counter600 ++;
-        if (counter600 >= 300)
+        // When a wave is done spawning, it waits until it's clear to call map.SpawnNextEnemy() again.
+        if (counter600 >= 30 && (!map.IsAtLastEnemySpawn() || new_wave_added)) 
         {
             // Create a character;
             counter600 = 0;
-            // std::cout << "deltaTime = " << deltaTime << std::endl;    
+            // std::cout << "deltaTime = " << deltaTime << std::endl;
             
-            Individual base_orc = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            auto character = std::make_shared<Character>(sf::Vector2f(15, 15), base_orc, 0); // Uses an Individual to set the Character's stats.
-            // map.addCharacter(character);
-            map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
+
+            // Individual base_orc = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            // auto character = std::make_shared<Character>(sf::Vector2f(15, 15), base_orc, 0); // Uses an Individual to set the Character's stats.
+            // // map.addCharacter(character);
+            // map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
             
-            Individual base_ne = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            character = std::make_shared<Character>(sf::Vector2f(45, 15), base_ne, 1); // Uses an Individual to set the Character's stats.
-            // map.addCharacter(character);
-            map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
+            // Individual base_ne = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            // character = std::make_shared<Character>(sf::Vector2f(45, 15), base_ne, 1); // Uses an Individual to set the Character's stats.
+            // // map.addCharacter(character);
+            // map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
             
-            Individual base_harpy = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            character = std::make_shared<Character>(sf::Vector2f(75, 75), base_harpy, 2); // Uses an Individual to set the Character's stats.
-            // map.addCharacter(character);
-            map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
+            // Individual base_harpy = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            // character = std::make_shared<Character>(sf::Vector2f(75, 75), base_harpy, 2); // Uses an Individual to set the Character's stats.
+            // // map.addCharacter(character);
+            // map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
             
-            Individual base_merc = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            character = std::make_shared<Character>(sf::Vector2f(105, 105), base_merc, 3); // Uses an Individual to set the Character's stats.
-            // map.addCharacter(character);
-            map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
+            // Individual base_merc = Individual(200.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            // character = std::make_shared<Character>(sf::Vector2f(105, 105), base_merc, 3); // Uses an Individual to set the Character's stats.
+            // // map.addCharacter(character);
+            // map.addCharacter(character, 0); // Adds a character to the species of id 0 (orcs).
+
+            
+            map.SpawnNextEnemy();
+
+            std::cout << std::endl;
             
         }
 

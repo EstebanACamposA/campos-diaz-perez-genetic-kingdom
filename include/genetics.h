@@ -8,8 +8,6 @@
 
 
 
-bool RandomBool(double probability);
-
 
 
 class Individual
@@ -55,6 +53,9 @@ class Individual
         // e. g.: stat *= 1.2; OR stat *= 0.8;
         // This is called by the testing function Genetics.SimulateWave()
         void MutateStats();
+
+        // Mutates random genes and returns how many genes changed. Genes change by 20%.
+        int MutateStats(double mutation_chance);
         
 
         
@@ -120,6 +121,9 @@ class Genetics
 
         void ClearWave();
 
+
+
+        static bool RandomBool(double probability);
 
 
 
