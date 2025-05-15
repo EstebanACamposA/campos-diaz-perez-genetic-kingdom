@@ -49,20 +49,25 @@ float tileSize;
 //     projectile_speed = projectile_speed_by_type[tower_type];
 // }
 
-Tower::Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float tile_size) 
-: position(startPosition), tower_type(tower_type){
-// Visuals:
-    sprite.setRadius(10.f);
+// const sf::Texture& texture is passed as reference to use the same texture object for different towers.
+Tower::Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float tile_size, const sf::Texture& texture) 
+: position(startPosition), tower_type(tower_type)
+{
+/// Testing visuals ///
+    // sprite.setRadius(10.f);
 
-    sf::Color tower_colors[3] = {
-        sf::Color(190, 190, 255),
-        sf::Color(255, 170, 210),
-        sf::Color(255, 190, 150)
-    };
-    sprite.setFillColor(tower_colors[tower_type]);
-    sprite.setOrigin(10.f, 10.f);
+    tower_colors[0] = sf::Color(190, 190, 255);
+    tower_colors[1] = sf::Color(255, 170, 210);
+    tower_colors[2] = sf::Color(255, 190, 150);
 
-    sprite.setPosition(position);
+    upgrade_color = tower_colors[tower_type];
+
+    // sprite.setFillColor(tower_colors[tower_type]);
+    // sprite.setOrigin(10.f, 10.f);
+
+    // sprite.setPosition(position);
+/// Testing visuals ///
+
     // Stats. Depend on level and type
     // Period.
     int towers_period_by_type[3] = {60, 120, 240};
@@ -82,6 +87,15 @@ Tower::Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float 
         upgrade();
     }
     
+    // SFML Textures.
+    sprite_texture.setTexture(texture);
+    // Scaling assuming squared tiles.
+    float scale = tile_size / texture.getSize().x;
+    sprite_texture.setScale(scale, scale);
+    
+    sprite_texture.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+    sprite_texture.setPosition(position);
+
 }
 
 
@@ -108,8 +122,12 @@ bool Tower::update(float deltaTime)
 void Tower::draw(sf::RenderWindow& window)
 {
     // sprite.setPosition(position);
-    window.draw(sprite);
 
+    /// Testing visuals ///
+    // window.draw(sprite);
+    /// Testing visuals ///
+    
+    window.draw(sprite_texture);
 }
 
 // Returns the pixel position of the tower
@@ -136,20 +154,24 @@ sf::Vector2f position;
 void Tower::upgrade()
 {
     damage *= 1.2f;
-    period = (int)(period * 0.8f);
+    // period = (int)(period * 0.8f);
+    period = period * 4 / 5;
 
-    sf::Color original = sprite.getFillColor();
 
-    float darkenFactor = 0.85f;
+    // sf::Color original = sprite.getFillColor();
+    sf::Color current_color = sprite_texture.getColor();
+
+
     
-    sf::Color darkerColor(
-        static_cast<sf::Uint8>(original.r * original.r / 255),
-        static_cast<sf::Uint8>(original.g * original.g / 255),
-        static_cast<sf::Uint8>(original.b * original.b / 255),
-        original.a // keep the original transparency
+    sf::Color darkened_color(
+        static_cast<sf::Uint8>(current_color.r * upgrade_color.r / 255),
+        static_cast<sf::Uint8>(current_color.g * upgrade_color.g / 255),
+        static_cast<sf::Uint8>(current_color.b * upgrade_color.b / 255),
+        current_color.a // keep the original transparency
     );
     
-    sprite.setFillColor(darkerColor);
+    // sprite.setFillColor(darkerColor);
+    sprite_texture.setColor(darkened_color);
 
 }
 

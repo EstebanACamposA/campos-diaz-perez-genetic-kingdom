@@ -200,11 +200,11 @@ Genetics::Genetics()
     this->best_individuals_matrix.push_back(best_harpies);
     this->best_individuals_matrix.push_back(best_mercs);
 
-    //Initializes the best_individuals vector with starter values.
-    Individual best_orc = Individual(100.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-    Individual best_night_elf = Individual(100.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-    Individual best_harpy = Individual(100.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-    Individual best_merc = Individual(100.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+    //Initializes the best_individuals vector with starter values. All values are 1 since these represent genes, and not the actual stats that interact within the game.
+    Individual best_orc = Individual(1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+    Individual best_night_elf = Individual(1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+    Individual best_harpy = Individual(1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+    Individual best_merc = Individual(1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
     this->best_individuals.push_back(best_orc);
     this->best_individuals.push_back(best_night_elf);

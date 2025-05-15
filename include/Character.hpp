@@ -21,7 +21,7 @@ public:
     float magic_damage;
     float siege_damage;
     // Constructor for genetic logic.
-    Character(sf::Vector2f startPosition, Individual genes, int species);
+    Character(sf::Vector2f startPosition, Individual genes, int species, const sf::Texture& texture);
 
     Individual CalculateIndividual();
     float CalculateCompletedPath();
@@ -81,5 +81,7 @@ private:
     sf::Color base_color;
     // Active Colors method.
     void CalculateColors(int r, int g, int b);
+    // SFML Texture
+    sf::Sprite sprite_texture;
 
 };

@@ -12,7 +12,7 @@ Character::Character(sf::Vector2f startPosition, float speed)
 
 // Genetics constructor.
 // species {orcs, NE, harpies, mercs} --> {0,1,2,3} 
-Character::Character(sf::Vector2f startPosition, Individual individual, int species):
+Character::Character(sf::Vector2f startPosition, Individual individual, int species, const sf::Texture& texture):
     position(startPosition),
     // Five genes:
     max_health(individual.max_health),
@@ -22,17 +22,19 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
     siege_armor(individual.siege_armor)
 {
     // SFML:
-    sprite.setRadius(10.f);
-    sf::Color enemy_color[4] = {
-        sf::Color(200, 225, 170),
-        sf::Color(200, 170, 255),
-        sf::Color(200, 255, 150),
-        sf::Color(180, 190, 150)
-    };
-    base_color = enemy_color[species];
-    sprite.setFillColor(base_color);
-    sprite.setOrigin(10.f, 10.f);
-    
+    /// Testing visuals ///
+    // sprite.setRadius(10.f);
+    // sf::Color enemy_color[4] = {
+    //     sf::Color(200, 225, 170),
+    //     sf::Color(200, 170, 255),
+    //     sf::Color(200, 255, 150),
+    //     sf::Color(180, 190, 150)
+    // };
+    // base_color = enemy_color[species];
+    // sprite.setFillColor(base_color);
+    // sprite.setOrigin(10.f, 10.f);
+    /// Testing visuals ///
+
     // Game logic
     // Species based damage:
     /* guide:                         {orcs, NE, harpies, mercs}
@@ -50,6 +52,7 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
 
     float species_health_multiplier[] = {1.f, 1.5f, 1.81f, 1.48f};
     max_health *= species_health_multiplier[species];   // This doesn't affect the genetic algorithm. It only makes the species balanced.
+    max_health *= 50;   // This is a starter value that converts the raw genetic data to a health value that makes sense in the game. 
 
     current_health = max_health;
     speed = 30 * speed_multiplier; // 30 is default speed!!! SPEED.
@@ -82,6 +85,17 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
 
     damage_blink = false;
 
+
+
+    // SFML Textures.
+    sprite_texture.setTexture(texture);
+    // Scaling assuming squared tiles.
+    // 25 is the size in pixels of the characters and was adjusted manually to get a comfortable size for the characters
+    float scale = 25.f / texture.getSize().x;
+    sprite_texture.setScale(scale, scale);
+    
+    sprite_texture.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+    sprite_texture.setPosition(position);
 
 }
 
@@ -220,12 +234,19 @@ void Character::setPath(const std::vector<sf::Vector2i>& newPath, float tileSize
     currentTarget = 0;  // Resets currentTarget that iterates along the path in update(float deltaTime)
 }
 
-// currently called by main 
+// Called by TileMap.draw(). 
 void Character::draw(sf::RenderWindow& window) {
     // There could be a VFX related position that follows the actuall position depending on the distance between the two and show this one
     // this would avoid sharp turns.
-    sprite.setPosition(position);
-    window.draw(sprite);
+
+    /// Testing visuals ///
+    // sprite.setPosition(position);
+    // window.draw(sprite);
+    /// Testing visuals ///
+    
+    sprite_texture.setPosition(position);
+    window.draw(sprite_texture);
+
 }
 
 sf::Vector2f Character::getPosition() const {
@@ -324,7 +345,15 @@ void Character::CalculateColors(int r, int g, int b)
     
 
     sf::Color result_color(base_color.r * status_color.r / 255, base_color.g * status_color.g / 255, base_color.b * status_color.b / 255);
-    sprite.setFillColor(result_color);
+    
+    /// Testing visuals ///
+    // sprite.setFillColor(result_color);
+    /// Testing visuals ///
+
+    // sprite_texture.setColor(result_color);
+    // Doesn't previously multiply by a base color because the sprites' textures are already colored.
+    sprite_texture.setColor(status_color);
+
     // std::cout << "base_color = (" << (int) base_color.r << ", " << (int) base_color.g << ", " << (int) base_color.b << ")" << std::endl;
     // std::cout << "result_color = (" << (int) result_color.r << ", " << (int) result_color.g << ", " << (int) result_color.b << ")" << std::endl;
 

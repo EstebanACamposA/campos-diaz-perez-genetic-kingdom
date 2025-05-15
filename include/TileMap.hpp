@@ -17,7 +17,7 @@
 class Character; // forward declaration instead of #include.
 class TileMap {
 public:
-    TileMap(int rows, int cols, int tileSize, int wave_lenght);
+    TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&tile_map)[30][30]);
     void draw(sf::RenderWindow& window);
     void setObstacle(int row, int col, bool isObstacle);
     void update(float deltaTime);
@@ -46,6 +46,10 @@ public:
     // In pixels.
     sf::Vector2i last_succesful_tile_click;
     void clickEvents(sf::Vector2i click_coords);
+
+    // Building tilemap from an int[][]
+    void setTiles(const int (&tile_map)[30][30]);
+
 
 
 private:
@@ -110,6 +114,14 @@ private:
     double mutation_chance;
     int total_mutations;
     
+    // SFML Texture
+    sf::Texture tower_textures[3];
+    sf::Texture enemy_textures[4];
+
+    sf::Texture tile_textures[3];
+    std::vector<sf::Sprite> textured_tiles; // This vector is used for drawing the tiles.
+    sf::Sprite sprite_texture_aux;
+
 
 
     // // Calculates the distance between two characters.

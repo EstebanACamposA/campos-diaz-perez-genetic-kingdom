@@ -22,7 +22,7 @@ public:
     // std::shared_ptr<Character> target_character;
     float tileSize;
     // Basics and movement:
-    Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float tile_size);
+    Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float tile_size, const sf::Texture& texture);
 
     // {0,1,2} -> {pierce, magic, siege}
     int tower_type;
@@ -44,10 +44,11 @@ public:
     float projectile_speed;
 
 private:
-    // SFML and movement:
-    sf::CircleShape sprite;
-    // std::vector<sf::Vector2f> path;
-
+    /// Testing visuals ///
+    // // SFML and movement:
+    // sf::CircleShape sprite;
+    // // std::vector<sf::Vector2f> path;
+    /// Testing visuals ///
 
     // period between shots in frames.
     int period;
@@ -58,6 +59,12 @@ private:
     sf::Vector2f position;
     // float closest_distance_to_target;
 
+    sf::Color tower_colors[3];
+
+    // SFML Texture
+    // sf::Texture texture;
+    sf::Sprite sprite_texture;
+    sf::Color upgrade_color;
 
 
 

@@ -3,25 +3,114 @@
 
 #include <cmath>
 
-TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght) 
+TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&tile_map)[30][30]) 
     : rows(rows), cols(cols), tileSize(tileSize), wave_lenght(wave_lenght) {
     // grid is a 2D vector of nodes.
     // Creates a grid of uninitialized nodes
     grid.resize(rows, std::vector<Node>(cols));
+
+    // SFML Texture
+    // sf::Texture tile_textures[3];
+    if (!tile_textures[0].loadFromFile("W3_sprites/Map/Nightelf-inventory-slotfiller.png")) //Walkable Unbuildable
+    {
+        std::cout << "Error at loading tile texture 0" << std::endl;
+    }
+    if (!tile_textures[1].loadFromFile("W3_sprites/Map/Undead-inventory-slotfiller.png"))   //Unwalkable Buildable
+    {
+        std::cout << "Error at loading tile texture 1" << std::endl;
+    }
+    if (!tile_textures[2].loadFromFile("W3_sprites/Map/Orc-inventory-slotfiller.png"))  //Walkable Buildable
+    {
+        std::cout << "Error at loading tile texture 2" << std::endl;
+    }
+
+
+    // Creates a sprite for a tile before the double for cycle.
+    // In the double for, adds a copy of the sprite for each tile in the map to std::vector<sf::Sprite> textured_tiles. Changes the position of each one
+    // Tiles should then be set to values according to the tile_map through setTiles(const int (&tile_map)[30][30]).
+    // sf::Sprite textured_tile;
+    // textured_tile.setTexture(tile_textures[0]);
+    // // Scaling assuming squared tiles.
+    // float scale = tileSize / tile_textures[0].getSize().x;
+    // textured_tile.setScale(scale, scale);
+    
+    // textured_tile.setOrigin(tile_textures[0].getSize().x / 2, tile_textures[0].getSize().y / 2);
+
     // Assigns the nodes
     // node struct attributes {int row, col; int gCost = 0, hCost = 0, fCost = 0; bool isObstacle = false; Node* parent}
-    for (int y = 0; y < rows; ++y) {
-        for (int x = 0; x < cols; ++x) {
-            grid[y][x] = {y, x, 0, 0, 0, false, false, nullptr};
+    for (int x = 0; x < rows; ++x) {
+        for (int y = 0; y < cols; ++y) {
+            grid[x][y] = {x, y, 0, 0, 0, false, false, nullptr};
 
+            /// Testing visuals ///
             // Creates white sf::RectangleShape tiles and stores them in the tiles (1D) vector. This 1D vector is used similar to a matrix.
-            sf::RectangleShape tile(sf::Vector2f(tileSize - 1, tileSize - 1));
-            tile.setPosition(x * tileSize, y * tileSize);
-            tile.setFillColor(sf::Color::White);
-            tile.setOutlineColor(sf::Color::Black);
-            tile.setOutlineThickness(1.f);
-            tiles.push_back(tile);
+            // sf::RectangleShape tile(sf::Vector2f(tileSize - 1, tileSize - 1));
+            // tile.setPosition(x * tileSize, y * tileSize);
+            // tile.setFillColor(sf::Color::White);
+            // tile.setOutlineColor(sf::Color::Black);
+            // tile.setOutlineThickness(1.f);
+            // tiles.push_back(tile);
+            /// Testing visuals ///
+
+
+
+            if (tile_map[x][y] == 0)
+            {
+                grid[x][y].isObstacle = false;
+                grid[x][y].isBuildable = false;
+
+                
+                sf::Sprite textured_tile;
+                textured_tile.setTexture(tile_textures[0]);
+                // Scaling assuming squared tiles.
+                float scale = (float)tileSize / tile_textures[0].getSize().x;
+                textured_tile.setScale(scale, scale);
+                
+                // textured_tile.setOrigin(tile_textures[0].getSize().x / 2, tile_textures[0].getSize().y / 2);
+                // textured_tile.setPosition(x * tileSize, y * tileSize);
+                textured_tile.setPosition(y * tileSize, x * tileSize);
+                textured_tiles.push_back(textured_tile);
+            
+            }
+
+            if (tile_map[x][y] == 1)
+            {
+                grid[x][y].isObstacle = true;
+                grid[x][y].isBuildable = true;
+
+                
+                sf::Sprite textured_tile;
+                textured_tile.setTexture(tile_textures[1]);
+                // Scaling assuming squared tiles.
+                float scale = (float)tileSize / tile_textures[1].getSize().x;
+                textured_tile.setScale(scale, scale);
+                
+                // textured_tile.setOrigin(tile_textures[1].getSize().x / 2, tile_textures[0].getSize().y / 2);
+                textured_tile.setPosition(y * tileSize, x * tileSize);
+                textured_tiles.push_back(textured_tile);
+            
+            }
+
+            if (tile_map[x][y] == 2)
+            {
+                grid[x][y].isObstacle = false;
+                grid[x][y].isBuildable = true;
+
+                
+                sf::Sprite textured_tile;
+                textured_tile.setTexture(tile_textures[2]);
+                // Scaling assuming squared tiles.
+                float scale = (float)tileSize / tile_textures[2].getSize().x;
+                textured_tile.setScale(scale, scale);
+                
+                // textured_tile.setOrigin(tile_textures[2].getSize().x / 2, tile_textures[0].getSize().y / 2);
+                textured_tile.setPosition(y * tileSize, x * tileSize);
+                textured_tiles.push_back(textured_tile);
+            
+            }
+
         }
+        
     }
 
     // Matches the number of rows of enemy_species with the number of species, 4.
@@ -108,10 +197,44 @@ TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght)
     std::cout << "after mutation_chance = 0.5; mutation_chance = " << mutation_chance << std::endl;
     total_mutations = 0;
 
+    // SFML Texture
+    // sf::Texture tower_textures[3];
+    if (!tower_textures[0].loadFromFile("W3_sprites/Towers/BTNGuardTower.png"))
+    {
+        std::cout << "Error at loading tower texture 0" << std::endl;
+    }
+    if (!tower_textures[1].loadFromFile("W3_sprites/Towers/BTNHumanArcaneTower.png"))
+    {
+        std::cout << "Error at loading tower texture 1" << std::endl;
+    }
+    if (!tower_textures[2].loadFromFile("W3_sprites/Towers/BTNCannonTower.png"))
+    {
+        std::cout << "Error at loading tower texture 2" << std::endl;
+    }
+    // sf::Texture enemy_textures[3];
+    if (!enemy_textures[0].loadFromFile("W3_sprites/Units/BTNGrunt.png"))
+    {
+        std::cout << "Error at loading enemy texture 0" << std::endl;
+    }
+    if (!enemy_textures[1].loadFromFile("W3_sprites/Units/BTNArcher.png"))
+    {
+        std::cout << "Error at loading enemy texture 1" << std::endl;
+    }
+    if (!enemy_textures[2].loadFromFile("W3_sprites/Units/BTNHarpy.png"))
+    {
+        std::cout << "Error at loading enemy texture 2" << std::endl;
+    }
+    if (!enemy_textures[3].loadFromFile("W3_sprites/Units/BTNBandit.png"))
+    {
+        std::cout << "Error at loading enemy texture 3" << std::endl;
+    }
+
+
+
 }
 
 
-
+// Testing function
 // Acceses grid and tiles at (row,col) and assigns isObstacle. White and free or Red and obstacle.
 // Makes all obstacles buildable.
 void TileMap::setObstacle(int row, int col, bool isObstacle) {
@@ -121,6 +244,37 @@ void TileMap::setObstacle(int row, int col, bool isObstacle) {
         tiles[row * cols + col].setFillColor(isObstacle ? sf::Color::Red : sf::Color::White);
     }
 }
+
+// Sets both the visuals and (walkable, buidable) properties of the tiles.
+// Map is fixed to be 30x30.
+void TileMap::setTiles(const int (&tile_map)[30][30])
+{
+    for (int i = 0; i < 30; ++i) {
+        for (int j = 0; j < 30; ++j) {
+            if (tile_map[i][j] == 0) {
+                grid[i][j].isObstacle = false;
+                grid[i][j].isBuildable = false;
+                textured_tiles[i * cols + j].setTexture(tile_textures[0]);
+                // std::cout << "setTiles of type 0 at (i,j) = (" << i << ", " << j << ")" << std::endl;
+            }
+            if (tile_map[i][j] == 1) {
+                grid[i][j].isObstacle = true;
+                grid[i][j].isBuildable = true;
+                textured_tiles[i * cols + j].setTexture(tile_textures[1]);
+                // std::cout << "setTiles of type 1 at (i,j) = (" << i << ", " << j << ")" << std::endl;
+            }
+            if (tile_map[i][j] == 2) {
+                grid[i][j].isObstacle = false;
+                grid[i][j].isBuildable = true;
+                textured_tiles[i * cols + j].setTexture(tile_textures[2]);
+                // std::cout << "setTiles of type 2 at (i,j) = (" << i << ", " << j << ")" << std::endl;
+            }
+        }
+        
+    }
+
+}
+
 
 std::vector<sf::Vector2i> TileMap::findPath(sf::Vector2i start, sf::Vector2i end) {
     std::vector<sf::Vector2i> path;
@@ -213,10 +367,29 @@ std::vector<TileMap::Node*> TileMap::getNeighbors(Node& node) {
 
 // Draws all the tiles, characters, projectiles, towers, and buttons, respectively.
 void TileMap::draw(sf::RenderWindow& window) {
+    /// Testing visuals ///
     // Tiles
-    for (const auto& tile : tiles) {
-        window.draw(tile);
+    // for (const auto& tile : tiles) {
+    //     window.draw(tile);
+    // }
+    /// Testing visuals ///
+
+    // Textured Tiles
+    for (size_t i = 0; i < textured_tiles.size(); i++)
+    {
+        window.draw(textured_tiles[i]);
+
+        // // Check if textured_tiles[i] has a texture.
+        // if (textured_tiles[i].getTexture() == nullptr)
+        // {
+        //     std::cout << "Sprite has no texture!" << std::endl;
+        // }
+        // sf::Vector2u texSize = textured_tiles[i].getTexture()->getSize();
+        // std::cout << "Texture size (tile): " << texSize.x << "x" << texSize.y << std::endl;
+
     }
+    
+
     // // Characters.
     // for (size_t i = 0; i < characters.size(); i++)
     // {
@@ -659,7 +832,7 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
                 // and adds half a tile to the coordinate. Does this for both coordinates.
                 sf::Vector2f startPosition(last_succesful_tile_click.x - last_succesful_tile_click.x%(tileSize) + (tileSize/2),
                 last_succesful_tile_click.y - last_succesful_tile_click.y%(tileSize) + (tileSize/2));
-                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 0, tower_levels[0], tileSize);
+                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 0, tower_levels[0], tileSize, tower_textures[0]);
                 towers.push_back(tower);
                 return;
 
@@ -671,7 +844,7 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
                 // Builds a magic tower.
                 sf::Vector2f startPosition(last_succesful_tile_click.x - last_succesful_tile_click.x%(tileSize) + (tileSize/2),
                 last_succesful_tile_click.y - last_succesful_tile_click.y%(tileSize) + (tileSize/2));
-                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 1, tower_levels[1], tileSize);
+                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 1, tower_levels[1], tileSize, tower_textures[1]);
                 towers.push_back(tower);
                 return;
 
@@ -683,7 +856,7 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
                 // Builds a siege tower.
                 sf::Vector2f startPosition(last_succesful_tile_click.x - last_succesful_tile_click.x%(tileSize) + (tileSize/2),
                 last_succesful_tile_click.y - last_succesful_tile_click.y%(tileSize) + (tileSize/2));
-                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 2, tower_levels[2], tileSize);
+                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 2, tower_levels[2], tileSize, tower_textures[2]);
                 towers.push_back(tower);
                 return;
 
@@ -938,7 +1111,7 @@ void TileMap::SpawnNextEnemy()
     total_mutations += current_best.MutateStats(mutation_chance);
     
     int spawn_location_offset = current_round_spawned_enemies%4;
-    auto character = std::make_shared<Character>(sf::Vector2f(15 + 30*spawn_location_offset, 15), current_best, 0); // Uses an Individual to set the Character's stats.
+    auto character = std::make_shared<Character>(sf::Vector2f(15 + 30*spawn_location_offset, 15), current_best, current_species, enemy_textures[current_species]); // Uses an Individual to set the Character's stats.
     // Adds a character to the current species.
     // This moves the spawned characters to the bottom right corner of the map.
     addCharacter(character, current_species);
