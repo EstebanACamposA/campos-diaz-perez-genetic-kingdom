@@ -237,8 +237,8 @@ int main() {
             map.AddWave(genWave());
             new_wave_added = true;
             // counter60 = 0;
-            global_speed_multiplier ++;
-            window.setFramerateLimit(60*global_speed_multiplier);
+            // global_speed_multiplier ++;
+            // window.setFramerateLimit(60*global_speed_multiplier);
         }
         
 

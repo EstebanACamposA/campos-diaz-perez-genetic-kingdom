@@ -87,8 +87,8 @@ void Individual::CalculateFitness(float completed_path, float remaining_health)
     // Actual fitness function.
     float calc_fitness = completed_path/(1 - remaining_health/2);  //remaining_health = health/max_health. Same for the completed path.
     this->fitness = calc_fitness;
-    std::cout << "CalculateFitness(float completed_path, float remaining_health): completed_path = " << completed_path << "; remaining_health = " << remaining_health;    
-    std::cout << "--> calc_fitness = " << calc_fitness << std::endl;
+    // std::cout << "CalculateFitness(float completed_path, float remaining_health): completed_path = " << completed_path << "; remaining_health = " << remaining_health;    
+    // std::cout << "--> calc_fitness = " << calc_fitness << std::endl;
 };
 
 // Testing only function.
@@ -331,6 +331,7 @@ void Genetics::GetBest5Individuals(const std::vector<std::vector<int>>& best_fit
     {
         for (size_t j = 0; j < best_fits_ids[i].size(); j++)
         {
+            // std::cout << "fitness added to best individuals matrix: " << species[i][best_fits_ids[i][j]].fitness << std::endl;
             best_individuals_matrix[i].push_back(species[i][best_fits_ids[i][j]]);
         }
     }
@@ -442,7 +443,8 @@ std::vector<float> Genetics::GetBestFits()
     {
         if (best_individuals_matrix[i].size() > 0)
         {
-            best_fits_per_species.push_back(best_individuals_matrix[i][1].fitness);
+            // std::cout << "best fitness found = " << best_individuals_matrix[i][0].fitness << " of species: " << i << std::endl;
+            best_fits_per_species.push_back(best_individuals_matrix[i][0].fitness);
         }
         else
         {

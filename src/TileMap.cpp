@@ -3,6 +3,9 @@
 
 #include <cmath>
 
+#include <sstream>
+#include <iomanip>
+
 TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&tile_map)[30][30]) 
     : rows(rows), cols(cols), tileSize(tileSize), wave_lenght(wave_lenght) {
     // grid is a 2D vector of nodes.
@@ -325,25 +328,23 @@ TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&
     generations_elapsed = 0;
 
 
-
+    int labels_vertical_offset = -35;
     // sf::Text generations_elapsed_label;
     generations_elapsed_label.setFont(font);                // set the font
     
     generations_elapsed_label.setCharacterSize(18);         // in pixels
     generations_elapsed_label.setFillColor(sf::Color(255, 255, 255));
-    // Center the text
     
-    generations_elapsed_label.setPosition(1050, 500);
+    generations_elapsed_label.setPosition(1050, 500 + labels_vertical_offset + 15);
     
     // sf::Text current_round_cleared_enemies_label;
     current_round_cleared_enemies_label.setFont(font);                // set the font
     
     current_round_cleared_enemies_label.setCharacterSize(18);         // in pixels
     current_round_cleared_enemies_label.setFillColor(sf::Color(255, 255, 255));
-    // Center the text
     
 
-    current_round_cleared_enemies_label.setPosition(1050, 550);
+    current_round_cleared_enemies_label.setPosition(1050, 550 + labels_vertical_offset);
 
 
 
@@ -352,33 +353,29 @@ TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&
     
     orc_best_fitness_label.setCharacterSize(18);         // in pixels
     orc_best_fitness_label.setFillColor(sf::Color(255, 255, 255));
-    // Center the text
     
-    orc_best_fitness_label.setPosition(1050, 600);
+    orc_best_fitness_label.setPosition(1050, 600 + labels_vertical_offset);
     // sf::Text ne_best_fitness_label;
     ne_best_fitness_label.setFont(font);                // set the font
     
     ne_best_fitness_label.setCharacterSize(18);         // in pixels
     ne_best_fitness_label.setFillColor(sf::Color(255, 255, 255));
-    // Center the text
     
-    ne_best_fitness_label.setPosition(1050, 650);
+    ne_best_fitness_label.setPosition(1050, 650 + labels_vertical_offset);
     // sf::Text harpy_best_fitness_label;
     harpy_best_fitness_label.setFont(font);                // set the font
     
     harpy_best_fitness_label.setCharacterSize(18);         // in pixels
     harpy_best_fitness_label.setFillColor(sf::Color(255, 255, 255));
-    // Center the text
     
-    harpy_best_fitness_label.setPosition(1050, 700);
+    harpy_best_fitness_label.setPosition(1050, 700 + labels_vertical_offset);
     // sf::Text merc_best_fitness_label;
     merc_best_fitness_label.setFont(font);                // set the font
     
     merc_best_fitness_label.setCharacterSize(18);         // in pixels
     merc_best_fitness_label.setFillColor(sf::Color(255, 255, 255));
-    // Center the text
     
-    merc_best_fitness_label.setPosition(1050, 750);
+    merc_best_fitness_label.setPosition(1050, 750 + labels_vertical_offset);
 
 
 
@@ -387,9 +384,8 @@ TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&
     
     tower_levels_label.setCharacterSize(18);         // in pixels
     tower_levels_label.setFillColor(sf::Color(255, 255, 255));
-    // Center the text
     
-    tower_levels_label.setPosition(1050, 800);
+    tower_levels_label.setPosition(1050, 825 + labels_vertical_offset);
 
 
 
@@ -398,9 +394,24 @@ TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&
     
     mutations_chance_and_total_label.setCharacterSize(18);         // in pixels
     mutations_chance_and_total_label.setFillColor(sf::Color(255, 255, 255));
-    // Center the text
     
-    mutations_chance_and_total_label.setPosition(1050, 750);
+    mutations_chance_and_total_label.setPosition(1050, 875 + labels_vertical_offset + 40);
+
+    // sf::Text total_money_label;
+    total_money_label.setFont(font);                // set the font
+    
+    total_money_label.setCharacterSize(18);         // in pixels
+    total_money_label.setFillColor(sf::Color(255, 240, 128));
+    
+    total_money_label.setPosition(1050, 60);
+
+    // sf::Text upgrade_and_build_costs_label;
+    upgrade_and_build_costs_label.setFont(font);                // set the font
+    
+    upgrade_and_build_costs_label.setCharacterSize(18);         // in pixels
+    upgrade_and_build_costs_label.setFillColor(sf::Color(255, 240, 128));
+    
+    upgrade_and_build_costs_label.setPosition(30*15-15, 30*31-5);
 
     
 
@@ -742,7 +753,7 @@ void TileMap::update(float deltaTime) {
                 {
                     money += money_per_species[i];
                     sf::Vector2f cleared_enemy_position = (*it)->getPosition();
-                    std::cout << "LOGIC TO SPAWN A TEXT BOX WITH THE MONEY EARNED AAAAAAA" << std::endl;
+                    // Spawn a text box with the money earned.
                     CreateMoneyLabel(cleared_enemy_position, money_per_species[i]);
                 }
                 // else
@@ -1156,16 +1167,24 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
                 int current_tower_type = towers[clicked_tower_id]->tower_type;
                 if (tower_levels[current_tower_type] < 2)   // This is 2 because a tower can only be upgraded twice.
                 {
-                    // Upgrades towers if user clicks within the button and the type isn't fully upgraded yet.
-                    for (size_t i = 0; i < towers.size(); i++)
+                    if ((current_tower_type = 0 && money > 300) || (current_tower_type = 1 && money > 450) || (current_tower_type = 3 && money > 600))
                     {
-                        if (towers[i]->tower_type == current_tower_type)
+                        // Upgrades towers if user clicks within the button and the type isn't fully upgraded yet.
+                        for (size_t i = 0; i < towers.size(); i++)
                         {
-                            towers[i]->upgrade();
-                            std::cout << "upgraded tower of id" << i << std::endl;
+                            if (towers[i]->tower_type == current_tower_type)
+                            {
+                                towers[i]->upgrade();
+                                std::cout << "upgraded tower of id" << i << std::endl;
+                            }
                         }
+                        tower_levels[current_tower_type] ++;
                     }
-                    tower_levels[current_tower_type] ++;
+                    else
+                    {
+                        std::cout << "Insuficient money for tower upgrade." << std::endl;
+                    }
+                    
 
                 }
                 else
@@ -1328,11 +1347,11 @@ void TileMap::AOEAttack(sf::Vector2f position, bool apply_shock_shell_effect, fl
             if (enemy_distance_from_center < tileSize) // If the enemy is within a 1 tile radius circle 
             {
                 enemy_species[i][j]->siege_damage += damage;
-                if (apply_shock_shell_effect)
+                if (apply_shock_shell_effect && i != 2) //  && i != 2 to avoid affecting harpies that are immune.
                 {
                     enemy_species[i][j]->shock_shell_timer = 60;
                 }
-                std::cout << "Explosion affected entity (" << i << ", " << j << ")" << std::endl;
+                // std::cout << "Explosion affected entity (" << i << ", " << j << ")" << std::endl;
             }
             
         }
@@ -1445,7 +1464,7 @@ void TileMap::DrawInfoPanel(sf::RenderWindow& window)
     
 
     // sf::Text generations_elapsed_label;
-    generations_elapsed_label.setString("Generaciones trancurridas: " + std::to_string(generations_elapsed));    // set the string
+    generations_elapsed_label.setString("Generaciones\ntrancurridas: " + std::to_string(generations_elapsed));    // set the string
     // Center the text
     sf::FloatRect textRect = generations_elapsed_label.getLocalBounds();
     generations_elapsed_label.setOrigin(
@@ -1478,7 +1497,7 @@ void TileMap::DrawInfoPanel(sf::RenderWindow& window)
         }
     }
     // sf::Text orc_best_fitness_label;
-    orc_best_fitness_label.setString("Mejor fitness Orcos: " + best_fits_per_species_strings[0]);    // set the string
+    orc_best_fitness_label.setString("Mejor fitness\n\tOrcos: " + best_fits_per_species_strings[0]);    // set the string
     // Center the text
     textRect = orc_best_fitness_label.getLocalBounds();
     orc_best_fitness_label.setOrigin(
@@ -1486,7 +1505,7 @@ void TileMap::DrawInfoPanel(sf::RenderWindow& window)
         textRect.top + textRect.height / 2.0f);
     
     // sf::Text ne_best_fitness_label;
-    ne_best_fitness_label.setString("Mejor fitness Elfos: " + best_fits_per_species_strings[1]);    // set the string
+    ne_best_fitness_label.setString("Mejor fitness\n\tElfos: " + best_fits_per_species_strings[1]);    // set the string
     // Center the text
     textRect = ne_best_fitness_label.getLocalBounds();
     ne_best_fitness_label.setOrigin(
@@ -1494,7 +1513,7 @@ void TileMap::DrawInfoPanel(sf::RenderWindow& window)
         textRect.top + textRect.height / 2.0f);
     
     // sf::Text harpy_best_fitness_label;
-    harpy_best_fitness_label.setString("Mejor fitness Harpias: " + best_fits_per_species_strings[2]);    // set the string
+    harpy_best_fitness_label.setString("Mejor fitness\n\tHarpias: " + best_fits_per_species_strings[2]);    // set the string
     // Center the text
     textRect = harpy_best_fitness_label.getLocalBounds();
     harpy_best_fitness_label.setOrigin(
@@ -1502,7 +1521,7 @@ void TileMap::DrawInfoPanel(sf::RenderWindow& window)
         textRect.top + textRect.height / 2.0f);
     
     // sf::Text merc_best_fitness_label;
-    merc_best_fitness_label.setString("Mejor fitness Mercenarios: " + best_fits_per_species_strings[3]);    // set the string
+    merc_best_fitness_label.setString("Mejor fitness\n\tMercenarios: " + best_fits_per_species_strings[3]);    // set the string
     // Center the text
     textRect = merc_best_fitness_label.getLocalBounds();
     merc_best_fitness_label.setOrigin(
@@ -1513,9 +1532,9 @@ void TileMap::DrawInfoPanel(sf::RenderWindow& window)
 
 
     // sf::Text tower_levels_label;
-    tower_levels_label.setString("Nivel de torres: Arqueros, " + std::to_string(tower_levels[0])
-        + "; Magos, " + std::to_string(tower_levels[1])
-        + "; Artilleros, " + std::to_string(tower_levels[2]));
+    tower_levels_label.setString("Nivel de torres:\nArqueros,   " + std::to_string(1 + tower_levels[0])
+        + ";\nMagos,      " + std::to_string(1 + tower_levels[1])
+        + ";\nArtilleros, " + std::to_string(1 + tower_levels[2]));
     // Center the text
     textRect = tower_levels_label.getLocalBounds();
     tower_levels_label.setOrigin(
@@ -1526,8 +1545,13 @@ void TileMap::DrawInfoPanel(sf::RenderWindow& window)
 
 
     // sf::Text mutations_chance_and_total_label;
-    mutations_chance_and_total_label.setString("Probabilidad de mutaciones: " + std::to_string(mutation_chance)
-        + "; cantidad de mutaciones: " + std::to_string(total_mutations));
+    // Get only 2 decimal places:
+    std::ostringstream ss;
+    ss << std::fixed << std::setprecision(2) << mutation_chance;
+    std::string mutation_chance_two_decimal_places = ss.str();
+    // Label:
+    mutations_chance_and_total_label.setString("Mutaciones:\n\tProbabilidad: " + mutation_chance_two_decimal_places
+        + ";\n\tCantidad: " + std::to_string(total_mutations));
     // Center the text
     textRect = mutations_chance_and_total_label.getLocalBounds();
     mutations_chance_and_total_label.setOrigin(
@@ -1535,6 +1559,33 @@ void TileMap::DrawInfoPanel(sf::RenderWindow& window)
         textRect.top + textRect.height / 2.0f);
 
 
+
+
+    // sf::Text total_money_label;
+    total_money_label.setString("Oro: " + std::to_string(money));    // set the string
+    // Center the text
+    textRect = total_money_label.getLocalBounds();
+    total_money_label.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+    
+    // sf::Text upgrade_and_build_costs_label;
+    upgrade_and_build_costs_label.setString("Costos:\tConstruccion:\tArqueros: " + std::to_string(150)
+        + "\tMagos: " + std::to_string(200)
+        + "\tArtilleros: " + std::to_string(250)
+        + "\n       \tMejoras:     \tArqueros: " + std::to_string(300)
+        + "\tMagos: " + std::to_string(400)
+        + "\tArtilleros: " + std::to_string(500));    // set the string
+    // Center the text
+    textRect = upgrade_and_build_costs_label.getLocalBounds();
+    upgrade_and_build_costs_label.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+    
+
+
+
+        
     window.draw(generations_elapsed_label);
     window.draw(current_round_cleared_enemies_label);
 
@@ -1545,5 +1596,8 @@ void TileMap::DrawInfoPanel(sf::RenderWindow& window)
     
     window.draw(tower_levels_label);
     window.draw(mutations_chance_and_total_label);
+
+    window.draw(total_money_label);
+    window.draw(upgrade_and_build_costs_label);
 
 }

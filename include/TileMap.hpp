@@ -146,8 +146,9 @@ private:
     
     sf::Text tower_levels_label;
     sf::Text mutations_chance_and_total_label;
-
-
+    // Money label
+    sf::Text total_money_label;
+    sf::Text upgrade_and_build_costs_label;
 
     // // Calculates the distance between two characters.
     // float calculateDistanceInPixels()
