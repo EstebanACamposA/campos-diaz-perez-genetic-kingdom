@@ -87,6 +87,8 @@ void Individual::CalculateFitness(float completed_path, float remaining_health)
     // Actual fitness function.
     float calc_fitness = completed_path/(1 - remaining_health/2);  //remaining_health = health/max_health. Same for the completed path.
     this->fitness = calc_fitness;
+    std::cout << "CalculateFitness(float completed_path, float remaining_health): completed_path = " << completed_path << "; remaining_health = " << remaining_health;    
+    std::cout << "--> calc_fitness = " << calc_fitness << std::endl;
 };
 
 // Testing only function.
@@ -357,7 +359,8 @@ void Genetics::ShowBestIndividuals()
     for (size_t i = 0; i < best_individuals.size(); i++)
     {
         // std::cout << "Name:\t" << name << "\nScore:\t" << score << "\n" << std::endl;
-        std::cout << "Race:\t" << i << "\tFitness:\t" << best_individuals[i].fitness << "\n"
+        std::cout << "ShowBestIndividuals(): " << std::endl;
+        std::cout << "Race:\t" << i << "\tFitness:\t" << "(average fitness not shown)" << "\n"
         << "Stats:\t"
         << best_individuals[i].max_health << ",\t" 
         << best_individuals[i].speed_multiplier << ",\t" 
@@ -387,7 +390,7 @@ void Genetics::AddIndividual(int species, Individual enemy)
 {
     // ClearWave() must be run before starting a new one so that there aren't different wave enemies in species 2d vector.
     this->species[species].push_back(enemy);
-    std::cout << "AddIndividual of species " << species << std::endl;
+    // std::cout << "AddIndividual of species " << species << std::endl;
 
 }
 
@@ -425,6 +428,28 @@ void Genetics::ClearWave()
     {
         species[i].clear();
     }
+}
+
+std::vector<float> Genetics::GetBestFits()
+{
+    // Calculates matrix best_fits_ids with the best 5 Individuals' ids for each species.
+    std::vector<std::vector<int>> best_fits_ids = CalculateBest5FitnessIDs();
+
+    GetBest5Individuals(best_fits_ids);
+   
+    std::vector<float> best_fits_per_species;
+    for (size_t i = 0; i < 4; i++)
+    {
+        if (best_individuals_matrix[i].size() > 0)
+        {
+            best_fits_per_species.push_back(best_individuals_matrix[i][1].fitness);
+        }
+        else
+        {
+            best_fits_per_species.push_back(-1.f);
+        }       
+    }
+    return best_fits_per_species;
 }
 
 

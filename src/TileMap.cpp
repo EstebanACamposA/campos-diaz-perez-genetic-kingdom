@@ -11,17 +11,32 @@ TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&
 
     // SFML Texture
     // sf::Texture tile_textures[3];
-    if (!tile_textures[0].loadFromFile("W3_sprites/Map/Nightelf-inventory-slotfiller.png")) //Walkable Unbuildable
+
+    /// Old textures ///
+    // "W3_sprites/Map/Nightelf-inventory-slotfiller.png"
+    // "W3_sprites/Map/Undead-inventory-slotfiller.png"
+    // "W3_sprites/Map/Orc-inventory-slotfiller.png"
+    /// Old textures ///
+
+    if (!tile_textures[0].loadFromFile("textures/2pOutLine_medievalTile_57.png")) //Walkable Unbuildable
     {
         std::cout << "Error at loading tile texture 0" << std::endl;
     }
-    if (!tile_textures[1].loadFromFile("W3_sprites/Map/Undead-inventory-slotfiller.png"))   //Unwalkable Buildable
+    if (!tile_textures[1].loadFromFile("textures/2pOutLine_medievalTile_13.png"))   //Unwalkable Buildable
     {
         std::cout << "Error at loading tile texture 1" << std::endl;
     }
-    if (!tile_textures[2].loadFromFile("W3_sprites/Map/Orc-inventory-slotfiller.png"))  //Walkable Buildable
+    if (!tile_textures[2].loadFromFile("textures/2pOutLine_medievalTile_01.png"))  //Walkable Buildable
     {
         std::cout << "Error at loading tile texture 2" << std::endl;
+    }
+    if (!tile_textures[3].loadFromFile("textures/medievalTile_47.png"))  // Background
+    {
+        std::cout << "Error at loading tile texture 3" << std::endl;
+    }
+    if (!tile_textures[4].loadFromFile("textures/medievalTile_46.png"))  // Background
+    {
+        std::cout << "Error at loading tile texture 4" << std::endl;
     }
 
 
@@ -159,21 +174,27 @@ TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&
     // button 1:
     sf::RectangleShape button(sf::Vector2f(7*tileSize - 1, build_button_height - 1));
     button.setPosition(31 * tileSize, build_button_top_anchors[0]);
-    button.setFillColor(sf::Color(225, 225, 255));  // Light Dull Blue.
+    // button.setFillColor(sf::Color(225, 225, 255));  // Light Dull Blue.
+    // button.setFillColor(sf::Color(153, 153, 255));  // More Saturated Blue.
+    button.setFillColor(sf::Color(204, 204, 255));  // Not that more Saturated Blue.
     button.setOutlineColor(sf::Color::Black);
     button.setOutlineThickness(1.5f);
     build_buttons_sprites.push_back(button);
     // button 2:
     // sf::RectangleShape button(sf::Vector2f(7*tileSize - 1, 7*tileSize - 1));
     button.setPosition(31 * tileSize, build_button_top_anchors[1]);
-    button.setFillColor(sf::Color(255, 225, 240));  // Light Dull Magenta.
+    // button.setFillColor(sf::Color(255, 225, 240));  // Light Dull Magenta.
+    // button.setFillColor(sf::Color(255, 102, 179));  // More Saturated Magenta.
+    button.setFillColor(sf::Color(255, 213, 235));  // Not that more Saturated Magenta.
     button.setOutlineColor(sf::Color::Black);
     button.setOutlineThickness(1.5f);
     build_buttons_sprites.push_back(button);
     // button 3:
     // sf::RectangleShape button(sf::Vector2f(7*tileSize - 1, 7*tileSize - 1));
     button.setPosition(31 * tileSize, build_button_top_anchors[2]);
-    button.setFillColor(sf::Color(255, 240, 225));  // Light Dull Orange.
+    // button.setFillColor(sf::Color(255, 240, 225));  // Light Dull Orange.
+    // button.setFillColor(sf::Color(255, 170, 102));  // More Saturated Orange.
+    button.setFillColor(sf::Color(255, 232, 210));  // Not that more Saturated Orange.
     button.setOutlineColor(sf::Color::Black);
     button.setOutlineThickness(1.5f);
     build_buttons_sprites.push_back(button);    
@@ -192,9 +213,6 @@ TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&
     current_round_spawned_enemies = 0;
 
     mutation_chance = 0.5;   // Enemies have 50% chance to mutate all stats.
-    std::cout << "after mutation_chance = 0.5; mutation_chance = " << mutation_chance << std::endl;
-    std::cout << "after mutation_chance = 0.5; mutation_chance = " << mutation_chance << std::endl;
-    std::cout << "after mutation_chance = 0.5; mutation_chance = " << mutation_chance << std::endl;
     total_mutations = 0;
 
     // SFML Texture
@@ -231,7 +249,176 @@ TileMap::TileMap(int rows, int cols, int tileSize, int wave_lenght, const int (&
 
 
 
+    // Draw background tiles.
+    // Adds set background tiles to textured_tiles vector.
+
+    // Draw botom line.
+    for (size_t i = 0; i < 30; i++)
+    {            
+        sf::Sprite textured_tile;
+        textured_tile.setTexture(tile_textures[3 + i%2]);
+        float scale = (float)tileSize / tile_textures[3 + i%2].getSize().x;
+        textured_tile.setScale(scale, scale);
+        textured_tile.setPosition(i * tileSize, 30 * tileSize);
+        textured_tile.setColor(sf::Color(255,255,255,196.f));
+        textured_tiles.push_back(textured_tile);
+        
+        // Adds an additional one just below.
+        textured_tile.setTexture(tile_textures[4 - i%2]);
+        textured_tile.setScale(scale, scale);
+        textured_tile.setPosition(i * tileSize, 31 * tileSize);
+        textured_tile.setColor(sf::Color(255,255,255,196.f));
+        textured_tiles.push_back(textured_tile);
+    }
+    
+
+    // Draw right side.
+    for (size_t i = 30; i < 40; i++)
+    {            
+        for (size_t j = 0; j < 32; j++)
+        {
+            sf::Sprite textured_tile;
+            textured_tile.setTexture(tile_textures[3 + (i+j)%2]);
+            float scale = (float)tileSize / tile_textures[3 + (i+j)%2].getSize().x;
+            textured_tile.setScale(scale, scale);
+            textured_tile.setPosition(i * tileSize, j * tileSize);
+            textured_tile.setColor(sf::Color(255,255,255,196.f));
+            textured_tiles.push_back(textured_tile);
+        }
+    }
+
+    // textured_tiles.pop_back();   // Remove the tile where the goal goes?
+
+    if (!goal_texture.loadFromFile("W3_sprites/Map/BTNTownHall.png"))
+    {
+        std::cout << "Error at loading goal texture" << std::endl;
+    }
+
+    // sf::Sprite textured_tile;
+    goal_sprite.setTexture(goal_texture);
+    float scale = (float)tileSize *2 / goal_texture.getSize().x;
+    goal_sprite.setScale(scale, scale);
+    goal_sprite.setPosition(29 * tileSize, 29 * tileSize);
+    // textured_tiles.push_back(textured_tile);
+    
+
+
+    // Money logic
+    money = 1000;
+    // money_per_species[0] = 67;
+    // money_per_species[1] = 100;
+    // money_per_species[2] = 140;
+    // money_per_species[3] = 140;
+    money_per_species[0] = 7;
+    money_per_species[1] = 10;
+    money_per_species[2] = 14;
+    money_per_species[3] = 14;
+
+    // Money Display
+    money_label_timer = 0;
+
+    if (!font.loadFromFile("Fonts/DejaVuSansMono-Bold.ttf")) {
+        std::cout << "Error at loading font" << std::endl;
+    }
+
+    // Info Panel
+    generations_elapsed = 0;
+
+
+
+    // sf::Text generations_elapsed_label;
+    generations_elapsed_label.setFont(font);                // set the font
+    
+    generations_elapsed_label.setCharacterSize(18);         // in pixels
+    generations_elapsed_label.setFillColor(sf::Color(255, 255, 255));
+    // Center the text
+    
+    generations_elapsed_label.setPosition(1050, 500);
+    
+    // sf::Text current_round_cleared_enemies_label;
+    current_round_cleared_enemies_label.setFont(font);                // set the font
+    
+    current_round_cleared_enemies_label.setCharacterSize(18);         // in pixels
+    current_round_cleared_enemies_label.setFillColor(sf::Color(255, 255, 255));
+    // Center the text
+    
+
+    current_round_cleared_enemies_label.setPosition(1050, 550);
+
+
+
+    // sf::Text orc_best_fitness_label;
+    orc_best_fitness_label.setFont(font);                // set the font
+    
+    orc_best_fitness_label.setCharacterSize(18);         // in pixels
+    orc_best_fitness_label.setFillColor(sf::Color(255, 255, 255));
+    // Center the text
+    
+    orc_best_fitness_label.setPosition(1050, 600);
+    // sf::Text ne_best_fitness_label;
+    ne_best_fitness_label.setFont(font);                // set the font
+    
+    ne_best_fitness_label.setCharacterSize(18);         // in pixels
+    ne_best_fitness_label.setFillColor(sf::Color(255, 255, 255));
+    // Center the text
+    
+    ne_best_fitness_label.setPosition(1050, 650);
+    // sf::Text harpy_best_fitness_label;
+    harpy_best_fitness_label.setFont(font);                // set the font
+    
+    harpy_best_fitness_label.setCharacterSize(18);         // in pixels
+    harpy_best_fitness_label.setFillColor(sf::Color(255, 255, 255));
+    // Center the text
+    
+    harpy_best_fitness_label.setPosition(1050, 700);
+    // sf::Text merc_best_fitness_label;
+    merc_best_fitness_label.setFont(font);                // set the font
+    
+    merc_best_fitness_label.setCharacterSize(18);         // in pixels
+    merc_best_fitness_label.setFillColor(sf::Color(255, 255, 255));
+    // Center the text
+    
+    merc_best_fitness_label.setPosition(1050, 750);
+
+
+
+    // sf::Text tower_levels_label;
+    tower_levels_label.setFont(font);                // set the font
+    
+    tower_levels_label.setCharacterSize(18);         // in pixels
+    tower_levels_label.setFillColor(sf::Color(255, 255, 255));
+    // Center the text
+    
+    tower_levels_label.setPosition(1050, 800);
+
+
+
+    // sf::Text mutations_chance_and_total_label;
+    mutations_chance_and_total_label.setFont(font);                // set the font
+    
+    mutations_chance_and_total_label.setCharacterSize(18);         // in pixels
+    mutations_chance_and_total_label.setFillColor(sf::Color(255, 255, 255));
+    // Center the text
+    
+    mutations_chance_and_total_label.setPosition(1050, 750);
+
+    
+
+
 }
+
+
+
+
+
+
+
+
+    /// End of constructor ///
+
+
+
+
 
 
 // Testing function
@@ -245,6 +432,7 @@ void TileMap::setObstacle(int row, int col, bool isObstacle) {
     }
 }
 
+// Funtionality added to constructor. This can be used to change the map midgame.
 // Sets both the visuals and (walkable, buidable) properties of the tiles.
 // Map is fixed to be 30x30.
 void TileMap::setTiles(const int (&tile_map)[30][30])
@@ -425,6 +613,40 @@ void TileMap::draw(sf::RenderWindow& window) {
     {
         window.draw(upgrade_button_sprite);
     }
+
+    // Goal sprite.
+    window.draw(goal_sprite);
+
+    // Money Display
+    // Erase money_labels after a short time.
+    if (money_labels.size() > 0)
+    {
+        money_label_timer ++;
+        if (money_label_timer >= 30)
+        {
+            money_labels.pop_back();    
+            money_label_timer = 0;
+        }
+    }
+    // Update and draw money labels
+    for (size_t i = 0; i < money_labels.size(); i++)
+    {
+        sf::Vector2f current_label_position = money_labels[i].getPosition();
+        sf::Color current_color = money_labels[i].getFillColor();
+
+        current_label_position.y -= 0.8f;
+        current_color = sf::Color(current_color.r, current_color.g, current_color.b, current_color.a - 5);
+
+        money_labels[i].setPosition(current_label_position);
+        money_labels[i].setFillColor(current_color);
+        
+        window.draw(money_labels[i]);
+        
+    }
+
+    // Info Panel
+    DrawInfoPanel(window);
+    
     
     
     
@@ -509,21 +731,37 @@ void TileMap::update(float deltaTime) {
             // std::cout << "enters for enemy_species[i].size" << std::endl;
             if ((*it)->update(deltaTime))   // The return type of Character::update is std::optional<Individual>. It works as true or false.
             {
-                // Sends genetic data to genetic manager, increases clearedd enemy count for current wave and erases the enemy from the game.
+                // Sends genetic data to genetic manager, increases cleared enemy count for current wave and erases the enemy from the game.
                 Individual individual_from_character = (*it)->CalculateIndividual();
                 genetic_manager.AddIndividual(i, individual_from_character);
                 current_round_cleared_enemies ++;
 
-                std::cout <<  "before enemy_species[" << i << "].size() = " << enemy_species[i].size() << std::endl;
+                // Money logic
+                // If enemy was cleared before reaching the goal (cleared by player).
+                if (!(*it)->goal_reached)
+                {
+                    money += money_per_species[i];
+                    sf::Vector2f cleared_enemy_position = (*it)->getPosition();
+                    std::cout << "LOGIC TO SPAWN A TEXT BOX WITH THE MONEY EARNED AAAAAAA" << std::endl;
+                    CreateMoneyLabel(cleared_enemy_position, money_per_species[i]);
+                }
+                // else
+                // {
+                //     std::cout << "ENEMY NOT KILLED" << std::endl;
+                // }
+                
+                // std::cout <<  "before enemy_species[" << i << "].size() = " << enemy_species[i].size() << std::endl;
                 it = enemy_species[i].erase(it);
-                std::cout << "Erased a Character of species: " << i << std::endl;
-                std::cout <<  "after enemy_species[" << i << "].size() = " << enemy_species[i].size() << std::endl;
+                // std::cout << "Erased a Character of species: " << i << std::endl;
+                // std::cout <<  "after enemy_species[" << i << "].size() = " << enemy_species[i].size() << std::endl;
 
                 // When all the enemies of the current wave have been cleared.
                 if (current_round_cleared_enemies >= wave_lenght)
                 {
                     EndWave();
                 }
+
+
                 
 
             } else
@@ -807,6 +1045,7 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
     // If the build menu is open, clicks outside the build_buttons result in closing the menu and a click on a cartain button results in building a matching tower.
     if (build_buttons && !upgrade_button)
     {
+        std::cout << "money before = " << money << std::endl;
         /*
         button 1:
             y: [,]
@@ -823,43 +1062,71 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
         {
             if (click_coords.y >= build_button_top_anchors[0] && click_coords.y <= build_button_top_anchors[0] + build_button_height)
             {
-                std::cout << "Button 1 clicked" << std::endl;
-                build_buttons = false;
-                // Builds a pierce tower.
-                // Gets a Vector2f to the center of the tile indicated by last_succesful_tile_click.
-                // last_succesful_tile_click corresponds to a tower click because the current state is build_buttons.
-                // Gets the center of the tile by substracting the module 30 of the coordinate from it so that it's placed at the top left corner of the tile (the min values)
-                // and adds half a tile to the coordinate. Does this for both coordinates.
-                sf::Vector2f startPosition(last_succesful_tile_click.x - last_succesful_tile_click.x%(tileSize) + (tileSize/2),
-                last_succesful_tile_click.y - last_succesful_tile_click.y%(tileSize) + (tileSize/2));
-                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 0, tower_levels[0], tileSize, tower_textures[0]);
-                towers.push_back(tower);
-                return;
+                if (money >= 150)
+                {
+                    money -= 150;
 
+                    std::cout << "Button 1 clicked" << std::endl;
+                    build_buttons = false;
+                    // Builds a pierce tower.
+                    // Gets a Vector2f to the center of the tile indicated by last_succesful_tile_click.
+                    // last_succesful_tile_click corresponds to a tower click because the current state is build_buttons.
+                    // Gets the center of the tile by substracting the module 30 of the coordinate from it so that it's placed at the top left corner of the tile (the min values)
+                    // and adds half a tile to the coordinate. Does this for both coordinates.
+                    sf::Vector2f startPosition(last_succesful_tile_click.x - last_succesful_tile_click.x%(tileSize) + (tileSize/2),
+                    last_succesful_tile_click.y - last_succesful_tile_click.y%(tileSize) + (tileSize/2));
+                    std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 0, tower_levels[0], tileSize, tower_textures[0]);
+                    towers.push_back(tower);
+                    return;
+                }
+                else
+                {
+                    std::cout << "Insuficient money for arrow tower." << std::endl;
+                }
+                
             }
             else if (click_coords.y >= build_button_top_anchors[1] && click_coords.y <= build_button_top_anchors[1] + build_button_height)
             {
-                std::cout << "Button 2 clicked" << std::endl;
-                build_buttons = false;
-                // Builds a magic tower.
-                sf::Vector2f startPosition(last_succesful_tile_click.x - last_succesful_tile_click.x%(tileSize) + (tileSize/2),
-                last_succesful_tile_click.y - last_succesful_tile_click.y%(tileSize) + (tileSize/2));
-                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 1, tower_levels[1], tileSize, tower_textures[1]);
-                towers.push_back(tower);
-                return;
+                if (money >= 200)
+                {
+                    money -= 200;
+
+                    std::cout << "Button 2 clicked" << std::endl;
+                    build_buttons = false;
+                    // Builds a magic tower.
+                    sf::Vector2f startPosition(last_succesful_tile_click.x - last_succesful_tile_click.x%(tileSize) + (tileSize/2),
+                    last_succesful_tile_click.y - last_succesful_tile_click.y%(tileSize) + (tileSize/2));
+                    std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 1, tower_levels[1], tileSize, tower_textures[1]);
+                    towers.push_back(tower);
+                    return;
+                }
+                else
+                {
+                    std::cout << "Insuficient money for magic tower." << std::endl;
+                }
 
             }
             else if (click_coords.y >= build_button_top_anchors[2] && click_coords.y <= build_button_top_anchors[2] + build_button_height)
             {
-                std::cout << "Button 3 clicked" << std::endl;
-                build_buttons = false;
-                // Builds a siege tower.
-                sf::Vector2f startPosition(last_succesful_tile_click.x - last_succesful_tile_click.x%(tileSize) + (tileSize/2),
-                last_succesful_tile_click.y - last_succesful_tile_click.y%(tileSize) + (tileSize/2));
-                std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 2, tower_levels[2], tileSize, tower_textures[2]);
-                towers.push_back(tower);
-                return;
+                if (money >= 250)
+                {
+                    money -= 250;
 
+                    std::cout << "Button 3 clicked" << std::endl;
+                    build_buttons = false;
+                    // Builds a siege tower.
+                    sf::Vector2f startPosition(last_succesful_tile_click.x - last_succesful_tile_click.x%(tileSize) + (tileSize/2),
+                    last_succesful_tile_click.y - last_succesful_tile_click.y%(tileSize) + (tileSize/2));
+                    std::shared_ptr<Tower> tower = std::make_shared<Tower>(startPosition, 2, tower_levels[2], tileSize, tower_textures[2]);
+                    towers.push_back(tower);
+                    return;
+    
+                }
+                else
+                {
+                    std::cout << "Insuficient money for magic tower." << std::endl;
+                }
+                
             }
         }
         // Why do this???
@@ -870,7 +1137,7 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
         //     build_buttons = true;
         // }
 
-        // Clicked somewhere else to escape the menu.
+        // Clicked somewhere else to escape the menu or didn't have enough money.
         build_buttons = false;
         return;
     }
@@ -903,7 +1170,7 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
                 }
                 else
                 {
-                    std::cout << "Couldn't upgrade tower of (id = " << clicked_tower_id << ") and (type = " << towers[clicked_tower_id]->tower_type << ") because is at max level." << std::endl;
+                    std::cout << "Couldn't upgrade tower of (id = " << clicked_tower_id << ") and (type = " << towers[clicked_tower_id]->tower_type << ") because it's at max level." << std::endl;
                 }
                 
             }
@@ -1008,32 +1275,32 @@ void TileMap::ShootNearest(sf::Vector2f startPosition, float damage, int tower_t
     switch (tower_type + 3 * power_up_projectile)
     {
     case 0:
-        std::cout << "Arrow projectile" << std::endl;
+        // std::cout << "Arrow projectile" << std::endl;
         // Add an Arrow type object that inherits from projectile to the projectiles vector.
         projectile = std::make_shared<Arrow>(startPosition, target_character, projectile_speed, damage);
         break;
     case 1:
-        std::cout << "Magic projectile" << std::endl;
+        // std::cout << "Magic projectile" << std::endl;
         // Add an Arrow type object that inherits from projectile to the projectiles vector.
         projectile = std::make_shared<MagicOrb>(startPosition, target_character, projectile_speed, damage);
         break;
     case 2:
-        std::cout << "Siege projectile" << std::endl;
+        // std::cout << "Siege projectile" << std::endl;
         // Add an Arrow type object that inherits from projectile to the projectiles vector.
         projectile = std::make_shared<ExplosiveShell>(startPosition, target_character, projectile_speed, damage);
         break;
     case 3:
-        std::cout << "Poison Arrow projectile" << std::endl;
+        // std::cout << "Poison Arrow projectile" << std::endl;
         // Add an Arrow type object that inherits from projectile to the projectiles vector.
         projectile = std::make_shared<PoisonArrow>(startPosition, target_character, projectile_speed, damage);
         break;        
     case 4:
-        std::cout << "Frost Orb projectile" << std::endl;
+        // std::cout << "Frost Orb projectile" << std::endl;
         // Add an Arrow type object that inherits from projectile to the projectiles vector.
         projectile = std::make_shared<FrostOrb>(startPosition, target_character, projectile_speed, damage);
         break;
     case 5:
-        std::cout << "Shock Shell projectile" << std::endl;
+        // std::cout << "Shock Shell projectile" << std::endl;
         // Add an Arrow type object that inherits from projectile to the projectiles vector.
         projectile = std::make_shared<ShockShell>(startPosition, target_character, projectile_speed, damage);
         break;
@@ -1046,7 +1313,7 @@ void TileMap::ShootNearest(sf::Vector2f startPosition, float damage, int tower_t
 
 
     projectiles.push_back(projectile);
-    std::cout << "ShootNearest cp 3" << std::endl;
+    // std::cout << "ShootNearest cp 3" << std::endl;
 
 }
 
@@ -1084,10 +1351,13 @@ void TileMap::AddWave(std::vector<int> new_wave)
 void TileMap::EndWave()
 {
     std::cout << "Enteres EndWave" << std::endl;
+    genetic_manager.ShowSpecies();
     genetic_manager.ClearWave();    // Recalculates the best Individuals of each species.
     genetic_manager.ShowBestIndividuals();
     current_round_cleared_enemies = 0;
     current_round_is_cleared = true;
+    
+    generations_elapsed ++;
 }
 
 void TileMap::SpawnNextEnemy()
@@ -1104,10 +1374,10 @@ void TileMap::SpawnNextEnemy()
 
     int current_species = waves_queue.front()[current_round_spawned_enemies];
 
-    // Creates and Individual from the current best.
+    // Creates and Individual as a copy of the current best.
     Individual current_best = genetic_manager.best_individuals[current_species];
     // Randomly mutates stats of the current Individual and increments total_mutations accordingly .
-    std::cout << "mutation_chance = " << mutation_chance << std::endl;
+    // std::cout << "mutation_chance = " << mutation_chance << std::endl;
     total_mutations += current_best.MutateStats(mutation_chance);
     
     int spawn_location_offset = current_round_spawned_enemies%4;
@@ -1115,7 +1385,7 @@ void TileMap::SpawnNextEnemy()
     // Adds a character to the current species.
     // This moves the spawned characters to the bottom right corner of the map.
     addCharacter(character, current_species);
-    std::cout << "Added a character of species " << current_species << std::endl;
+    std::cout << "Added a character of species " << current_species << "; \t";
     std::cout << "total_mutations = " << total_mutations << std::endl;
 
     current_round_spawned_enemies ++;
@@ -1131,4 +1401,149 @@ bool TileMap::IsAtLastEnemySpawn()
     return current_round_spawned_enemies == wave_lenght;
 }
 
+void TileMap::CreateMoneyLabel(sf::Vector2f cleared_enemy_position, int money_obtained)
+{
 
+    sf::Text text;
+    text.setFont(font);                // set the font
+    text.setString(std::to_string(money_obtained));    // set the string
+    text.setCharacterSize(18);         // in pixels
+    text.setFillColor(sf::Color(255, 240, 128));
+    // Center the text
+    sf::FloatRect textRect = text.getLocalBounds();
+    text.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+
+    text.setPosition(cleared_enemy_position);        // x and y position
+    money_labels.push_back(text);
+
+}
+
+void TileMap::DrawInfoPanel(sf::RenderWindow& window)
+{
+    // All Texts:
+    // sf::Text generations_elapsed_label;
+    // sf::Text current_round_cleared_enemies_label;
+    
+    // sf::Text orc_best_fitness_label;
+    // sf::Text ne_best_fitness_label;
+    // sf::Text harpy_best_fitness_label;
+    // sf::Text merc_best_fitness_label;
+    
+    // sf::Text tower_levels_label;
+    // sf::Text mutations_chance_and_total_label;
+
+
+
+    // Run only once. Constructor.
+    // .setFont(font);                // set the font
+    // .setCharacterSize(18);         // in pixels
+    // .setFillColor(sf::Color(255, 255, 255));
+    // // Center the text    
+    // .setPosition(1050, 500);
+    
+
+    // sf::Text generations_elapsed_label;
+    generations_elapsed_label.setString("Generaciones trancurridas: " + std::to_string(generations_elapsed));    // set the string
+    // Center the text
+    sf::FloatRect textRect = generations_elapsed_label.getLocalBounds();
+    generations_elapsed_label.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+    
+    
+    // sf::Text current_round_cleared_enemies_label;
+    current_round_cleared_enemies_label.setString("Enemigos derrotados: " + std::to_string(current_round_cleared_enemies));    // set the string
+    // Center the text
+    textRect = current_round_cleared_enemies_label.getLocalBounds();
+    current_round_cleared_enemies_label.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+
+    
+
+    // Best fits per species
+    std::vector<float> best_fits_per_species = genetic_manager.GetBestFits();
+    std::vector<std::string> best_fits_per_species_strings;
+    for (size_t i = 0; i < 4; i++)
+    {
+        if (best_fits_per_species[i] < 0)   // -1 represents no fitness for the current species was found.
+        {
+            best_fits_per_species_strings.push_back("-");
+        }
+        else
+        {
+            best_fits_per_species_strings.push_back(std::to_string(best_fits_per_species[i]));
+        }
+    }
+    // sf::Text orc_best_fitness_label;
+    orc_best_fitness_label.setString("Mejor fitness Orcos: " + best_fits_per_species_strings[0]);    // set the string
+    // Center the text
+    textRect = orc_best_fitness_label.getLocalBounds();
+    orc_best_fitness_label.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+    
+    // sf::Text ne_best_fitness_label;
+    ne_best_fitness_label.setString("Mejor fitness Elfos: " + best_fits_per_species_strings[1]);    // set the string
+    // Center the text
+    textRect = ne_best_fitness_label.getLocalBounds();
+    ne_best_fitness_label.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+    
+    // sf::Text harpy_best_fitness_label;
+    harpy_best_fitness_label.setString("Mejor fitness Harpias: " + best_fits_per_species_strings[2]);    // set the string
+    // Center the text
+    textRect = harpy_best_fitness_label.getLocalBounds();
+    harpy_best_fitness_label.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+    
+    // sf::Text merc_best_fitness_label;
+    merc_best_fitness_label.setString("Mejor fitness Mercenarios: " + best_fits_per_species_strings[3]);    // set the string
+    // Center the text
+    textRect = merc_best_fitness_label.getLocalBounds();
+    merc_best_fitness_label.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+    
+
+
+
+    // sf::Text tower_levels_label;
+    tower_levels_label.setString("Nivel de torres: Arqueros, " + std::to_string(tower_levels[0])
+        + "; Magos, " + std::to_string(tower_levels[1])
+        + "; Artilleros, " + std::to_string(tower_levels[2]));
+    // Center the text
+    textRect = tower_levels_label.getLocalBounds();
+    tower_levels_label.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+    
+
+
+
+    // sf::Text mutations_chance_and_total_label;
+    mutations_chance_and_total_label.setString("Probabilidad de mutaciones: " + std::to_string(mutation_chance)
+        + "; cantidad de mutaciones: " + std::to_string(total_mutations));
+    // Center the text
+    textRect = mutations_chance_and_total_label.getLocalBounds();
+    mutations_chance_and_total_label.setOrigin(
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+
+
+    window.draw(generations_elapsed_label);
+    window.draw(current_round_cleared_enemies_label);
+
+    window.draw(orc_best_fitness_label);
+    window.draw(ne_best_fitness_label);
+    window.draw(harpy_best_fitness_label);
+    window.draw(merc_best_fitness_label);
+    
+    window.draw(tower_levels_label);
+    window.draw(mutations_chance_and_total_label);
+
+}

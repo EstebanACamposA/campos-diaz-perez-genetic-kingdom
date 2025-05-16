@@ -125,7 +125,8 @@ class Genetics
 
         static bool RandomBool(double probability);
 
-
+        // Info Panel
+        std::vector<float> GetBestFits();
 
 
 

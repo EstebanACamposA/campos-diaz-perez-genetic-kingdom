@@ -138,7 +138,8 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1200, 950), "Genetic Kingdom");
 
     std::cout << "Main checkpoint 1" << std::endl;
-    window.setFramerateLimit(60);
+    int global_speed_multiplier = 1;
+    window.setFramerateLimit(60*global_speed_multiplier);
     std::cout << "Main checkpoint 2" << std::endl;
     sf::Clock clock;
     std::cout << "Main checkpoint 3" << std::endl;
@@ -166,7 +167,7 @@ int main() {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -224,6 +225,10 @@ int main() {
     while (window.isOpen())
     {
         float deltaTime = clock.restart().asSeconds();
+        
+        // speed multiplying must multiply deltaTime and the max framerate by the same value to work.
+        // float global_speed_multiplier = 2.f;
+        deltaTime *= global_speed_multiplier;
 
         bool new_wave_added = false;
 
@@ -232,6 +237,8 @@ int main() {
             map.AddWave(genWave());
             new_wave_added = true;
             // counter60 = 0;
+            global_speed_multiplier ++;
+            window.setFramerateLimit(60*global_speed_multiplier);
         }
         
 
@@ -314,8 +321,8 @@ int main() {
         
         map.update(deltaTime);
         
-        window.clear(sf::Color::White);
-        // window.clear(sf::Color(32,32,24));
+        // window.clear(sf::Color::White);
+        window.clear(sf::Color(32,32,24));
         map.draw(window);
         
         // Dibujar objetivo

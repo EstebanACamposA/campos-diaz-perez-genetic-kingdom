@@ -70,7 +70,7 @@ Tower::Tower(sf::Vector2f startPosition, int tower_type, int tower_level, float 
 
     // Stats. Depend on level and type
     // Period.
-    int towers_period_by_type[3] = {60, 120, 240};
+    float towers_period_by_type[3] = {1.f, 2.f, 4.f};
     period = towers_period_by_type[tower_type];
     // Damage
     float towers_damage_by_type[3] = {7.5f, 20.f, 25.f};
@@ -111,10 +111,10 @@ bool Tower::update(float deltaTime)
 {
     if (period_progress >= period)
     {
-        period_progress = 0;
+        period_progress = 0.f;
         return true;
     }
-    period_progress ++;
+    period_progress += deltaTime;
     return false;
 }
 
@@ -155,7 +155,7 @@ void Tower::upgrade()
 {
     damage *= 1.2f;
     // period = (int)(period * 0.8f);
-    period = period * 4 / 5;
+    period = period * 0.8f;
 
 
     // sf::Color original = sprite.getFillColor();

@@ -118,9 +118,34 @@ private:
     sf::Texture tower_textures[3];
     sf::Texture enemy_textures[4];
 
-    sf::Texture tile_textures[3];
+    sf::Texture tile_textures[5];
     std::vector<sf::Sprite> textured_tiles; // This vector is used for drawing the tiles.
-    sf::Sprite sprite_texture_aux;
+
+    sf::Texture goal_texture;
+    sf::Sprite goal_sprite;
+
+    // Money logic
+    int money;
+    int money_per_species[4];
+    // Money Display
+    int money_label_timer;
+    std::vector<sf::Text> money_labels; // This vector is used for drawing labels displaying money earned for defeating enemies.
+    void CreateMoneyLabel(sf::Vector2f cleared_enemy_position, int money_obtained);
+    sf::Font font;
+
+    // Info Panel
+    void DrawInfoPanel(sf::RenderWindow& window);
+    int generations_elapsed;
+    sf::Text generations_elapsed_label;
+    sf::Text current_round_cleared_enemies_label;
+    
+    sf::Text orc_best_fitness_label;
+    sf::Text ne_best_fitness_label;
+    sf::Text harpy_best_fitness_label;
+    sf::Text merc_best_fitness_label;
+    
+    sf::Text tower_levels_label;
+    sf::Text mutations_chance_and_total_label;
 
 
 

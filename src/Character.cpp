@@ -50,12 +50,18 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
             then it is divided by the smallest value so that the base mutliplier is 1 (for orcs).
     */
 
-    float species_health_multiplier[] = {1.f, 1.5f, 1.81f, 1.48f};
-    max_health *= species_health_multiplier[species];   // This doesn't affect the genetic algorithm. It only makes the species balanced.
-    max_health *= 50;   // This is a starter value that converts the raw genetic data to a health value that makes sense in the game. 
+    // Can't modify max_health because it's part of the Character's genes. Current health is used for translating genes to game values.
 
-    current_health = max_health;
-    speed = 30 * speed_multiplier; // 30 is default speed!!! SPEED.
+    // This doesn't affect the genetic algorithm. It only makes the species balanced.
+    float species_health_multiplier[] = {1.f, 1.5f, 1.81f, 1.48f};
+    
+    // 50 is a starter value that converts the raw genetic data to a health value that makes sense in the game. 
+    starting_health = max_health * species_health_multiplier[species] * 50;
+    current_health = starting_health;
+
+
+    float species_speed_multiplier[] = {0.7f, 1.5f, 1.f, 1.f};
+    speed = 30 * speed_multiplier * species_speed_multiplier[species]; // 30 is default speed!!! SPEED.
 
     pierce_damage = 0;
     magic_damage = 0;
@@ -79,9 +85,9 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
     shock_shell_timer = 0;
 
     // Active color variables.
-    bool active_color_red = false;
-    bool active_color_blue = false;
-    bool active_color_green = false;
+    active_color_red = false;
+    active_color_blue = false;
+    active_color_green = false;
 
     damage_blink = false;
 
@@ -96,6 +102,9 @@ Character::Character(sf::Vector2f startPosition, Individual individual, int spec
     
     sprite_texture.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
     sprite_texture.setPosition(position);
+
+    // Money logic
+    goal_reached = false;
 
 }
 
@@ -129,9 +138,9 @@ std::optional<Individual> Character::update(float deltaTime) {
         magic_damage = 0.f;
         siege_damage = 0.f;
         
-        std::cout << "current_health before:" << current_health;
+        // std::cout << "current_health before:" << current_health;
         current_health -= damage_taken;
-        std::cout << " current_health after:" << current_health << std::endl;
+        // std::cout << " current_health after:" << current_health << " damage taken: " << damage_taken << std::endl;
 
     }
     
@@ -198,6 +207,7 @@ std::optional<Individual> Character::update(float deltaTime) {
     else
     {
         // Characters is taken out of the game before loosing all its health when reaching the goal/
+        goal_reached = true;
         Individual genetic_result = CalculateIndividual();
         return genetic_result; // Returning an Individual type object works even if the return type is std::optional<Individual>.
     }
@@ -257,7 +267,7 @@ sf::Vector2f Character::getPosition() const {
 Individual Character::CalculateIndividual()
 {   
     float completed_path = CalculateCompletedPath();
-    float remaining_health = current_health / max_health;
+    float remaining_health = current_health / starting_health;
 
     Individual genetic_result(max_health, speed_multiplier, pierce_armor, magic_armor, siege_armor, completed_path, remaining_health);
     return genetic_result;
@@ -290,8 +300,15 @@ float Character::CalculateCompletedPath()
 // Cuts enemies speed by half. Can only be applied once. Is permanent.
 void Character::ApplyFrostOrbEffect()
 {
+    // std::cout << "ENTERS ApplyFrostOrbEffect()" << std::endl;
+    // std::cout << "ENTERS ApplyFrostOrbEffect()" << std::endl;
+    // std::cout << "ENTERS ApplyFrostOrbEffect()" << std::endl;
     if (!frost_orb_effect)
     {
+        // std::cout << "APPLIES ApplyFrostOrbEffect()" << std::endl;
+        // std::cout << "APPLIES ApplyFrostOrbEffect()" << std::endl;
+        // std::cout << "APPLIES ApplyFrostOrbEffect()" << std::endl;
+
         CalculateColors(0,0,1);
         frost_orb_effect = true;
         this->speed /= 2;    
@@ -328,6 +345,7 @@ void Character::CalculateColors(int r, int g, int b)
     }
     
     // std::cout << "Color input = (" << r << ", " << g << ", " << b << ")" << std::endl;
+    // std::cout << "Active colors = (" << active_color_red << ", " << active_color_green << ", " << active_color_blue << ")" << std::endl;
 
     // Generates a status color rgb by starting with white and substracting the colors that are not the applied one. This is then mutliplied to the base color.
     // sf::Color status_color(
@@ -339,12 +357,12 @@ void Character::CalculateColors(int r, int g, int b)
     // and substracting 128 to each channel if any of the other channels are active colors and the current one is not an active color,
     // in which case nothing is substracted. This is then mutliplied to the base color.
     sf::Color status_color(
-        255 -128*((active_color_green | active_color_blue) & !active_color_red),
-        255 -128*((active_color_red | active_color_blue) & !active_color_green),
-        255 -128*((active_color_red | active_color_green) & !active_color_blue));
+        255 -128*((active_color_green || active_color_blue) && !active_color_red),
+        255 -128*((active_color_red || active_color_blue) && !active_color_green),
+        255 -128*((active_color_red || active_color_green) && !active_color_blue));
     
 
-    sf::Color result_color(base_color.r * status_color.r / 255, base_color.g * status_color.g / 255, base_color.b * status_color.b / 255);
+    // sf::Color result_color(base_color.r * status_color.r / 255, base_color.g * status_color.g / 255, base_color.b * status_color.b / 255);
     
     /// Testing visuals ///
     // sprite.setFillColor(result_color);
@@ -356,6 +374,7 @@ void Character::CalculateColors(int r, int g, int b)
 
     // std::cout << "base_color = (" << (int) base_color.r << ", " << (int) base_color.g << ", " << (int) base_color.b << ")" << std::endl;
     // std::cout << "result_color = (" << (int) result_color.r << ", " << (int) result_color.g << ", " << (int) result_color.b << ")" << std::endl;
+    // std::cout << "status_color = (" << (int) status_color.r << ", " << (int) status_color.g << ", " << (int) status_color.b << ")" << std::endl;
 
 
 }

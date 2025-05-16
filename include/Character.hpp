@@ -32,6 +32,9 @@ public:
     void ApplyFrostOrbEffect();
     int shock_shell_timer;
 
+    // Money logic
+    bool goal_reached;
+
 private:
     // SFML and movement:
     sf::CircleShape sprite;
@@ -83,5 +86,8 @@ private:
     void CalculateColors(int r, int g, int b);
     // SFML Texture
     sf::Sprite sprite_texture;
+
+    // Fitness calculation of CalculateIndividual()
+    float starting_health;
 
 };

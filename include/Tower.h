@@ -50,9 +50,9 @@ private:
     // // std::vector<sf::Vector2f> path;
     /// Testing visuals ///
 
-    // period between shots in frames.
-    int period;
-    int period_progress = 0;
+    // period between shots in seconds.
+    float period;
+    float period_progress = 0.f;
 
     
 
