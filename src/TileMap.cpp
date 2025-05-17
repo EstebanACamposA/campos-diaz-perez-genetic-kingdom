@@ -1167,8 +1167,12 @@ void TileMap::clickEvents(sf::Vector2i click_coords)
                 int current_tower_type = towers[clicked_tower_id]->tower_type;
                 if (tower_levels[current_tower_type] < 2)   // This is 2 because a tower can only be upgraded twice.
                 {
-                    if ((current_tower_type = 0 && money > 300) || (current_tower_type = 1 && money > 450) || (current_tower_type = 3 && money > 600))
+                    if ((current_tower_type == 0 && money > 300) || (current_tower_type == 1 && money > 400) || (current_tower_type == 3 && money > 500))
                     {
+                        if (current_tower_type == 0) money -= 300;
+                        if (current_tower_type == 1) money -= 400;
+                        if (current_tower_type == 2) money -= 500;
+                        
                         // Upgrades towers if user clicks within the button and the type isn't fully upgraded yet.
                         for (size_t i = 0; i < towers.size(); i++)
                         {
